@@ -6,8 +6,8 @@
 using namespace std;
 #define RF 1.966
 
-Analysis_SP8:: Analysis_SP8(Int_t run){
-    file= new TFile(Form("./../Data/run%06d_0.root", run), "read");
+Analysis:: Analysis(Int_t run){
+    file= new TFile(Form("./../../Data/run%06d_0.root", run), "read");
     if(!file || !file-> IsOpen()){
         cout << Form("can not open run%06d_0.root", run) << endl;
         return;
@@ -21,13 +21,13 @@ Analysis_SP8:: Analysis_SP8(Int_t run){
     cout << "Event: " << nEntries << endl;
 }
 
-Analysis_SP8:: ~Analysis_SP8(){
+Analysis:: ~Analysis(){
     if (!tree) return;
     file-> Close();
     delete tree-> GetCurrentFile();
 }
 
-void Analysis_SP8:: Init(TChain *tree){
+void Analysis:: Init(TChain *tree){
     tree-> SetBranchAddress("amp", &amp, &b_amp);
     tree-> SetBranchAddress("dt", &dt, &b_dt);
     tree-> SetBranchAddress("width", &width, &b_width);
@@ -35,7 +35,14 @@ void Analysis_SP8:: Init(TChain *tree){
     tree-> SetBranchAddress("l1_tdc1", &l1_tdc1, &b_l1_tdc1);
     tree-> SetBranchAddress("ltdc", &ltdc, &b_ltdc);
     tree-> SetBranchAddress("ttdc", &ttdc, &b_ttdc);
-    tree->GetEntry(0);
+    // tree-> SetBranchAddress("amp", &amp);
+    // tree-> SetBranchAddress("dt", &dt);
+    // tree-> SetBranchAddress("width", &width);
+    // tree-> SetBranchAddress("l1_tdc", &l1_tdc);
+    // tree-> SetBranchAddress("l1_tdc1", &l1_tdc1);
+    // tree-> SetBranchAddress("ltdc", &ltdc);
+    // tree-> SetBranchAddress("ttdc", &ttdc);
+    tree-> GetEntry(0);
     tree-> SetBranchStatus("*", 0);
     tree-> SetBranchStatus("amp", 1);
     tree-> SetBranchStatus("ltdc", 1);
@@ -43,7 +50,7 @@ void Analysis_SP8:: Init(TChain *tree){
     return;
 }
 
-void Analysis_SP8:: indicator(Int_t iEntry, Int_t nEntries){
+void Analysis:: indicator(Int_t iEntry, Int_t nEntries){
     Int_t percent= 100*(iEntry+1)/nEntries;
     if(percent==percent_tmp) return;
     else if(percent<10)   cout << "\r" << "[__________]  "  << percent << "%" << string(5, ' ') << flush;
@@ -58,5 +65,11 @@ void Analysis_SP8:: indicator(Int_t iEntry, Int_t nEntries){
     else if(percent<100)  cout << "\r" << "[#########_]  "  << percent << "%" << string(5, ' ') << flush;
     else if(percent==100) cout << "\r" << "[##########]  "  << percent << "%" << string(10, ' ') << endl;
     percent_tmp = percent;
+    return;
+}
+
+void Analysis_SP8(Int_t run){
+    cout << "OK" << endl;
+    Analysis* a= new Analysis(run);
     return;
 }

@@ -7,13 +7,13 @@ class Analysis{
     TChain *tree;
     Int_t nEntries=0;
     Int_t percent_tmp=0;
-    vector<vector<Double_t>> *amp;
-    vector<vector<Double_t>> *dt;
-    vector<vector<Double_t>> *width;
+    vector<vector<Double_t>> *amp=0;
+    vector<vector<Double_t>> *dt=0;
+    vector<vector<Double_t>> *width=0;
     Int_t l1_tdc;
     Int_t l1_tdc1;
-    vector<vector<Double_t>> *ltdc;
-    vector<vector<Double_t>> *ttdc;
+    vector<vector<Double_t>> *ltdc=0;
+    vector<vector<Double_t>> *ttdc=0;
     TBranch *b_amp;
     TBranch *b_dt;
     TBranch *b_width;
@@ -22,8 +22,8 @@ class Analysis{
     TBranch *b_ltdc;
     TBranch *b_ttdc;
 
-    Analysis_SP8(Int_t run);
-    ~Analysis_SP8();
+    Analysis(Int_t run);
+    ~Analysis();
     void Init(TChain *tree);
     void indicator(Int_t iEntry, Int_t nEntries);
     void MakeCanvas();
