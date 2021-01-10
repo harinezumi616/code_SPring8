@@ -7,7 +7,7 @@ using namespace std;
 
 
 void TimeResolution(Int_t run){
-    TFile *file= new TFile(Form("./../Data/run%06d_0.root", run), "read");
+    TFile *file= new TFile(Form("./../../Data/run%06d_0.root", run), "read");
     if(!file || !file-> IsOpen()){
         cout << Form("can not open run%06d_0.root", run) << endl;
         return;

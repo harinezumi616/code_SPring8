@@ -21,11 +21,13 @@ class Analysis{
     TBranch *b_l1_tdc1;
     TBranch *b_ltdc;
     TBranch *b_ttdc;
+    Bool_t BCheck=0;
 
     Analysis(Int_t run);
     ~Analysis();
     void Init(TChain *tree);
     void indicator(Int_t iEntry, Int_t nEntries);
+    void Select();
     void MakeCanvas();
     void RunEventLoop();
     void DrawPlot();
