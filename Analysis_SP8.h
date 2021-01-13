@@ -7,9 +7,9 @@ class Analysis{
     TChain *tree;
     Int_t nEntries=0;
     Int_t percent_tmp=0;
-    vector<vector<Double_t>> RecofigLtdc;
-    vector<vector<Double_t>> RecofigTtdc;
-    vector<vector<Double_t>> RecofigWidth;
+    vector<vector<Double_t>> ReconfigLtdc;
+    vector<vector<Double_t>> ReconfigTtdc;
+    vector<vector<Double_t>> ReconfigWidth;
     vector<vector<Double_t>> *amp=0;
     vector<vector<Double_t>> *dt=0;
     vector<vector<Double_t>> *width=0;
@@ -24,17 +24,15 @@ class Analysis{
     TBranch *b_l1_tdc1;
     TBranch *b_ltdc;
     TBranch *b_ttdc;
-    Bool_t BCheck=0;
 
     Analysis(Int_t run);
     ~Analysis();
     void Init(TChain *tree);
-    void Select();
     void MakeCanvas();
     void RunEventLoop();
     void DrawPlot();
     void Save();
-    void indicator(Int_t iEntry, Int_t nEntries);
-    void SetData();
-    void Check();
+    inline void indicator(Int_t iEntry, Int_t nEntries);
+    inline void SetData();
+    inline void Check();
 };

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Select_SP8.h"
 #include "MakeCanvas_SP8.h"
 #include "Analysis_SP8.h"
 using namespace std;
@@ -44,19 +45,14 @@ void Analysis:: Init(TChain *tree){
     return;
 }
 
-void Analysis:: Select(){
-    BCheck=1;
-    return;
-}
-
 void Analysis:: MakeCanvas(){
     if(BCheck){
-        CLtdc1= new TCanvas("CLtdc1", "CLtdc1", 2000, 2000);
-        CLtdc2= new TCanvas("CLtdc2", "CLtdc2", 2000, 2000);
-        CTtdc1= new TCanvas("CTtdc1", "CTtdc1", 2000, 2000);
-        CTtdc2= new TCanvas("CTtdc2", "CTtdc2", 2000, 2000);
-        CWidth1= new TCanvas("CWidth1", "CWidth1", 2000, 2000);
-        CWidth2= new TCanvas("CWidth2", "CWidth2", 2000, 2000);
+        CLtdc1= new TCanvas(Form("run%d_CLtdc1", Run), Form("run%d_CLtdc1", Run), 2000, 2000);
+        CLtdc2= new TCanvas(Form("run%d_CLtdc2", Run), Form("run%d_CLtdc2", Run), 2000, 2000);
+        CTtdc1= new TCanvas(Form("run%d_CTtdc1", Run), Form("run%d_CTtdc1", Run), 2000, 2000);
+        CTtdc2= new TCanvas(Form("run%d_CTtdc2", Run), Form("run%d_CTtdc2", Run), 2000, 2000);
+        CWidth1= new TCanvas(Form("run%d_CWidth1", Run), Form("run%d_Width1", Run), 2000, 2000);
+        CWidth2= new TCanvas(Form("run%d_CWidth2", Run), Form("run%d_Width2", Run), 2000, 2000);
         CLtdc1-> Divide(4,4);
         CLtdc2-> Divide(4,4);
         CTtdc1-> Divide(4,4);
@@ -64,15 +60,15 @@ void Analysis:: MakeCanvas(){
         CWidth1-> Divide(4,4);
         CWidth2-> Divide(4,4);
         for(Int_t ch=0; ch<32; ch++){
-            HLtdc1[ch]= new TH1D(Form("run%d_HLtdc1[%d]", Run, ch), Form("run%d_HLtdc[%d]", Run, ch), 3000, 0, 600);
-            HLtdc2[ch]= new TH1D(Form("run%d_HLtdc2[%d]", Run, ch), Form("run%d_HLtdc[%d]", Run, ch), 3000, 0, 600);
-            HLtdc3[ch]= new TH1D(Form("run%d_HLtdc3[%d]", Run, ch), Form("run%d_HLtdc[%d]", Run, ch), 3000, 0, 600);
-            HTtdc1[ch]= new TH1D(Form("run%d_HTtdc1[%d]", Run, ch), Form("run%d_HTtdc[%d]", Run, ch), 3000, 0, 600);
-            HTtdc2[ch]= new TH1D(Form("run%d_HTtdc2[%d]", Run, ch), Form("run%d_HTtdc[%d]", Run, ch), 3000, 0, 600);
-            HTtdc3[ch]= new TH1D(Form("run%d_HTtdc3[%d]", Run, ch), Form("run%d_HTtdc[%d]", Run, ch), 3000, 0, 600);
-            HWidth1[ch]= new TH1D(Form("run%d_HWidth1[%d]", Run, ch), Form("run%d_HWidth[%d]", Run, ch), 3000, 0, 600);
-            HWidth2[ch]= new TH1D(Form("run%d_HWidth2[%d]", Run, ch), Form("run%d_HWidth[%d]", Run, ch), 3000, 0, 600);
-            HWidth3[ch]= new TH1D(Form("run%d_HWidth3[%d]", Run, ch), Form("run%d_HWidth[%d]", Run, ch), 3000, 0, 600);
+            HLtdc1[ch]= new TH1D(Form("run%d_HLtdc1[%d]", Run, ch), Form("run%d_HLtdc1[%d]", Run, ch), 3000, 0, 600);
+            HLtdc2[ch]= new TH1D(Form("run%d_HLtdc2[%d]", Run, ch), Form("run%d_HLtdc2[%d]", Run, ch), 3000, 0, 600);
+            HLtdc3[ch]= new TH1D(Form("run%d_HLtdc3[%d]", Run, ch), Form("run%d_HLtdc3[%d]", Run, ch), 3000, 0, 600);
+            HTtdc1[ch]= new TH1D(Form("run%d_HTtdc1[%d]", Run, ch), Form("run%d_HTtdc1[%d]", Run, ch), 3000, 0, 600);
+            HTtdc2[ch]= new TH1D(Form("run%d_HTtdc2[%d]", Run, ch), Form("run%d_HTtdc2[%d]", Run, ch), 3000, 0, 600);
+            HTtdc3[ch]= new TH1D(Form("run%d_HTtdc3[%d]", Run, ch), Form("run%d_HTtdc3[%d]", Run, ch), 3000, 0, 600);
+            HWidth1[ch]= new TH1D(Form("run%d_HWidth1[%d]", Run, ch), Form("run%d_HWidth1[%d]", Run, ch), 150, 0, 30);
+            HWidth2[ch]= new TH1D(Form("run%d_HWidth2[%d]", Run, ch), Form("run%d_HWidth2[%d]", Run, ch), 150, 0, 30);
+            HWidth3[ch]= new TH1D(Form("run%d_HWidth3[%d]", Run, ch), Form("run%d_HWidth3[%d]", Run, ch), 150, 0, 30);
             HLtdc1[ch]-> SetLineColor(kRed);
             HLtdc2[ch]-> SetLineColor(kBlue);
             HLtdc3[ch]-> SetLineColor(kBlack);
@@ -93,7 +89,7 @@ void Analysis:: RunEventLoop(){
         if(iEntry<0) break;
         indicator(iEntry, nEntries);
         if(BCheck) SetData();
-        // if(BCheck) Check();
+        if(BCheck) Check();
     }
     return;
 }
@@ -135,10 +131,10 @@ void Analysis:: DrawPlot(){
 }
 
 void Analysis:: Save(){
-    cout << "\r" << Form("Save Histgram and Canvas into ./../Save/run%d_plot.root", Run) << flush;
+    cout << "\r" << Form("Save Histgram and Canvas into ./../Save/run%d_plot.root", Run) << flush << endl;
     TFile *fout= new TFile(Form("./../Save/run%d_plot.root", Run), "recreate");
-    TTree *cptree= tree-> CloneTree();
-    cptree-> Write();
+    // TTree *cptree= tree-> CloneTree();
+    // cptree-> Write();
     if(BCheck){
         CLtdc1-> Write();
         CLtdc2-> Write();
@@ -180,28 +176,28 @@ void Analysis:: indicator(Int_t iEntry, Int_t nEntries){
 }
 
 void Analysis:: SetData(){
-    RecofigLtdc.clear();
-    RecofigTtdc.clear();
-    RecofigWidth.clear();
+    ReconfigLtdc.clear();
+    ReconfigTtdc.clear();
+    ReconfigWidth.clear();
     for(Int_t ch=0; ch<32; ch++){
         Int_t i=0;
         Int_t j=0;
-        RecofigLtdc.emplace_back();
-        RecofigTtdc.emplace_back();
-        RecofigWidth.emplace_back();
+        ReconfigLtdc.emplace_back();
+        ReconfigTtdc.emplace_back();
+        ReconfigWidth.emplace_back();
         Int_t nltdc= ltdc->at(ch).size();
         Int_t nttdc= ttdc->at(ch).size();
         while(i<nltdc-1 && j<nttdc){
             if(ltdc->at(ch).at(i+1)>ttdc->at(ch).at(j)) i++;
             else if(ttdc->at(ch).at(j)>ltdc->at(ch).at(i)) j++;
             else if(ltdc->at(ch).at(i)>ttdc->at(ch).at(j) && ttdc->at(ch).at(j)>=ltdc->at(ch).at(i+1)){
-                RecofigLtdc.at(ch).emplace_back(ltdc->at(ch).at(i));
-                RecofigTtdc.at(ch).emplace_back(ttdc->at(ch).at(j));
-                RecofigWidth.at(ch).emplace_back(ltdc->at(ch).at(i) - ttdc->at(ch).at(j));
-                Int_t nReconfigLtdc= RecofigLtdc.at(ch).size();
-                Int_t nReconfigTtdc= RecofigTtdc.at(ch).size();
-                // cout << Form("RecofigLtdc.at(%2d).at(%2d)= ", ch, nReconfigLtdc-1) << RecofigLtdc.at(ch).at(nReconfigLtdc-1) << endl;
-                // cout << Form("RecofigTtdc.at(%2d).at(%2d)= ", ch, nReconfigTtdc-1) << RecofigTtdc.at(ch).at(nReconfigTtdc-1) << endl;
+                ReconfigLtdc.at(ch).emplace_back(ltdc->at(ch).at(i));
+                ReconfigTtdc.at(ch).emplace_back(ttdc->at(ch).at(j));
+                ReconfigWidth.at(ch).emplace_back(ltdc->at(ch).at(i) - ttdc->at(ch).at(j));
+                Int_t nReconfigLtdc= ReconfigLtdc.at(ch).size();
+                Int_t nReconfigTtdc= ReconfigTtdc.at(ch).size();
+                // cout << Form("ReconfigLtdc.at(%2d).at(%2d)= ", ch, nReconfigLtdc-1) << ReconfigLtdc.at(ch).at(nReconfigLtdc-1) << endl;
+                // cout << Form("ReconfigTtdc.at(%2d).at(%2d)= ", ch, nReconfigTtdc-1) << ReconfigTtdc.at(ch).at(nReconfigTtdc-1) << endl;
                 i++;
                 j++;
             }
@@ -215,12 +211,27 @@ void Analysis:: SetData(){
 }
 
 void Analysis:: Check(){
-    
+    for(Int_t ch=0; ch<32; ch++){
+        for(Int_t i=0; i<ReconfigLtdc.at(ch).size(); i++){
+            if(i==0) HLtdc1[ch]-> Fill(ReconfigLtdc.at(ch).at(i));
+            else if(i==1) HLtdc2[ch]-> Fill(ReconfigLtdc.at(ch).at(i));
+            else HLtdc3[ch]-> Fill(ltdc->at(ch).at(i));
+        }
+        for(Int_t i=0; i<ReconfigTtdc.at(ch).size(); i++){
+            if(i==0) HTtdc1[ch]-> Fill(ReconfigTtdc.at(ch).at(i));
+            else if(i==1) HTtdc2[ch]-> Fill(ReconfigTtdc.at(ch).at(i));
+            else HTtdc3[ch]-> Fill(ReconfigTtdc.at(ch).at(i));
+        }
+        for(Int_t i=0; i<ReconfigWidth.at(ch).size(); i++){
+            if(i==0) HWidth1[ch]-> Fill(ReconfigWidth.at(ch).at(i));
+            else if(i==1) HWidth2[ch]-> Fill(ReconfigWidth.at(ch).at(i));
+            else HWidth3[ch]-> Fill(ReconfigWidth.at(ch).at(i));
+        }
+    }
 }
 
 void Analysis_SP8(Int_t run){
     Analysis* a= new Analysis(run);
-    a-> Select();
     a-> MakeCanvas();
     a-> RunEventLoop();
     a-> DrawPlot();
