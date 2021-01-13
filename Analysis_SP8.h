@@ -7,6 +7,9 @@ class Analysis{
     TChain *tree;
     Int_t nEntries=0;
     Int_t percent_tmp=0;
+    vector<vector<Double_t>> RecofigLtdc;
+    vector<vector<Double_t>> RecofigTtdc;
+    vector<vector<Double_t>> RecofigWidth;
     vector<vector<Double_t>> *amp=0;
     vector<vector<Double_t>> *dt=0;
     vector<vector<Double_t>> *width=0;
@@ -26,10 +29,12 @@ class Analysis{
     Analysis(Int_t run);
     ~Analysis();
     void Init(TChain *tree);
-    void indicator(Int_t iEntry, Int_t nEntries);
     void Select();
     void MakeCanvas();
     void RunEventLoop();
     void DrawPlot();
     void Save();
+    void indicator(Int_t iEntry, Int_t nEntries);
+    void SetData();
+    void Check();
 };

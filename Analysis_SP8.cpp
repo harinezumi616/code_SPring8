@@ -44,24 +44,6 @@ void Analysis:: Init(TChain *tree){
     return;
 }
 
-void Analysis:: indicator(Int_t iEntry, Int_t nEntries){
-    Int_t percent= 100*(iEntry+1)/nEntries;
-    if(percent==percent_tmp) return;
-    else if(percent<10)   cout << "\r" << "[__________]  "  << percent << "%" << string(5, ' ') << flush;
-    else if(percent<20)   cout << "\r" << "[#_________]  "  << percent << "%" << string(5, ' ') << flush;
-    else if(percent<30)   cout << "\r" << "[##________]  "  << percent << "%" << string(5, ' ') << flush;
-    else if(percent<40)   cout << "\r" << "[###_______]  "  << percent << "%" << string(5, ' ') << flush;
-    else if(percent<50)   cout << "\r" << "[####______]  "  << percent << "%" << string(5, ' ') << flush;
-    else if(percent<60)   cout << "\r" << "[#####_____]  "  << percent << "%" << string(5, ' ') << flush;
-    else if(percent<70)   cout << "\r" << "[######____]  "  << percent << "%" << string(5, ' ') << flush;
-    else if(percent<80)   cout << "\r" << "[#######___]  "  << percent << "%" << string(5, ' ') << flush;
-    else if(percent<90)   cout << "\r" << "[########__]  "  << percent << "%" << string(5, ' ') << flush;
-    else if(percent<100)  cout << "\r" << "[#########_]  "  << percent << "%" << string(5, ' ') << flush;
-    else if(percent==100) cout << "\r" << "[##########]  "  << percent << "%" << string(10, ' ') << endl;
-    percent_tmp = percent;
-    return;
-}
-
 void Analysis:: Select(){
     BCheck=1;
     return;
@@ -82,15 +64,15 @@ void Analysis:: MakeCanvas(){
         CWidth1-> Divide(4,4);
         CWidth2-> Divide(4,4);
         for(Int_t ch=0; ch<32; ch++){
-            HLtdc1[ch]= new TH1D(Form("run%d_HLtdc[%d]", Run, ch), Form("run%d_HLtdc[%d]", Run, ch), 3000, 0, 600);
-            HLtdc2[ch]= new TH1D(Form("run%d_HLtdc[%d]", Run, ch), Form("run%d_HLtdc[%d]", Run, ch), 3000, 0, 600);
-            HLtdc3[ch]= new TH1D(Form("run%d_HLtdc[%d]", Run, ch), Form("run%d_HLtdc[%d]", Run, ch), 3000, 0, 600);
-            HTtdc1[ch]= new TH1D(Form("run%d_HTtdc[%d]", Run, ch), Form("run%d_HTtdc[%d]", Run, ch), 3000, 0, 600);
-            HTtdc2[ch]= new TH1D(Form("run%d_HTtdc[%d]", Run, ch), Form("run%d_HTtdc[%d]", Run, ch), 3000, 0, 600);
-            HTtdc3[ch]= new TH1D(Form("run%d_HTtdc[%d]", Run, ch), Form("run%d_HTtdc[%d]", Run, ch), 3000, 0, 600);
-            HWidth1[ch]= new TH1D(Form("run%d_HWidth[%d]", Run, ch), Form("run%d_HWidth[%d]", Run, ch), 3000, 0, 600);
-            HWidth2[ch]= new TH1D(Form("run%d_HWidth[%d]", Run, ch), Form("run%d_HWidth[%d]", Run, ch), 3000, 0, 600);
-            HWidth3[ch]= new TH1D(Form("run%d_HWidth[%d]", Run, ch), Form("run%d_HWidth[%d]", Run, ch), 3000, 0, 600);
+            HLtdc1[ch]= new TH1D(Form("run%d_HLtdc1[%d]", Run, ch), Form("run%d_HLtdc[%d]", Run, ch), 3000, 0, 600);
+            HLtdc2[ch]= new TH1D(Form("run%d_HLtdc2[%d]", Run, ch), Form("run%d_HLtdc[%d]", Run, ch), 3000, 0, 600);
+            HLtdc3[ch]= new TH1D(Form("run%d_HLtdc3[%d]", Run, ch), Form("run%d_HLtdc[%d]", Run, ch), 3000, 0, 600);
+            HTtdc1[ch]= new TH1D(Form("run%d_HTtdc1[%d]", Run, ch), Form("run%d_HTtdc[%d]", Run, ch), 3000, 0, 600);
+            HTtdc2[ch]= new TH1D(Form("run%d_HTtdc2[%d]", Run, ch), Form("run%d_HTtdc[%d]", Run, ch), 3000, 0, 600);
+            HTtdc3[ch]= new TH1D(Form("run%d_HTtdc3[%d]", Run, ch), Form("run%d_HTtdc[%d]", Run, ch), 3000, 0, 600);
+            HWidth1[ch]= new TH1D(Form("run%d_HWidth1[%d]", Run, ch), Form("run%d_HWidth[%d]", Run, ch), 3000, 0, 600);
+            HWidth2[ch]= new TH1D(Form("run%d_HWidth2[%d]", Run, ch), Form("run%d_HWidth[%d]", Run, ch), 3000, 0, 600);
+            HWidth3[ch]= new TH1D(Form("run%d_HWidth3[%d]", Run, ch), Form("run%d_HWidth[%d]", Run, ch), 3000, 0, 600);
             HLtdc1[ch]-> SetLineColor(kRed);
             HLtdc2[ch]-> SetLineColor(kBlue);
             HLtdc3[ch]-> SetLineColor(kBlack);
@@ -107,12 +89,11 @@ void Analysis:: MakeCanvas(){
 
 void Analysis:: RunEventLoop(){
     for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
-        if(BCheck){
-            tree-> GetEntry(iEntry);
-            if(iEntry<0) break;
-            indicator(iEntry, nEntries);
-            if(BCheck) Check();
-        }
+        tree-> GetEntry(iEntry);
+        if(iEntry<0) break;
+        indicator(iEntry, nEntries);
+        if(BCheck) SetData();
+        // if(BCheck) Check();
     }
     return;
 }
@@ -178,6 +159,63 @@ void Analysis:: Save(){
         }
     }
     return;
+}
+
+void Analysis:: indicator(Int_t iEntry, Int_t nEntries){
+    Int_t percent= 100*(iEntry+1)/nEntries;
+    if(percent==percent_tmp) return;
+    else if(percent<10)   cout << "\r" << "[__________]  "  << percent << "%" << string(5, ' ') << flush;
+    else if(percent<20)   cout << "\r" << "[#_________]  "  << percent << "%" << string(5, ' ') << flush;
+    else if(percent<30)   cout << "\r" << "[##________]  "  << percent << "%" << string(5, ' ') << flush;
+    else if(percent<40)   cout << "\r" << "[###_______]  "  << percent << "%" << string(5, ' ') << flush;
+    else if(percent<50)   cout << "\r" << "[####______]  "  << percent << "%" << string(5, ' ') << flush;
+    else if(percent<60)   cout << "\r" << "[#####_____]  "  << percent << "%" << string(5, ' ') << flush;
+    else if(percent<70)   cout << "\r" << "[######____]  "  << percent << "%" << string(5, ' ') << flush;
+    else if(percent<80)   cout << "\r" << "[#######___]  "  << percent << "%" << string(5, ' ') << flush;
+    else if(percent<90)   cout << "\r" << "[########__]  "  << percent << "%" << string(5, ' ') << flush;
+    else if(percent<100)  cout << "\r" << "[#########_]  "  << percent << "%" << string(5, ' ') << flush;
+    else if(percent==100) cout << "\r" << "[##########]  "  << percent << "%" << string(10, ' ') << endl;
+    percent_tmp = percent;
+    return;
+}
+
+void Analysis:: SetData(){
+    RecofigLtdc.clear();
+    RecofigTtdc.clear();
+    RecofigWidth.clear();
+    for(Int_t ch=0; ch<32; ch++){
+        Int_t i=0;
+        Int_t j=0;
+        RecofigLtdc.emplace_back();
+        RecofigTtdc.emplace_back();
+        RecofigWidth.emplace_back();
+        Int_t nltdc= ltdc->at(ch).size();
+        Int_t nttdc= ttdc->at(ch).size();
+        while(i<nltdc-1 && j<nttdc){
+            if(ltdc->at(ch).at(i+1)>ttdc->at(ch).at(j)) i++;
+            else if(ttdc->at(ch).at(j)>ltdc->at(ch).at(i)) j++;
+            else if(ltdc->at(ch).at(i)>ttdc->at(ch).at(j) && ttdc->at(ch).at(j)>=ltdc->at(ch).at(i+1)){
+                RecofigLtdc.at(ch).emplace_back(ltdc->at(ch).at(i));
+                RecofigTtdc.at(ch).emplace_back(ttdc->at(ch).at(j));
+                RecofigWidth.at(ch).emplace_back(ltdc->at(ch).at(i) - ttdc->at(ch).at(j));
+                Int_t nReconfigLtdc= RecofigLtdc.at(ch).size();
+                Int_t nReconfigTtdc= RecofigTtdc.at(ch).size();
+                // cout << Form("RecofigLtdc.at(%2d).at(%2d)= ", ch, nReconfigLtdc-1) << RecofigLtdc.at(ch).at(nReconfigLtdc-1) << endl;
+                // cout << Form("RecofigTtdc.at(%2d).at(%2d)= ", ch, nReconfigTtdc-1) << RecofigTtdc.at(ch).at(nReconfigTtdc-1) << endl;
+                i++;
+                j++;
+            }
+            else{
+                // cout << ch << ":" << ltdc->at(ch).at(i+1) << ":" << ttdc->at(ch).at(j) << ":" << ltdc->at(ch).at(i) <<endl;
+                i++;
+            }
+        }
+    }
+    return;
+}
+
+void Analysis:: Check(){
+    
 }
 
 void Analysis_SP8(Int_t run){
