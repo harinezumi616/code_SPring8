@@ -92,8 +92,9 @@ void Analysis:: RunEventLoop(){
         tree-> GetEntry(iEntry);
         if(iEntry<0) break;
         indicator(iEntry, nEntries);
-        if(BCheck) SetData();
-        if(BCheck) Check();
+        if(BSetData) SetData();
+        if(BCheck && BSetData) Check(BSetData);
+        if(BCheck && !BSetData) Check();
         if(BGetTimeReso) GetTimeReso();
     }
     return;
@@ -244,11 +245,47 @@ Bool_t Analysis:: HitStrip(Int_t Strip=0){
 }
 
 void Analysis:: Check(){
+    // cout << "Check()" << endl;
+    for(Int_t ch=0; ch<32; ch++){
+        for(Int_t i=0; i<ltdc->at(ch).size(); i++){
+            if(i==0) HLtdc1[ch]-> Fill(ltdc->at(ch).at(i));
+            else if(i==1) HLtdc2[ch]-> Fill(ltdc->at(ch).at(i));
+            else HLtdc3[ch]-> Fill(ltdc->at(ch).at(i));
+        }
+        for(Int_t i=0; i<ttdc->at(ch).size(); i++){
+            if(i==0) HTtdc1[ch]-> Fill(ttdc->at(ch).at(i));
+            else if(i==1) HTtdc2[ch]-> Fill(ttdc->at(ch).at(i));
+            else HTtdc3[ch]-> Fill(ttdc->at(ch).at(i));
+        }
+        if(ltdc->at(ch).size()<ttdc->at(ch).size()){
+            for(Int_t i=0; i<ltdc->at(ch).size(); i++){
+                if(i==0) HWidth1[ch]-> Fill(ltdc->at(ch).at(i)-ttdc->at(ch).at(i));
+                else if(i==1) HWidth2[ch]-> Fill(ltdc->at(ch).at(i)-ttdc->at(ch).at(i));
+                else HWidth3[ch]-> Fill(ltdc->at(ch).at(i)-ttdc->at(ch).at(i));
+            }
+        }
+        if(ttdc->at(ch).size()<ltdc->at(ch).size()){
+            for(Int_t i=0; i<ttdc->at(ch).size(); i++){
+                if(i==0) HWidth1[ch]-> Fill(ltdc->at(ch).at(i)-ttdc->at(ch).at(i));
+                else if(i==1) HWidth2[ch]-> Fill(ltdc->at(ch).at(i)-ttdc->at(ch).at(i));
+                else HWidth3[ch]-> Fill(ltdc->at(ch).at(i)-ttdc->at(ch).at(i));
+            }
+        }
+    }
+    return;
+}
+
+void Analysis:: GetLtdc()
+void Analysis:: GetTtdc()
+void Analysis:: GetWidth()
+
+void Analysis:: Check(Bool_t BSetData){
+    // cout << "Check(BSetData)" << endl;
     for(Int_t ch=0; ch<32; ch++){
         for(Int_t i=0; i<ReconfigLtdc.at(ch).size(); i++){
             if(i==0) HLtdc1[ch]-> Fill(ReconfigLtdc.at(ch).at(i));
             else if(i==1) HLtdc2[ch]-> Fill(ReconfigLtdc.at(ch).at(i));
-            else HLtdc3[ch]-> Fill(ltdc->at(ch).at(i));
+            else HLtdc3[ch]-> Fill(ReconfigLtdc.at(ch).at(i));
         }
         for(Int_t i=0; i<ReconfigTtdc.at(ch).size(); i++){
             if(i==0) HTtdc1[ch]-> Fill(ReconfigTtdc.at(ch).at(i));
@@ -261,6 +298,7 @@ void Analysis:: Check(){
             else HWidth3[ch]-> Fill(ReconfigWidth.at(ch).at(i));
         }
     }
+    return;
 }
 
 void Analysis:: GetTimeReso(){

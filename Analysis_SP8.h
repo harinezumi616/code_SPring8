@@ -35,6 +35,10 @@ class Analysis{
     void indicator(Int_t iEntry, Int_t nEntries);
     void SetData();
     Bool_t HitStrip(Int_t Strip=0);
+    Double_t GetLtdc(Int_t ch, Int_t Nth=0);
+    Double_t GetTtdc(Int_t ch, Int_t Nth=0);
+    Double_t GetWidth(Int_t ch, Int_t Nth=0);
     void Check();
+    void Check(Bool_t BSetData);
     void GetTimeReso();
 };
