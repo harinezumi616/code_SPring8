@@ -19,8 +19,8 @@ Analysis:: Analysis(Int_t run){
     gStyle-> SetOptFit(11111111);
     gStyle-> SetOptStat(11111111);
     nEntries= tree-> GetEntriesFast();
-    cout << Form("run%d", run) << endl;
-    cout << "Event: " << nEntries << endl;
+    cout << Form("Data File:run%d", run) << endl;
+    cout << "Event    : " << nEntries << endl;
 }
 
 Analysis:: ~Analysis(){
@@ -80,6 +80,10 @@ void Analysis:: MakeCanvas(){
             HWidth3[ch]-> SetLineColor(kBlack);
         }
     }
+    if(BGetTimeReso){
+        CRFLtdc= new TCanvas(Form("run%d_CRFLtdc", Run), Form("run%d_CRFLtdc", Run), 2000, 2000);
+        HRFLtdc= new TH1D(Form("run%d_HRFLtdc", Run), Form("run%d_HRFLtdc", Run), 1000, 0, 1000);
+    }
     return;
 }
 
@@ -90,6 +94,7 @@ void Analysis:: RunEventLoop(){
         indicator(iEntry, nEntries);
         if(BCheck) SetData();
         if(BCheck) Check();
+        if(BGetTimeReso) GetTimeReso();
     }
     return;
 }
@@ -127,6 +132,9 @@ void Analysis:: DrawPlot(){
             }
         }
     }
+    if(BGetTimeReso){
+
+    }
     return;
 }
 
@@ -153,6 +161,10 @@ void Analysis:: Save(){
         HWidth2[ch]-> Write();
         HWidth3[ch]-> Write();
         }
+    }
+    if(BGetTimeReso){
+        CRFLtdc-> Write();
+        HRFLtdc-> Write();
     }
     return;
 }
@@ -210,6 +222,27 @@ void Analysis:: SetData(){
     return;
 }
 
+Bool_t Analysis:: HitStrip(Int_t Strip=0){
+    if(Strip==0){
+        if(ltdc->at(1).size()!=0 && ltdc->at(4).size()!=0) return true;
+        else return false;
+    }
+    else if(Strip==1){
+        if(ltdc->at(0).size()!=0 && ltdc->at(3).size()!=0) return true;
+        else return false;
+    }
+    else if(Strip==-1){
+        if(ltdc->at(2).size()!=0 && ltdc->at(5).size()!=0) return true;
+        else return false;
+    }
+    else{
+        cout << "error: call of not specifying the strip" << endl;
+        Analysis:: ~Analysis();
+        exit(1);
+        return false;
+    }
+}
+
 void Analysis:: Check(){
     for(Int_t ch=0; ch<32; ch++){
         for(Int_t i=0; i<ReconfigLtdc.at(ch).size(); i++){
@@ -227,6 +260,14 @@ void Analysis:: Check(){
             else if(i==1) HWidth2[ch]-> Fill(ReconfigWidth.at(ch).at(i));
             else HWidth3[ch]-> Fill(ReconfigWidth.at(ch).at(i));
         }
+    }
+}
+
+void Analysis:: GetTimeReso(){
+    Bool_t C1= HitStrip();
+    Double_t mean;
+    Double_t RFmean;
+    if(C1){
     }
 }
 

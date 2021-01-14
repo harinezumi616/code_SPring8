@@ -32,7 +32,9 @@ class Analysis{
     void RunEventLoop();
     void DrawPlot();
     void Save();
-    inline void indicator(Int_t iEntry, Int_t nEntries);
-    inline void SetData();
-    inline void Check();
+    void indicator(Int_t iEntry, Int_t nEntries);
+    void SetData();
+    Bool_t HitStrip(Int_t Strip=0);
+    void Check();
+    void GetTimeReso();
 };

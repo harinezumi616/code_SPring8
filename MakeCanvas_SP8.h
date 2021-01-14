@@ -1,5 +1,5 @@
 #pragma once
-
+//Check()
 TCanvas *CLtdc1;
 TCanvas *CLtdc2;
 TCanvas *CTtdc1;
@@ -15,3 +15,7 @@ TH1D *HTtdc3[32];
 TH1D *HWidth1[32];
 TH1D *HWidth2[32];
 TH1D *HWidth3[32];
+
+//GetTimeReso
+TCanvas *CRFLtdc;
+TH1D *HRFLtdc;
