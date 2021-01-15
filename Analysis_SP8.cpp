@@ -6,6 +6,8 @@
 #include "Analysis_SP8.h"
 using namespace std;
 #define RF 1.966
+#define REDi "\e[0;31m"
+#define REDf "\033[m"
 
 Analysis:: Analysis(Int_t run){
     file= new TFile(Form("./../../Data/run%06d_0.root", run), "read");
@@ -237,12 +239,27 @@ Bool_t Analysis:: HitStrip(Int_t Strip=0){
         else return false;
     }
     else{
-        cout << "error: call of not specifying the strip" << endl;
+        cout << REDi "error: " REDf << "call of not exisiting the strip" << endl;
         Analysis:: ~Analysis();
         exit(1);
         return false;
     }
 }
+
+Double_t Analysis:: GetLtdc(Int_t ch, Int_t Nth=0){
+    if(BSetData){
+        return ReconfigLtdc.at(ch).at(Nth);
+    }
+    else{
+        if(!BSetData){
+            if(ltdc->at(ch).at(0)>ttdc->at(ch).at(0)) return ltdc->at(ch).at(0);
+            else ltdc->at(ch).at(1);
+        }
+        else return ltdc->at(ch).at(Nth);
+    }
+};
+Double_t Analysis:: GetTtdc(Int_t ch, Int_t Nth=0);
+Double_t Analysis:: GetWidth(Int_t ch, Int_t Nth=0);
 
 void Analysis:: Check(){
     // cout << "Check()" << endl;
@@ -274,10 +291,6 @@ void Analysis:: Check(){
     }
     return;
 }
-
-void Analysis:: GetLtdc()
-void Analysis:: GetTtdc()
-void Analysis:: GetWidth()
 
 void Analysis:: Check(Bool_t BSetData){
     // cout << "Check(BSetData)" << endl;
@@ -315,5 +328,15 @@ void Analysis_SP8(Int_t run){
     a-> RunEventLoop();
     a-> DrawPlot();
     a-> Save();
+    return;
+}
+
+void Analysis_SP8(){
+    cout << REDi "error: " REDf << "enter the run number like follow example" << endl;
+    cout << "\"" << REDi "user$ root Analysis_SP8.cpp\\(run number\\)" REDf << "\"" << endl;
+    cout << "or" << endl;
+    cout << "\"" << REDi "user$ root" REDf << "\"" << endl;
+    cout << "\"" << REDi "root [0] .x Analysis_SP8.cpp(run number)" REDf << "\"" << endl;
+    exit(1);
     return;
 }
