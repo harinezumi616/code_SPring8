@@ -83,8 +83,12 @@ void Analysis:: MakeCanvas(){
         }
     }
     if(BGetTimeReso){
-        CRFLtdc= new TCanvas(Form("run%d_CRFLtdc", Run), Form("run%d_CRFLtdc", Run), 2000, 2000);
-        HRFLtdc= new TH1D(Form("run%d_HRFLtdc", Run), Form("run%d_HRFLtdc", Run), 1000, 0, 1000);
+        CRFLtdcRight= new TCanvas(Form("run%d_CRFLtdcRight", Run), Form("run%d_CRFLtdcRight", Run), 2000, 2000);
+        CRFLtdcLeft= new TCanvas(Form("run%d_CRFLtdcLeft", Run), Form("run%d_CRFLtdcLeft", Run), 2000, 2000);
+        CRFLtdcMean= new TCanvas(Form("run%d_CRFLtdcMean", Run), Form("run%d_CRFLtdcMean", Run), 2000, 2000);
+        HRFLtdcRight= new TH1D(Form("run%d_HRFLtdcRight", Run), Form("run%d_HRFLtdcRight", Run), 6000, 380, 580);
+        HRFLtdcLeft= new TH1D(Form("run%d_HRFLtdcLeft", Run), Form("run%d_HRFLtdcLeft", Run), 6000, 380, 580);
+        HRFLtdcMean= new TH1D(Form("run%d_HRFLtdcMean", Run), Form("run%d_HRFLtdcMean", Run), 6000, 380, 580);
     }
     return;
 }
@@ -136,6 +140,12 @@ void Analysis:: DrawPlot(){
         }
     }
     if(BGetTimeReso){
+        CRFLtdcRight-> cd();
+        HRFLtdcRight-> Draw();
+        CRFLtdcLeft-> cd();
+        HRFLtdcLeft-> Draw();
+        CRFLtdcMean-> cd();
+        HRFLtdcMean-> Draw();
     }
     return;
 }
@@ -165,8 +175,12 @@ void Analysis:: Save(){
         }
     }
     if(BGetTimeReso){
-        CRFLtdc-> Write();
-        HRFLtdc-> Write();
+        CRFLtdcRight-> Write();
+        CRFLtdcLeft-> Write();
+        CRFLtdcMean-> Write();
+        HRFLtdcRight-> Write();
+        HRFLtdcLeft-> Write();
+        HRFLtdcMean-> Write();
     }
     return;
 }
@@ -333,7 +347,6 @@ Double_t Analysis:: GetWidth(Int_t ch, Int_t Nth=0){
 }
 
 void Analysis:: Check(){
-    // cout << "Check()" << endl;
     for(Int_t ch=0; ch<32; ch++){
         for(Int_t i=0; i<ltdc->at(ch).size(); i++){
             if(i==0) HLtdc1[ch]-> Fill(ltdc->at(ch).at(i));
@@ -364,7 +377,6 @@ void Analysis:: Check(){
 }
 
 void Analysis:: Check(Bool_t BSetData){
-    // cout << "Check(BSetData)" << endl;
     for(Int_t ch=0; ch<32; ch++){
         for(Int_t i=0; i<ReconfigLtdc.at(ch).size(); i++){
             if(i==0) HLtdc1[ch]-> Fill(ReconfigLtdc.at(ch).at(i));
@@ -387,9 +399,18 @@ void Analysis:: Check(Bool_t BSetData){
 
 void Analysis:: GetTimeReso(){
     Bool_t C1= HitStrip();
-    Double_t mean;
-    Double_t RFmean;
     if(C1){
+        Double_t right= GetLtdc(1);
+        Double_t left= GetLtdc(4);
+        Double_t mean= (GetLtdc(1)+GetLtdc(4))/2.;
+        Double_t RFright= GetLtdc(15)-right;
+        Double_t RFleft= GetLtdc(15)-left;
+        Double_t RFmean= GetLtdc(15)-mean;
+        HRFLtdcRight-> Fill(RFright);
+        HRFLtdcLeft-> Fill(RFleft);
+        HRFLtdcMean-> Fill(RFmean);
+        for(Int_t i=0; i<80; i++){
+        }
     }
 }
 

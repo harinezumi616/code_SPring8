@@ -17,5 +17,9 @@ TH1D *HWidth2[32];
 TH1D *HWidth3[32];
 
 //GetTimeReso
-TCanvas *CRFLtdc;
-TH1D *HRFLtdc;
+TCanvas *CRFLtdcRight;
+TCanvas *CRFLtdcLeft;
+TCanvas *CRFLtdcMean;
+TH1D *HRFLtdcRight;
+TH1D *HRFLtdcLeft;
+TH1D *HRFLtdcMean;
