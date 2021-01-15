@@ -1,7 +1,7 @@
 #pragma once
 
 class Analysis{
-    public:
+    private:
     Int_t Run;
     TFile *file;
     TChain *tree;
@@ -24,7 +24,8 @@ class Analysis{
     TBranch *b_l1_tdc1;
     TBranch *b_ltdc;
     TBranch *b_ttdc;
-
+    
+    public:
     Analysis(Int_t run);
     ~Analysis();
     void Init(TChain *tree);
