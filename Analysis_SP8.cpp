@@ -53,14 +53,18 @@ void Analysis:: MakeCanvas(){
         CLtdc2= new TCanvas(Form("run%d_CLtdc2", Run), Form("run%d_CLtdc2", Run), 2000, 2000);
         CTtdc1= new TCanvas(Form("run%d_CTtdc1", Run), Form("run%d_CTtdc1", Run), 2000, 2000);
         CTtdc2= new TCanvas(Form("run%d_CTtdc2", Run), Form("run%d_CTtdc2", Run), 2000, 2000);
-        CWidth1= new TCanvas(Form("run%d_CWidth1", Run), Form("run%d_Width1", Run), 2000, 2000);
-        CWidth2= new TCanvas(Form("run%d_CWidth2", Run), Form("run%d_Width2", Run), 2000, 2000);
+        CWidth1= new TCanvas(Form("run%d_CWidth1", Run), Form("run%d_CWidth1", Run), 2000, 2000);
+        CWidth2= new TCanvas(Form("run%d_CWidth2", Run), Form("run%d_CWidth2", Run), 2000, 2000);
+        CAmp1= new TCanvas(Form("run%d_CAmp1", Run), Form("run%d_CAmp1", Run), 2000, 2000);
+        CAmp2= new TCanvas(Form("run%d_CAmp2", Run), Form("run%d_CAmp2", Run), 2000, 2000);
         CLtdc1-> Divide(4,4);
         CLtdc2-> Divide(4,4);
         CTtdc1-> Divide(4,4);
         CTtdc2-> Divide(4,4);
         CWidth1-> Divide(4,4);
         CWidth2-> Divide(4,4);
+        CAmp1-> Divide(4,4);
+        CAmp2-> Divide(4,4);
         for(Int_t ch=0; ch<32; ch++){
             HLtdc1[ch]= new TH1D(Form("run%d_HLtdc1[%d]", Run, ch), Form("run%d_HLtdc1[%d]", Run, ch), 3000, 0, 600);
             HLtdc2[ch]= new TH1D(Form("run%d_HLtdc2[%d]", Run, ch), Form("run%d_HLtdc2[%d]", Run, ch), 3000, 0, 600);
@@ -71,6 +75,9 @@ void Analysis:: MakeCanvas(){
             HWidth1[ch]= new TH1D(Form("run%d_HWidth1[%d]", Run, ch), Form("run%d_HWidth1[%d]", Run, ch), 150, 0, 30);
             HWidth2[ch]= new TH1D(Form("run%d_HWidth2[%d]", Run, ch), Form("run%d_HWidth2[%d]", Run, ch), 150, 0, 30);
             HWidth3[ch]= new TH1D(Form("run%d_HWidth3[%d]", Run, ch), Form("run%d_HWidth3[%d]", Run, ch), 150, 0, 30);
+            HAmp1[ch]= new TH1D(Form("run%d_HAmp1[%d]", Run, ch), Form("run%d_HAmp1[%d]", Run, ch), 150, 0, 30);
+            HAmp2[ch]= new TH1D(Form("run%d_HAmp2[%d]", Run, ch), Form("run%d_HAmp2[%d]", Run, ch), 150, 0, 30);
+            HAmp3[ch]= new TH1D(Form("run%d_HAmp3[%d]", Run, ch), Form("run%d_HAmp3[%d]", Run, ch), 150, 0, 30);
             HLtdc1[ch]-> SetLineColor(kRed);
             HLtdc2[ch]-> SetLineColor(kBlue);
             HLtdc3[ch]-> SetLineColor(kBlack);
@@ -80,12 +87,13 @@ void Analysis:: MakeCanvas(){
             HWidth1[ch]-> SetLineColor(kRed);
             HWidth2[ch]-> SetLineColor(kBlue);
             HWidth3[ch]-> SetLineColor(kBlack);
+            HAmp1[ch]-> SetLineColor(kRed);
+            HAmp2[ch]-> SetLineColor(kBlue);
+            HAmp3[ch]-> SetLineColor(kBlack);
         }
     }
     if(BGetTimeReso){
-        CRFLtdcRight= new TCanvas(Form("run%d_CRFLtdcRight", Run), Form("run%d_CRFLtdcRight", Run), 2000, 2000);
-        CRFLtdcLeft= new TCanvas(Form("run%d_CRFLtdcLeft", Run), Form("run%d_CRFLtdcLeft", Run), 2000, 2000);
-        CRFLtdcMean= new TCanvas(Form("run%d_CRFLtdcMean", Run), Form("run%d_CRFLtdcMean", Run), 2000, 2000);
+        CRFLtdc= new TCanvas(Form("run%d_CRFLtdc", Run), Form("run%d_CRFLtdc", Run), 2000, 2000);
         HRFLtdcRight= new TH1D(Form("run%d_HRFLtdcRight", Run), Form("run%d_HRFLtdcRight", Run), 6000, 380, 580);
         HRFLtdcLeft= new TH1D(Form("run%d_HRFLtdcLeft", Run), Form("run%d_HRFLtdcLeft", Run), 6000, 380, 580);
         HRFLtdcMean= new TH1D(Form("run%d_HRFLtdcMean", Run), Form("run%d_HRFLtdcMean", Run), 6000, 380, 580);
@@ -122,6 +130,10 @@ void Analysis:: DrawPlot(){
                 HWidth1[ch]-> Draw();
                 HWidth2[ch]-> Draw("same");
                 HWidth3[ch]-> Draw("same");
+                CAmp1-> cd(ch+1);
+                HAmp1[ch]-> Draw();
+                HAmp2[ch]-> Draw("same");
+                HAmp3[ch]-> Draw("same");
             }
             else{
                 CLtdc2-> cd(ch-15);
@@ -136,15 +148,23 @@ void Analysis:: DrawPlot(){
                 HWidth1[ch]-> Draw();
                 HWidth2[ch]-> Draw("same");
                 HWidth3[ch]-> Draw("same");
+                CAmp2-> cd(ch-15);
+                HAmp1[ch]-> Draw();
+                HAmp2[ch]-> Draw("same");
+                HAmp3[ch]-> Draw("same");
             }
         }
     }
     if(BGetTimeReso){
-        CRFLtdcRight-> cd();
+        CRFLtdc-> Divide(1,3);
+        // CRFLtdcRight-> cd();
+        CRFLtdc-> cd(1);
         HRFLtdcRight-> Draw();
-        CRFLtdcLeft-> cd();
+        // CRFLtdcLeft-> cd();
+        CRFLtdc-> cd(2);
         HRFLtdcLeft-> Draw();
-        CRFLtdcMean-> cd();
+        // CRFLtdc-> cd();
+        CRFLtdc-> cd(3);
         HRFLtdcMean-> Draw();
     }
     return;
@@ -162,22 +182,25 @@ void Analysis:: Save(){
         CTtdc2-> Write();
         CWidth1-> Write();
         CWidth2-> Write();
+        CAmp1-> Write();
+        CAmp2-> Write();
         for(Int_t ch=0; ch<32; ch++){
-        HLtdc1[ch]-> Write();
-        HLtdc2[ch]-> Write();
-        HLtdc3[ch]-> Write();
-        HTtdc1[ch]-> Write();
-        HTtdc2[ch]-> Write();
-        HTtdc3[ch]-> Write();
-        HWidth1[ch]-> Write();
-        HWidth2[ch]-> Write();
-        HWidth3[ch]-> Write();
+            HLtdc1[ch]-> Write();
+            HLtdc2[ch]-> Write();
+            HLtdc3[ch]-> Write();
+            HTtdc1[ch]-> Write();
+            HTtdc2[ch]-> Write();
+            HTtdc3[ch]-> Write();
+            HWidth1[ch]-> Write();
+            HWidth2[ch]-> Write();
+            HWidth3[ch]-> Write();
+            HAmp1[ch]-> Write();
+            HAmp2[ch]-> Write();
+            HAmp3[ch]-> Write();
         }
     }
     if(BGetTimeReso){
-        CRFLtdcRight-> Write();
-        CRFLtdcLeft-> Write();
-        CRFLtdcMean-> Write();
+        CRFLtdc-> Write();
         HRFLtdcRight-> Write();
         HRFLtdcLeft-> Write();
         HRFLtdcMean-> Write();
@@ -373,6 +396,15 @@ void Analysis:: Check(){
             }
         }
     }
+    for(Int_t ch=0; ch<16; ch++){
+        for(Int_t i=0; i<amp->at(ch).size(); i++){
+            // cout << Form("amp->size()= ") << amp->size() << endl;
+            // cout << Form("amp->at(%d).at(%d)= ", ch, i) << amp->at(ch).at(i) << endl;
+            if(i==0) HAmp1[ch]-> Fill(amp->at(ch).at(i));
+            else if(i==1) HAmp2[ch]-> Fill(amp->at(ch).at(i));
+            else HAmp3[ch]-> Fill(amp->at(ch).at(i));
+        }
+    }
     return;
 }
 
@@ -392,6 +424,13 @@ void Analysis:: Check(Bool_t BSetData){
             if(i==0) HWidth1[ch]-> Fill(ReconfigWidth.at(ch).at(i));
             else if(i==1) HWidth2[ch]-> Fill(ReconfigWidth.at(ch).at(i));
             else HWidth3[ch]-> Fill(ReconfigWidth.at(ch).at(i));
+        }
+    }
+    for(Int_t ch=0; ch<16; ch++){
+        for(Int_t i=0; i<amp->at(ch).size(); i++){
+            if(i==0) HAmp1[ch]-> Fill(amp->at(ch).at(i));
+            else if(i==1) HAmp2[ch]-> Fill(amp->at(ch).at(i));
+            else HAmp3[ch]-> Fill(amp->at(ch).at(i));
         }
     }
     return;
