@@ -35,6 +35,8 @@ class Analysis{
     void Save();
     void indicator(Int_t iEntry, Int_t nEntries);
     void SetData();
+    void CheckData(Int_t iEntry);
+    void CheckSetData(Int_t iEntry);
     Bool_t HitStrip(Int_t Strip=0);
     Double_t GetLtdc(Int_t ch, Int_t Nth=0);
     Double_t GetTtdc(Int_t ch, Int_t Nth=0);

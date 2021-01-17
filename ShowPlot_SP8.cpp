@@ -20,7 +20,6 @@ void ShowPlot_SP8(Int_t run){
         CWidth1= (TCanvas*) gROOT-> FindObject(Form("run%d_CWidth1", run));
         CWidth2= (TCanvas*) gROOT-> FindObject(Form("run%d_CWidth2", run));
         CAmp1= (TCanvas*) gROOT-> FindObject(Form("run%d_CAmp1", run));
-        CAmp2= (TCanvas*) gROOT-> FindObject(Form("run%d_CAmp2", run));
         CLtdc1-> Draw();
         CLtdc2-> Draw();
         CTtdc1-> Draw();
@@ -28,7 +27,6 @@ void ShowPlot_SP8(Int_t run){
         CWidth1-> Draw();
         CWidth2-> Draw();
         CAmp1-> Draw();
-        CAmp2-> Draw();
         for(Int_t ch=0; ch<32; ch++){
             HLtdc1[ch]= (TH1D*) gROOT-> FindObject(Form("run%d_HLtdc1[%d]", run, ch));
             HLtdc2[ch]= (TH1D*) gROOT-> FindObject(Form("run%d_HLtdc2[%d]", run, ch));
@@ -39,6 +37,8 @@ void ShowPlot_SP8(Int_t run){
             HWidth1[ch]= (TH1D*) gROOT-> FindObject(Form("run%d_HWidth1[%d]", run, ch));
             HWidth2[ch]= (TH1D*) gROOT-> FindObject(Form("run%d_HWidth2[%d]", run, ch));
             HWidth3[ch]= (TH1D*) gROOT-> FindObject(Form("run%d_HWidth3[%d]", run, ch));
+        }
+        for(Int_t ch=0; ch<16; ch++){
             HAmp1[ch]= (TH1D*) gROOT-> FindObject(Form("run%d_HAmp1[%d]", run, ch));
             HAmp2[ch]= (TH1D*) gROOT-> FindObject(Form("run%d_HAmp2[%d]", run, ch));
             HAmp3[ch]= (TH1D*) gROOT-> FindObject(Form("run%d_HAmp3[%d]", run, ch));

@@ -6,8 +6,12 @@
 #include "Analysis_SP8.h"
 using namespace std;
 #define RF 1.966
-#define REDi "\e[0;31m"
-#define REDf "\033[m"
+#define UL "\033[04m"
+#define RED "\033[31m"
+#define YELLOW "\033[33m"
+#define BLUE "\033[34m"
+#define MAGENTA "\033[35m"
+#define END33 "\033[m"
 
 Analysis:: Analysis(Int_t run){
     file= new TFile(Form("./../../Data/run%06d_0.root", run), "read");
@@ -56,7 +60,6 @@ void Analysis:: MakeCanvas(){
         CWidth1= new TCanvas(Form("run%d_CWidth1", Run), Form("run%d_CWidth1", Run), 2000, 2000);
         CWidth2= new TCanvas(Form("run%d_CWidth2", Run), Form("run%d_CWidth2", Run), 2000, 2000);
         CAmp1= new TCanvas(Form("run%d_CAmp1", Run), Form("run%d_CAmp1", Run), 2000, 2000);
-        CAmp2= new TCanvas(Form("run%d_CAmp2", Run), Form("run%d_CAmp2", Run), 2000, 2000);
         CLtdc1-> Divide(4,4);
         CLtdc2-> Divide(4,4);
         CTtdc1-> Divide(4,4);
@@ -64,7 +67,6 @@ void Analysis:: MakeCanvas(){
         CWidth1-> Divide(4,4);
         CWidth2-> Divide(4,4);
         CAmp1-> Divide(4,4);
-        CAmp2-> Divide(4,4);
         for(Int_t ch=0; ch<32; ch++){
             HLtdc1[ch]= new TH1D(Form("run%d_HLtdc1[%d]", Run, ch), Form("run%d_HLtdc1[%d]", Run, ch), 3000, 0, 600);
             HLtdc2[ch]= new TH1D(Form("run%d_HLtdc2[%d]", Run, ch), Form("run%d_HLtdc2[%d]", Run, ch), 3000, 0, 600);
@@ -75,9 +77,6 @@ void Analysis:: MakeCanvas(){
             HWidth1[ch]= new TH1D(Form("run%d_HWidth1[%d]", Run, ch), Form("run%d_HWidth1[%d]", Run, ch), 150, 0, 30);
             HWidth2[ch]= new TH1D(Form("run%d_HWidth2[%d]", Run, ch), Form("run%d_HWidth2[%d]", Run, ch), 150, 0, 30);
             HWidth3[ch]= new TH1D(Form("run%d_HWidth3[%d]", Run, ch), Form("run%d_HWidth3[%d]", Run, ch), 150, 0, 30);
-            HAmp1[ch]= new TH1D(Form("run%d_HAmp1[%d]", Run, ch), Form("run%d_HAmp1[%d]", Run, ch), 150, 0, 30);
-            HAmp2[ch]= new TH1D(Form("run%d_HAmp2[%d]", Run, ch), Form("run%d_HAmp2[%d]", Run, ch), 150, 0, 30);
-            HAmp3[ch]= new TH1D(Form("run%d_HAmp3[%d]", Run, ch), Form("run%d_HAmp3[%d]", Run, ch), 150, 0, 30);
             HLtdc1[ch]-> SetLineColor(kRed);
             HLtdc2[ch]-> SetLineColor(kBlue);
             HLtdc3[ch]-> SetLineColor(kBlack);
@@ -87,6 +86,11 @@ void Analysis:: MakeCanvas(){
             HWidth1[ch]-> SetLineColor(kRed);
             HWidth2[ch]-> SetLineColor(kBlue);
             HWidth3[ch]-> SetLineColor(kBlack);
+        }
+        for(Int_t ch=0; ch<16; ch++){
+            HAmp1[ch]= new TH1D(Form("run%d_HAmp1[%d]", Run, ch), Form("run%d_HAmp1[%d]", Run, ch), 150, 0, 30);
+            HAmp2[ch]= new TH1D(Form("run%d_HAmp2[%d]", Run, ch), Form("run%d_HAmp2[%d]", Run, ch), 150, 0, 30);
+            HAmp3[ch]= new TH1D(Form("run%d_HAmp3[%d]", Run, ch), Form("run%d_HAmp3[%d]", Run, ch), 150, 0, 30);
             HAmp1[ch]-> SetLineColor(kRed);
             HAmp2[ch]-> SetLineColor(kBlue);
             HAmp3[ch]-> SetLineColor(kBlack);
@@ -102,13 +106,16 @@ void Analysis:: MakeCanvas(){
 }
 
 void Analysis:: RunEventLoop(){
-    for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
+    // for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
+    for(Int_t iEntry=0; iEntry<10; iEntry++){
         tree-> GetEntry(iEntry);
         if(iEntry<0) break;
         indicator(iEntry, nEntries);
         if(BSetData) SetData();
-        if(BCheck && BSetData) Check(BSetData);
+        if(BCheckData && !BSetData) CheckData(iEntry);
+        if(BCheckSetData && BSetData) CheckSetData(iEntry);
         if(BCheck && !BSetData) Check();
+        if(BCheck && BSetData) Check(BSetData);
         if(BGetTimeReso) GetTimeReso();
     }
     return;
@@ -148,10 +155,6 @@ void Analysis:: DrawPlot(){
                 HWidth1[ch]-> Draw();
                 HWidth2[ch]-> Draw("same");
                 HWidth3[ch]-> Draw("same");
-                CAmp2-> cd(ch-15);
-                HAmp1[ch]-> Draw();
-                HAmp2[ch]-> Draw("same");
-                HAmp3[ch]-> Draw("same");
             }
         }
     }
@@ -183,7 +186,6 @@ void Analysis:: Save(){
         CWidth1-> Write();
         CWidth2-> Write();
         CAmp1-> Write();
-        CAmp2-> Write();
         for(Int_t ch=0; ch<32; ch++){
             HLtdc1[ch]-> Write();
             HLtdc2[ch]-> Write();
@@ -194,6 +196,8 @@ void Analysis:: Save(){
             HWidth1[ch]-> Write();
             HWidth2[ch]-> Write();
             HWidth3[ch]-> Write();
+        }
+        for(Int_t ch=0; ch<16; ch++){
             HAmp1[ch]-> Write();
             HAmp2[ch]-> Write();
             HAmp3[ch]-> Write();
@@ -238,17 +242,17 @@ void Analysis:: SetData(){
         ReconfigWidth.emplace_back();
         Int_t nltdc= ltdc->at(ch).size();
         Int_t nttdc= ttdc->at(ch).size();
-        while(i<nltdc-1 && j<nttdc){
-            if(ltdc->at(ch).at(i+1)>ttdc->at(ch).at(j)) i++;
+        while(i<nltdc && j<nttdc){
+            if(i+1<nltdc && ltdc->at(ch).at(i+1)>ttdc->at(ch).at(j)) i++;
             else if(ttdc->at(ch).at(j)>ltdc->at(ch).at(i)) j++;
-            else if(ltdc->at(ch).at(i)>ttdc->at(ch).at(j) && ttdc->at(ch).at(j)>=ltdc->at(ch).at(i+1)){
+            else if(ltdc->at(ch).at(i)>ttdc->at(ch).at(j) ){
                 ReconfigLtdc.at(ch).emplace_back(ltdc->at(ch).at(i));
                 ReconfigTtdc.at(ch).emplace_back(ttdc->at(ch).at(j));
                 ReconfigWidth.at(ch).emplace_back(ltdc->at(ch).at(i) - ttdc->at(ch).at(j));
                 Int_t nReconfigLtdc= ReconfigLtdc.at(ch).size();
                 Int_t nReconfigTtdc= ReconfigTtdc.at(ch).size();
-                // cout << Form("ReconfigLtdc.at(%2d).at(%2d)= ", ch, nReconfigLtdc-1) << ReconfigLtdc.at(ch).at(nReconfigLtdc-1) << endl;
-                // cout << Form("ReconfigTtdc.at(%2d).at(%2d)= ", ch, nReconfigTtdc-1) << ReconfigTtdc.at(ch).at(nReconfigTtdc-1) << endl;
+                // cout << RED << Form("ReconfigLtdc.at(%2d).at(%2d)= ", ch, nReconfigLtdc-1) << END33 << ReconfigLtdc.at(ch).at(nReconfigLtdc-1) << endl;
+                // cout << BLUE << Form("ReconfigTtdc.at(%2d).at(%2d)= ", ch, nReconfigTtdc-1) << END33 << ReconfigTtdc.at(ch).at(nReconfigTtdc-1) << endl;
                 i++;
                 j++;
             }
@@ -259,6 +263,82 @@ void Analysis:: SetData(){
         }
     }
     return;
+}
+
+void Analysis:: CheckData(Int_t iEntry){
+    cout << MAGENTA << "Event :" << iEntry << END33 << endl;
+    cout << MAGENTA "ltdc" END33 << endl;
+    for(Int_t ch=0; ch<32; ch++){
+        if(ch==0) cout << UL "|ch|" << "    0th|" << "    1st|" << "    2nd|" << "    3rd|" << "    4th|" << "    5th|" END33 << endl;
+        cout << UL << Form("|%2d|", ch) << END33;
+        for(Int_t i=0; i<ltdc->at(ch).size(); i++){
+            cout << MAGENTA << setw(7) << ltdc->at(ch).at(i) << END33 << "|";
+        }
+        cout << endl;
+    }
+    cout << endl;
+
+    cout << BLUE << "Event :" << iEntry << END33 << endl;
+    cout << BLUE "ttdc" END33 << endl;
+    for(Int_t ch=0; ch<32; ch++){
+        if(ch==0) cout << UL "|ch|" << "    0th|" << "    1st|" << "    2nd|" << "    3rd|" << "    4th|" << "    5th|" END33 << endl;
+        cout << UL << Form("|%2d|", ch) << END33;
+        for(Int_t i=0; i<ttdc->at(ch).size(); i++){
+            cout << BLUE << setw(7) << ttdc->at(ch).at(i) << END33 << "|";
+        }
+        cout << endl;
+    }
+    cout << endl;
+
+    cout << YELLOW << "Event :" << iEntry << END33 << endl;
+    cout << YELLOW "amp" END33 << endl;
+    for(Int_t ch=0; ch<16; ch++){
+        if(ch==0) cout << UL "|ch|" << "    0th|" << "    1st|" << "    2nd|" << "    3rd|" << "    4th|" << "    5th|" END33 << endl;
+        cout << UL << Form("|%2d|", ch) << END33;
+        for(Int_t i=0; i<amp->at(ch).size(); i++){
+            cout << YELLOW << setw(7) << amp->at(ch).at(i) << END33 << "|";
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
+void Analysis:: CheckSetData(Int_t iEntry){
+    cout << MAGENTA << "Event :" << iEntry << END33 << endl;
+    cout << MAGENTA "ReconfigLtdc" END33 << endl;
+    for(Int_t ch=0; ch<32; ch++){
+        if(ch==0) cout << UL "|ch|" << "    0th|" << "    1st|" << "    2nd|" << "    3rd|" << "    4th|" << "    5th|" END33 << endl;
+        cout << UL << Form("|%2d|", ch) << END33;
+        for(Int_t i=0; i<ReconfigLtdc.at(ch).size(); i++){
+            cout << MAGENTA << setw(7) << ReconfigLtdc.at(ch).at(i) << END33 << "|";
+        }
+        cout << endl;
+    }
+    cout << endl;
+
+    cout << BLUE << "Event :" << iEntry << END33 << endl;
+    cout << BLUE "ReconfigTtdc" END33 << endl;
+    for(Int_t ch=0; ch<32; ch++){
+        if(ch==0) cout << UL "|ch|" << "    0th|" << "    1st|" << "    2nd|" << "    3rd|" << "    4th|" << "    5th|" END33 << endl;
+        cout << UL << Form("|%2d|", ch) << END33;
+        for(Int_t i=0; i<ReconfigTtdc.at(ch).size(); i++){
+            cout << BLUE << setw(7) << ReconfigTtdc.at(ch).at(i) << END33 << "|";
+        }
+        cout << endl;
+    }
+    cout << endl;
+
+    cout << YELLOW << "Event :" << iEntry << END33 << endl;
+    cout << YELLOW "amp" END33 << endl;
+    for(Int_t ch=0; ch<16; ch++){
+        if(ch==0) cout << UL "|ch|" << "    0th|" << "    1st|" << "    2nd|" << "    3rd|" << "    4th|" << "    5th|" END33 << endl;
+        cout << UL << Form("|%2d|", ch) << END33;
+        for(Int_t i=0; i<amp->at(ch).size(); i++){
+            cout << YELLOW << setw(7) << amp->at(ch).at(i) << END33 << "|";
+        }
+        cout << endl;
+    }
+    cout << endl;
 }
 
 Bool_t Analysis:: HitStrip(Int_t Strip=0){
@@ -302,7 +382,7 @@ Bool_t Analysis:: HitStrip(Int_t Strip=0){
             else return false;
         }
         else{
-            cout << REDi "error: " REDf << "call of not exisiting the strip" << endl;
+            cout << RED "error: " END33 << "call of not exisiting the strip" << endl;
             Analysis:: ~Analysis();
             exit(1);
             return false;
@@ -346,7 +426,7 @@ Bool_t Analysis:: HitStrip(Int_t Strip=0){
             else return false;
         }
         else{
-            cout << REDi "error: " REDf << "call of not exisiting the strip" << endl;
+            cout << RED "error: " END33 << "call of not exisiting the strip" << endl;
             Analysis:: ~Analysis();
             exit(1);
             return false;
@@ -463,11 +543,11 @@ void Analysis_SP8(Int_t run){
 }
 
 void Analysis_SP8(){
-    cout << REDi "error: " REDf << "enter the run number like follow example" << endl;
-    cout << "\"" << REDi "user$ root Analysis_SP8.cpp\\(run number\\)" REDf << "\"" << endl;
+    cout << RED "error: " END33 << "enter the run number like follow example" << endl;
+    cout << "\"" << RED "user$ root Analysis_SP8.cpp\\(run number\\)" END33 << "\"" << endl;
     cout << "or" << endl;
-    cout << "\"" << REDi "user$ root" REDf << "\"" << endl;
-    cout << "\"" << REDi "root [0] .x Analysis_SP8.cpp(run number)" REDf << "\"" << endl;
+    cout << "\"" << RED "user$ root" END33 << "\"" << endl;
+    cout << "\"" << RED "root [0] .x Analysis_SP8.cpp(run number)" END33 << "\"" << endl;
     exit(1);
     return;
 }
