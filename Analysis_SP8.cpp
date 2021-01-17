@@ -106,8 +106,8 @@ void Analysis:: MakeCanvas(){
 }
 
 void Analysis:: RunEventLoop(){
-    // for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
-    for(Int_t iEntry=0; iEntry<10; iEntry++){
+    for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
+    // for(Int_t iEntry=0; iEntry<10; iEntry++){
         tree-> GetEntry(iEntry);
         if(iEntry<0) break;
         indicator(iEntry, nEntries);
