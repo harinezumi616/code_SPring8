@@ -22,8 +22,8 @@ Analysis:: Analysis(Int_t run){
     tree= (TChain*)file-> Get("tree");
     Init(tree);
     Run= run;
-    gStyle-> SetOptFit(11111111);
-    gStyle-> SetOptStat(11111111);
+    gStyle-> SetOptFit(111111111);
+    gStyle-> SetOptStat(111111111);
     nEntries= tree-> GetEntriesFast();
     cout << Form("Data File:run%d", run) << endl;
     cout << "Event    : " << nEntries << endl;
@@ -88,9 +88,9 @@ void Analysis:: MakeCanvas(){
             HWidth3[ch]-> SetLineColor(kBlack);
         }
         for(Int_t ch=0; ch<16; ch++){
-            HAmp1[ch]= new TH1D(Form("run%d_HAmp1[%d]", Run, ch), Form("run%d_HAmp1[%d]", Run, ch), 150, 0, 30);
-            HAmp2[ch]= new TH1D(Form("run%d_HAmp2[%d]", Run, ch), Form("run%d_HAmp2[%d]", Run, ch), 150, 0, 30);
-            HAmp3[ch]= new TH1D(Form("run%d_HAmp3[%d]", Run, ch), Form("run%d_HAmp3[%d]", Run, ch), 150, 0, 30);
+            HAmp1[ch]= new TH1D(Form("run%d_HAmp1[%d]", Run, ch), Form("run%d_HAmp1[%d]", Run, ch), 500, 0, 500);
+            HAmp2[ch]= new TH1D(Form("run%d_HAmp2[%d]", Run, ch), Form("run%d_HAmp2[%d]", Run, ch), 500, 0, 500);
+            HAmp3[ch]= new TH1D(Form("run%d_HAmp3[%d]", Run, ch), Form("run%d_HAmp3[%d]", Run, ch), 500, 0, 500);
             HAmp1[ch]-> SetLineColor(kRed);
             HAmp2[ch]-> SetLineColor(kBlue);
             HAmp3[ch]-> SetLineColor(kBlack);
@@ -101,13 +101,14 @@ void Analysis:: MakeCanvas(){
         HRFLtdcRight= new TH1D(Form("run%d_HRFLtdcRight", Run), Form("run%d_HRFLtdcRight", Run), 6000, 380, 580);
         HRFLtdcLeft= new TH1D(Form("run%d_HRFLtdcLeft", Run), Form("run%d_HRFLtdcLeft", Run), 6000, 380, 580);
         HRFLtdcMean= new TH1D(Form("run%d_HRFLtdcMean", Run), Form("run%d_HRFLtdcMean", Run), 6000, 380, 580);
+        CRFLtdc-> Divide(1,3);
     }
     return;
 }
 
 void Analysis:: RunEventLoop(){
     for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
-    // for(Int_t iEntry=0; iEntry<10; iEntry++){
+    // for(Int_t iEntry=0; iEntry<500; iEntry++){
         tree-> GetEntry(iEntry);
         if(iEntry<0) break;
         indicator(iEntry, nEntries);
@@ -127,46 +128,49 @@ void Analysis:: DrawPlot(){
             if(ch<16){
                 CLtdc1-> cd(ch+1);
                 HLtdc1[ch]-> Draw();
-                HLtdc2[ch]-> Draw("same");
-                HLtdc3[ch]-> Draw("same");
+                HLtdc3[ch]-> Draw("sames");
+                HLtdc2[ch]-> Draw("sames");
+                HLtdc1[ch]-> Draw("sames");
                 CTtdc1-> cd(ch+1);
                 HTtdc1[ch]-> Draw();
-                HTtdc2[ch]-> Draw("same");
-                HTtdc3[ch]-> Draw("same");
+                HTtdc3[ch]-> Draw("sames");
+                HTtdc2[ch]-> Draw("sames");
+                HTtdc1[ch]-> Draw("sames");
                 CWidth1-> cd(ch+1);
                 HWidth1[ch]-> Draw();
-                HWidth2[ch]-> Draw("same");
-                HWidth3[ch]-> Draw("same");
+                HWidth3[ch]-> Draw("sames");
+                HWidth2[ch]-> Draw("sames");
+                HWidth1[ch]-> Draw("sames");
                 CAmp1-> cd(ch+1);
                 HAmp1[ch]-> Draw();
-                HAmp2[ch]-> Draw("same");
-                HAmp3[ch]-> Draw("same");
+                HAmp3[ch]-> Draw("sames");
+                HAmp2[ch]-> Draw("sames");
+                HAmp1[ch]-> Draw("sames");
             }
             else{
                 CLtdc2-> cd(ch-15);
                 HLtdc1[ch]-> Draw();
-                HLtdc2[ch]-> Draw("same");
-                HLtdc3[ch]-> Draw("same");
+                HLtdc3[ch]-> Draw("sames");
+                HLtdc2[ch]-> Draw("sames");
+                HLtdc1[ch]-> Draw("sames");
                 CTtdc2-> cd(ch-15);
                 HTtdc1[ch]-> Draw();
-                HTtdc2[ch]-> Draw("same");
-                HTtdc3[ch]-> Draw("same");
+                HTtdc3[ch]-> Draw("sames");
+                HTtdc2[ch]-> Draw("sames");
+                HTtdc1[ch]-> Draw("sames");
                 CWidth2-> cd(ch-15);
                 HWidth1[ch]-> Draw();
-                HWidth2[ch]-> Draw("same");
-                HWidth3[ch]-> Draw("same");
+                HWidth3[ch]-> Draw("sames");
+                HWidth2[ch]-> Draw("sames");
+                HWidth1[ch]-> Draw("sames");
             }
         }
     }
     if(BGetTimeReso){
-        CRFLtdc-> Divide(1,3);
-        // CRFLtdcRight-> cd();
         CRFLtdc-> cd(1);
         HRFLtdcRight-> Draw();
-        // CRFLtdcLeft-> cd();
         CRFLtdc-> cd(2);
         HRFLtdcLeft-> Draw();
-        // CRFLtdc-> cd();
         CRFLtdc-> cd(3);
         HRFLtdcMean-> Draw();
     }
@@ -245,10 +249,10 @@ void Analysis:: SetData(){
         while(i<nltdc && j<nttdc){
             if(i+1<nltdc && ltdc->at(ch).at(i+1)>ttdc->at(ch).at(j)) i++;
             else if(ttdc->at(ch).at(j)>ltdc->at(ch).at(i)) j++;
-            else if(ltdc->at(ch).at(i)>ttdc->at(ch).at(j) ){
+            else if(ltdc->at(ch).at(i)>=ttdc->at(ch).at(j)){
                 ReconfigLtdc.at(ch).emplace_back(ltdc->at(ch).at(i));
                 ReconfigTtdc.at(ch).emplace_back(ttdc->at(ch).at(j));
-                ReconfigWidth.at(ch).emplace_back(ltdc->at(ch).at(i) - ttdc->at(ch).at(j));
+                ReconfigWidth.at(ch).emplace_back(ltdc->at(ch).at(i)-ttdc->at(ch).at(j));
                 Int_t nReconfigLtdc= ReconfigLtdc.at(ch).size();
                 Int_t nReconfigTtdc= ReconfigTtdc.at(ch).size();
                 // cout << RED << Form("ReconfigLtdc.at(%2d).at(%2d)= ", ch, nReconfigLtdc-1) << END33 << ReconfigLtdc.at(ch).at(nReconfigLtdc-1) << endl;
@@ -468,7 +472,8 @@ void Analysis:: Check(){
                 else HWidth3[ch]-> Fill(ltdc->at(ch).at(i)-ttdc->at(ch).at(i));
             }
         }
-        if(ttdc->at(ch).size()<ltdc->at(ch).size()){
+        // if(ttdc->at(ch).size()<=ltdc->at(ch).size()){
+        else{
             for(Int_t i=0; i<ttdc->at(ch).size(); i++){
                 if(i==0) HWidth1[ch]-> Fill(ltdc->at(ch).at(i)-ttdc->at(ch).at(i));
                 else if(i==1) HWidth2[ch]-> Fill(ltdc->at(ch).at(i)-ttdc->at(ch).at(i));
