@@ -27,3 +27,6 @@ TH1D *HRF;
 TH1D *HRFLtdcRight;
 TH1D *HRFLtdcLeft;
 TH1D *HRFLtdcMean;
+TF1 *FRight;
+TF1 *FLeft;
+TF1 *FMean;
