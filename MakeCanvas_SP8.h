@@ -21,7 +21,9 @@ TH1D *HAmp2[16];
 TH1D *HAmp3[16];
 
 //GetTimeReso
+TCanvas *CRF;
 TCanvas *CRFLtdc;
+TH1D *HRF;
 TH1D *HRFLtdcRight;
 TH1D *HRFLtdcLeft;
 TH1D *HRFLtdcMean;

@@ -45,7 +45,9 @@ void ShowPlot_SP8(Int_t run){
         }
     }
     if(BGetTimeReso){
+        CRF= (TCanvas*) gROOT-> FindObject(Form("run%d_CRF", run));
         CRFLtdc= (TCanvas*) gROOT-> FindObject(Form("run%d_CRFLtdc", run));
+        CRF-> Draw();
         CRFLtdc-> Draw();
         HRFLtdcRight= (TH1D*) gROOT-> FindObject(Form("run%d_HRFLtdcRight", run));
         HRFLtdcLeft= (TH1D*) gROOT-> FindObject(Form("run%d_HRFLtdcLeft", run));

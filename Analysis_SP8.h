@@ -7,6 +7,9 @@ class Analysis{
     TChain *tree;
     Int_t nEntries=0;
     Int_t percent_tmp=0;
+    Int_t iBinRight=1;
+    Int_t iBinLeft=1;
+    Int_t iBinMean=1;
     vector<vector<Double_t>> ReconfigLtdc;
     vector<vector<Double_t>> ReconfigTtdc;
     vector<vector<Double_t>> ReconfigWidth;
@@ -38,10 +41,15 @@ class Analysis{
     void CheckData(Int_t iEntry);
     void CheckSetData(Int_t iEntry);
     Bool_t HitStrip(Int_t Strip=0);
+    Int_t GetLtdcSize(Int_t ch);
+    Int_t GetTtdcSize(Int_t ch);
+    Int_t GetWidthSize(Int_t ch);
     Double_t GetLtdc(Int_t ch, Int_t Nth=0);
     Double_t GetTtdc(Int_t ch, Int_t Nth=0);
     Double_t GetWidth(Int_t ch, Int_t Nth=0);
     void Check();
     void Check(Bool_t BSetData);
+    void GetRFDist();
+    void GetDivision();
     void GetTimeReso();
 };

@@ -97,7 +97,9 @@ void Analysis:: MakeCanvas(){
         }
     }
     if(BGetTimeReso){
+        CRF= new TCanvas(Form("run%d_CRF", Run), Form("run%d_CRF", Run), 2000, 2000);
         CRFLtdc= new TCanvas(Form("run%d_CRFLtdc", Run), Form("run%d_CRFLtdc", Run), 2000, 2000);
+        HRF= new TH1D(Form("run%d_HRF", Run), Form("run%d_HRF", Run), 2000, 580, 780);
         HRFLtdcRight= new TH1D(Form("run%d_HRFLtdcRight", Run), Form("run%d_HRFLtdcRight", Run), 6000, 380, 580);
         HRFLtdcLeft= new TH1D(Form("run%d_HRFLtdcLeft", Run), Form("run%d_HRFLtdcLeft", Run), 6000, 380, 580);
         HRFLtdcMean= new TH1D(Form("run%d_HRFLtdcMean", Run), Form("run%d_HRFLtdcMean", Run), 6000, 380, 580);
@@ -110,14 +112,19 @@ void Analysis:: RunEventLoop(){
     for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
     // for(Int_t iEntry=0; iEntry<500; iEntry++){
         tree-> GetEntry(iEntry);
-        if(iEntry<0) break;
         indicator(iEntry, nEntries);
         if(BSetData) SetData();
         if(BCheckData && !BSetData) CheckData(iEntry);
         if(BCheckSetData && BSetData) CheckSetData(iEntry);
         if(BCheck && !BSetData) Check();
         if(BCheck && BSetData) Check(BSetData);
-        if(BGetTimeReso) GetTimeReso();
+        if(BGetTimeReso) GetRFDist();
+    }
+    if(BGetTimeReso) GetDivision();
+    for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
+        tree-> GetEntry(iEntry);
+        indicator(iEntry, nEntries);
+        // if(BGetTimeReso) GetTimeReso();
     }
     return;
 }
@@ -167,6 +174,8 @@ void Analysis:: DrawPlot(){
         }
     }
     if(BGetTimeReso){
+        CRF-> cd();
+        HRF-> Draw();
         CRFLtdc-> cd(1);
         HRFLtdcRight-> Draw();
         CRFLtdc-> cd(2);
@@ -208,7 +217,9 @@ void Analysis:: Save(){
         }
     }
     if(BGetTimeReso){
+        CRF-> Write();
         CRFLtdc-> Write();
+        HRF-> Write();
         HRFLtdcRight-> Write();
         HRFLtdcLeft-> Write();
         HRFLtdcMean-> Write();
@@ -438,6 +449,21 @@ Bool_t Analysis:: HitStrip(Int_t Strip=0){
     }
 }
 
+Int_t Analysis:: GetLtdcSize(Int_t ch){
+    if(BSetData) return ReconfigLtdc.at(ch).size();
+    else return ltdc->at(ch).size();
+}
+
+Int_t Analysis:: GetTtdcSize(Int_t ch){
+    if(BSetData) return ReconfigTtdc.at(ch).size();
+    else return ttdc->at(ch).size();
+}
+
+Int_t Analysis:: GetWidthSize(Int_t ch){
+    if(BSetData) return ReconfigWidth.at(ch).size();
+    else return width->at(ch).size();
+}
+
 Double_t Analysis:: GetLtdc(Int_t ch, Int_t Nth=0){
     if(BSetData) return ReconfigLtdc.at(ch).at(Nth);
     else return ltdc->at(ch).at(Nth);
@@ -521,7 +547,7 @@ void Analysis:: Check(Bool_t BSetData){
     return;
 }
 
-void Analysis:: GetTimeReso(){
+void Analysis:: GetRFDist(){
     Bool_t C1= HitStrip();
     if(C1){
         Double_t right= GetLtdc(1);
@@ -530,12 +556,20 @@ void Analysis:: GetTimeReso(){
         Double_t RFright= GetLtdc(15)-right;
         Double_t RFleft= GetLtdc(15)-left;
         Double_t RFmean= GetLtdc(15)-mean;
+        HRF-> Fill(GetLtdc(15));
         HRFLtdcRight-> Fill(RFright);
         HRFLtdcLeft-> Fill(RFleft);
         HRFLtdcMean-> Fill(RFmean);
-        for(Int_t i=0; i<80; i++){
-        }
     }
+}
+
+void Analysis:: GetDivision(){
+    Int_t nThreRight=20;
+    Int_t nThreLeft=20;
+    Int_t nThreMean=20;
+    while(HRFLtdcRight->GetBinContent(iBinRight)<nThreRight) iBinRight++;
+    while(HRFLtdcLeft->GetBinContent(iBinLeft)<nThreLeft) iBinLeft++;
+    while(HRFLtdcMean->GetBinContent(iBinMean)<nThreMean) iBinMean++;
 }
 
 void Analysis_SP8(Int_t run){
