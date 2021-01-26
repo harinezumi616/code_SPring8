@@ -100,10 +100,10 @@ void Analysis:: MakeCanvas(){
         CRF= new TCanvas(Form("run%d_CRF", Run), Form("run%d_CRF", Run), 2000, 2000);
         CRFLtdc= new TCanvas(Form("run%d_CRFLtdc", Run), Form("run%d_CRFLtdc", Run), 2000, 2000);
         HRF= new TH1D(Form("run%d_HRF", Run), Form("run%d_HRF", Run), 2000, 580, 780);
+        CRFLtdc-> Divide(1,3);
         HRFLtdcRight= new TH1D(Form("run%d_HRFLtdcRight", Run), Form("run%d_HRFLtdcRight", Run), 6000, 380, 580);
         HRFLtdcLeft= new TH1D(Form("run%d_HRFLtdcLeft", Run), Form("run%d_HRFLtdcLeft", Run), 6000, 380, 580);
         HRFLtdcMean= new TH1D(Form("run%d_HRFLtdcMean", Run), Form("run%d_HRFLtdcMean", Run), 6000, 380, 580);
-        CRFLtdc-> Divide(1,3);
     }
     return;
 }
@@ -121,11 +121,11 @@ void Analysis:: RunEventLoop(){
         if(BGetTimeReso) GetRFDist();
     }
     if(BGetTimeReso) GetDivision();
-    for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
-        tree-> GetEntry(iEntry);
-        indicator(iEntry, nEntries);
-        // if(BGetTimeReso) GetTimeReso();
-    }
+    // for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
+    //     tree-> GetEntry(iEntry);
+    //     indicator(iEntry, nEntries);
+    //     if(BGetTimeReso) GetTimeReso();
+    // }
     return;
 }
 
@@ -570,6 +570,16 @@ void Analysis:: GetDivision(){
     while(HRFLtdcRight->GetBinContent(iBinRight)<nThreRight) iBinRight++;
     while(HRFLtdcLeft->GetBinContent(iBinLeft)<nThreLeft) iBinLeft++;
     while(HRFLtdcMean->GetBinContent(iBinMean)<nThreMean) iBinMean++;
+    TF1 *FRight= new TF1("FRight", "gaus", 0, 600);
+    TF1 *FLeft= new TF1("FLeft", "gaus", 0, 600);
+    TF1 *FMean= new TF1("FMean", "gaus", 0, 600);
+    // HRFLtdcRight-> Fit("FRight", "Q", "", HRFLtdcRight->GetBinCenter(iBinRight)-RF/2., HRFLtdcRight->GetBinCenter(iBinRight)+RF/2.);
+    HRFLtdcLeft-> Fit("FLeft", "Q", "", HRFLtdcLeft->GetBinCenter(iBinLeft)-RF/2., HRFLtdcLeft->GetBinCenter(iBinLeft)+RF/2.);
+    // HRFLtdcMean-> Fit("FMean", "Q", "", HRFLtdcMean->GetBinCenter(iBinMean)-RF/2., HRFLtdcMean->GetBinCenter(iBinMean)+RF/2.);
+}
+
+void Analysis:: GetTimeReso(){
+    
 }
 
 void Analysis_SP8(Int_t run){
