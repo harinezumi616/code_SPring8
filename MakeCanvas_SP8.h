@@ -23,10 +23,18 @@ TH1D *HAmp3[16];
 //GetTimeReso
 TCanvas *CRF;
 TCanvas *CRFLtdc;
+TCanvas *CDivision[3];
+TCanvas *CMerge;
 TH1D *HRF;
 TH1D *HRFLtdcRight;
 TH1D *HRFLtdcLeft;
 TH1D *HRFLtdcMean;
+TH1D *HDivisionRight[80];
+TH1D *HDivisionLeft[80];
+TH1D *HDivisionMean[80];
+TH1D *HMergeRight;
+TH1D *HMergeLeft;
+TH1D *HMergeMean;
 TF1 *FRight;
 TF1 *FLeft;
 TF1 *FMean;

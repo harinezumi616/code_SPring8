@@ -111,6 +111,23 @@ void Analysis:: MakeCanvas(){
     return;
 }
 
+void Analysis:: MakeCanvas2(){
+    for(Int_t i=0; i<3; i++){
+        CDivision[i]= new TCanvas(Form("run%d_CDivision[%d]", Run, i), Form("run%d_CDivision[%d]", Run, i), 2000, 2000);
+        CDivision[i]-> Divide(10,8);
+    }
+    CMerge= new TCanvas(Form("run%d_CMerge", Run), Form("run%d_CMerge", Run), 2000, 2000);
+    CMerge-> Divide(3,1);
+    for(Int_t i=0; i<80; i++){
+        HDivisionRight[i]= new TH1D(Form("run%d_HDivivisonRight[%d]", Run, i), Form("run%d_HDivivisonRight[%d]", Run, i), 30*RF, iGaussRight+RF*(2*i-1)/2., iGaussRight+RF*(2*i+1)/2.);
+        HDivisionLeft[i]= new TH1D(Form("run%d_HDivivisonLeft[%d]", Run, i), Form("run%d_HDivivisonLeft[%d]", Run, i), 30*RF, iGaussLeft+RF*(2*i-1)/2., iGaussLeft+RF*(2*i+1)/2.);
+        HDivisionMean[i]= new TH1D(Form("run%d_HDivivisonMean[%d]", Run, i), Form("run%d_HDivivisonMean[%d]", Run, i), 30*RF, iGaussMean+RF*(2*i-1)/2., iGaussMean+RF*(2*i+1)/2.);
+    }
+    HMergeRight= new TH1D(Form("run%d_HMergeRight", Run), Form("run%d_HMergeRight", Run), 100*RF, -RF/2., RF/2.);
+    HMergeLeft= new TH1D(Form("run%d_HMergeLeft", Run), Form("run%d_HMergeLeft", Run), 100*RF, -RF/2., RF/2.);
+    HMergeMean= new TH1D(Form("run%d_HMergeMean", Run), Form("run%d_HMergeMean", Run), 100*RF, -RF/2., RF/2.);
+}
+
 void Analysis:: RunEventLoop(){
     for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
     // for(Int_t iEntry=0; iEntry<500; iEntry++){
@@ -124,11 +141,12 @@ void Analysis:: RunEventLoop(){
         if(BGetTimeReso) GetRFDist();
     }
     if(BGetTimeReso) GetDivision();
-    // for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
-    //     tree-> GetEntry(iEntry);
-    //     indicator(iEntry, nEntries);
-    //     if(BGetTimeReso) GetTimeReso();
-    // }
+    if(BGetTimeReso) MakeCanvas2();
+    for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
+        tree-> GetEntry(iEntry);
+        indicator(iEntry, nEntries);
+        if(BGetTimeReso) GetTimeReso();
+    }
     return;
 }
 
@@ -185,6 +203,23 @@ void Analysis:: DrawPlot(){
         HRFLtdcLeft-> Draw();
         CRFLtdc-> cd(3);
         HRFLtdcMean-> Draw();
+        for(Int_t i=0; i<80; i++){
+            CDivision[0]-> cd(i+1);
+            HDivisionRight[i]-> Draw();
+            CDivision[1]-> cd(i+1);
+            HDivisionLeft[i]-> Draw();
+            CDivision[2]-> cd(i+1);
+            HDivisionMean[i]-> Draw();
+        }
+        CMerge-> cd(1);
+        HMergeRight-> Fit("gaus", "Q", "", -0.2, 0.2);
+        HMergeRight-> Draw();
+        CMerge-> cd(2);
+        HMergeLeft-> Fit("gaus", "Q", "", -0.2, 0.2);
+        HMergeLeft-> Draw();
+        CMerge-> cd(3);
+        HMergeMean-> Fit("gaus", "Q", "", -0.2, 0.2);
+        HMergeMean-> Draw();
     }
     return;
 }
@@ -222,10 +257,22 @@ void Analysis:: Save(){
     if(BGetTimeReso){
         CRF-> Write();
         CRFLtdc-> Write();
+        for(Int_t i=0; i<3; i++){
+            CDivision[i]-> Write();
+        }
+        CMerge-> Write();
         HRF-> Write();
         HRFLtdcRight-> Write();
         HRFLtdcLeft-> Write();
         HRFLtdcMean-> Write();
+        for(Int_t i=0; i<80; i++){
+            HDivisionRight[i]-> Write();
+            HDivisionLeft[i]-> Write();
+            HDivisionMean[i]-> Write();
+        }
+        HMergeRight-> Write();
+        HMergeLeft-> Write();
+        HMergeMean-> Write();
     }
     return;
 }
@@ -579,10 +626,36 @@ void Analysis:: GetDivision(){
     HRFLtdcLeft-> Fit("FLeft", "Q", "", HRFLtdcLeft->GetBinCenter(iBinLeft)-RF/2., HRFLtdcLeft->GetBinCenter(iBinLeft)+RF/2.);
     CRFLtdc-> cd(3);
     HRFLtdcMean-> Fit("FMean", "Q", "", HRFLtdcMean->GetBinCenter(iBinMean)-RF/2., HRFLtdcMean->GetBinCenter(iBinMean)+RF/2.);
+    iGaussRight= FRight->GetParameter(1);
+    iGaussLeft= FLeft->GetParameter(1);
+    iGaussMean= FMean->GetParameter(1);
+    // cout << iGaussRight << ":" << iGaussLeft << ":" << iGaussMean << endl;
 }
 
 void Analysis:: GetTimeReso(){
-    
+    Bool_t C1= HitStrip();
+    if(C1){
+        Double_t right= GetLtdc(1);
+        Double_t left= GetLtdc(4);
+        Double_t mean= (GetLtdc(1)+GetLtdc(4))/2.;
+        Double_t RFright= GetLtdc(15)-right;
+        Double_t RFleft= GetLtdc(15)-left;
+        Double_t RFmean= GetLtdc(15)-mean;
+        for(Int_t i=0; i<80; i++){
+            if(iGaussRight+RF*(2*i-1)/2.<RFright && RFright<iGaussRight+RF*(2*i+1)/2.){
+                HDivisionRight[i]-> Fill(RFright);
+                HMergeRight-> Fill(RFright-(iGaussRight+i*RF));
+            }
+            if(iGaussLeft+RF*(2*i-1)/2.<RFleft && RFleft<iGaussLeft+RF*(2*i+1)/2.){
+                HDivisionLeft[i]-> Fill(RFleft);
+                HMergeLeft-> Fill(RFleft-(iGaussLeft+i*RF));
+            }
+            if(iGaussMean+RF*(2*i-1)/2.<RFmean && RFmean<iGaussMean+RF*(2*i+1)/2.){
+                HDivisionMean[i]-> Fill(RFmean);
+                HMergeMean-> Fill(RFmean-(iGaussMean+i*RF));
+            }
+        }
+    }
 }
 
 void Analysis_SP8(Int_t run){

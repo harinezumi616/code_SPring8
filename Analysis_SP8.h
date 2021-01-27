@@ -10,6 +10,9 @@ class Analysis{
     Int_t iBinRight=1;
     Int_t iBinLeft=1;
     Int_t iBinMean=1;
+    Double_t iGaussRight;
+    Double_t iGaussLeft;
+    Double_t iGaussMean;
     vector<vector<Double_t>> ReconfigLtdc;
     vector<vector<Double_t>> ReconfigTtdc;
     vector<vector<Double_t>> ReconfigWidth;
@@ -33,6 +36,7 @@ class Analysis{
     ~Analysis();
     void Init(TChain *tree);
     void MakeCanvas();
+    void MakeCanvas2();
     void RunEventLoop();
     void DrawPlot();
     void Save();
