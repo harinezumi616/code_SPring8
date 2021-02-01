@@ -35,8 +35,9 @@ class Analysis{
     Analysis(Int_t run);
     ~Analysis();
     void Init(TChain *tree);
-    void MakeCanvas();
+    void MakeCanvas1();
     void MakeCanvas2();
+    void MakeCanvas3();
     void RunEventLoop();
     void DrawPlot();
     void Save();
@@ -56,4 +57,5 @@ class Analysis{
     void GetRFDist();
     void GetDivision();
     void GetTimeReso();
+    void GetSlewing();
 };
