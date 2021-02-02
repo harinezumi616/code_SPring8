@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include "MakeCanvas_SP8.h"
 #include "Select_SP8.h"
+#include "MakeCanvas_SP8.h"
 using namespace std;
 
 void ShowPlot_SP8(Int_t run){
@@ -47,10 +47,31 @@ void ShowPlot_SP8(Int_t run){
     if(BGetTimeReso){
         CRF= (TCanvas*) gROOT-> FindObject(Form("run%d_CRF", run));
         CRFLtdc= (TCanvas*) gROOT-> FindObject(Form("run%d_CRFLtdc", run));
+        for(Int_t i=0; i<3; i++){
+            CDivision[i]= (TCanvas*) gROOT-> FindObject(Form("run%d_CDivision[%d]", run, i));
+            CDivision[i]-> Draw();
+        }
+        CMerge= (TCanvas*) gROOT-> FindObject(Form("run%d_CMerge", run));
+        CMerge2D= (TCanvas*) gROOT-> FindObject(Form("run%d_CMerge2D", run));
         CRF-> Draw();
         CRFLtdc-> Draw();
+        CMerge-> Draw();
+        CMerge2D-> Draw();
+        HRF= (TH1D*) gROOT-> FindObject(Form("run%d_HRF", run));
         HRFLtdcRight= (TH1D*) gROOT-> FindObject(Form("run%d_HRFLtdcRight", run));
         HRFLtdcLeft= (TH1D*) gROOT-> FindObject(Form("run%d_HRFLtdcLeft", run));
         HRFLtdcMean= (TH1D*) gROOT-> FindObject(Form("run%d_HRFLtdcMean", run));
+        for(Int_t i=0; i<80; i++){
+            HDivisionRight[i]= (TH1D*) gROOT-> FindObject(Form("run%d_HDivisionRight[%d]", run, i));
+            HDivisionLeft[i]= (TH1D*) gROOT-> FindObject(Form("run%d_HDivisionLeft[%d]", run, i));
+            HDivisionMean[i]= (TH1D*) gROOT-> FindObject(Form("run%d_HDivisionMean[%d]", run, i));
+        }
+        HMergeRight= (TH1D*) gROOT-> FindObject(Form("run%d_HMergeRight", run));
+        HMergeLeft= (TH1D*) gROOT-> FindObject(Form("run%d_HMergeLeft", run));
+        HMergeMean= (TH1D*) gROOT-> FindObject(Form("run%d_HMergeMean", run));
+        HMergeRight2D= (TH2D*) gROOT-> FindObject(Form("run%d_HMergeRight2D", run));
+        HMergeLeft2D= (TH2D*) gROOT-> FindObject(Form("run%d_HMergeLeft2D", run));
+        HMergeMeanR2D= (TH2D*) gROOT-> FindObject(Form("run%d_HMergeMeanR2D", run));
+        HMergeMeanL2D= (TH2D*) gROOT-> FindObject(Form("run%d_HMergeMeanL2D", run));
     }
 }

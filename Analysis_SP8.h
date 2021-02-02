@@ -55,7 +55,7 @@ class Analysis{
     void Check();
     void Check(Bool_t BSetData);
     void GetRFDist();
-    void GetDivision();
+    void GetPeak();
     void GetTimeReso();
     void GetSlewing();
 };

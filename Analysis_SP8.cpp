@@ -27,6 +27,7 @@ Analysis:: Analysis(Int_t run){
     nEntries= tree-> GetEntriesFast();
     cout << Form("Data File:run%d", run) << endl;
     cout << "Event    : " << nEntries << endl;
+    Slewing= new TF1("Slewing", "[0]+[1]/(x+[2])+[3]/sqrt(x+[4])", 0, 15);
 }
 
 Analysis:: ~Analysis(){
@@ -137,7 +138,7 @@ void Analysis:: MakeCanvas2(){
 void Analysis:: MakeCanvas3(){
     CSlewing= new TCanvas(Form("run%d_CSlewing", Run), Form("run%d_CSlewing", Run), 2000, 2000);
     CSlewing2D= new TCanvas(Form("run%d_CSlewing2D", Run), Form("run%d_CSlewing2D", Run), 2000, 2000);
-    CSlewing-> Divide(3,1);
+    CSlewing-> Divide(2,2);
     CSlewing2D-> Divide(2,2);
 }
 
@@ -154,7 +155,7 @@ void Analysis:: RunEventLoop(){
         if(BCheck && BSetData) Check(BSetData);
         if(BGetTimeReso) GetRFDist();
     }
-    if(BGetTimeReso) GetDivision();
+    if(BGetTimeReso) GetPeak();
     if(BGetTimeReso) MakeCanvas2();
     for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
         tree-> GetEntry(iEntry);
@@ -238,12 +239,16 @@ void Analysis:: DrawPlot(){
         HMergeMean-> Draw();
         CMerge2D-> cd(1);
         HMergeRight2D-> Draw("colz");
+        PMergeRight2D-> Draw("same");
         CMerge2D-> cd(2);
         HMergeLeft2D-> Draw("colz");
+        PMergeLeft2D-> Draw("same");
         CMerge2D-> cd(3);
         HMergeMeanR2D-> Draw("colz");
+        PMergeMeanR2D-> Draw("same");
         CMerge2D-> cd(4);
         HMergeMeanL2D-> Draw("colz");
+        PMergeMeanL2D-> Draw("same");
     }
     return;
 }
@@ -642,7 +647,7 @@ void Analysis:: GetRFDist(){
     }
 }
 
-void Analysis:: GetDivision(){
+void Analysis:: GetPeak(){
     Int_t nThreRight=20;
     Int_t nThreLeft=20;
     Int_t nThreMean=20;
@@ -688,6 +693,10 @@ void Analysis:: GetTimeReso(){
                 HMergeMeanL2D-> Fill(GetWidth(4), RFmean-(iGaussMean+i*RF));
             }
         }
+        PMergeRight2D= HMergeRight2D-> ProfileX();
+        PMergeLeft2D= HMergeLeft2D-> ProfileX();
+        PMergeMeanR2D= HMergeMeanR2D-> ProfileX();
+        PMergeMeanL2D= HMergeMeanL2D-> ProfileX();
     }
 }
 

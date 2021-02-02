@@ -53,6 +53,7 @@ TH2D *HSlewingMeanL2D;
 TF1 *FRight;
 TF1 *FLeft;
 TF1 *FMean;
+TF1 *Slewing;
 TProfile *PMergeRight2D;
 TProfile *PMergeLeft2D;
 TProfile *PMergeMeanR2D;
