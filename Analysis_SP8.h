@@ -13,6 +13,10 @@ class Analysis{
     Double_t iGaussRight;
     Double_t iGaussLeft;
     Double_t iGaussMean;
+    Double_t fuctorMR[5];
+    Double_t fuctorML[5];
+    Double_t fuctorMMR[5];
+    Double_t fuctorMML[5];
     vector<vector<Double_t>> ReconfigLtdc;
     vector<vector<Double_t>> ReconfigTtdc;
     vector<vector<Double_t>> ReconfigWidth;
@@ -57,5 +61,6 @@ class Analysis{
     void GetRFDist();
     void GetPeak();
     void GetTimeReso();
+    void GetFitFunction();
     void GetSlewing();
 };
