@@ -3,13 +3,17 @@
 #include "Select_SP8.h"
 #include "MakeCanvas_SP8.h"
 using namespace std;
+#define UL "\033[04m"
+#define RED "\033[31m"
+#define END33 "\033[m"
 
 void ShowPlot_SP8(Int_t run){
     gStyle-> SetOptFit(11111111);
     gStyle-> SetOptStat(11111111);
     TFile *fin= new TFile(Form("./../Save/run%d_plot.root", run), "read");
     if(!fin || !fin-> IsOpen()){
-        cout << Form("can not open run%d_plot.root", run) << endl;
+        cout << RED "error: " END33 << Form("can not open run%d_plot.root", run) << endl;
+        exit(1);
         return;
     }
     if(BCheck){

@@ -16,7 +16,7 @@ using namespace std;
 Analysis:: Analysis(Int_t run){
     file= new TFile(Form("./../../Data/run%06d_0.root", run), "read");
     if(!file || !file-> IsOpen()){
-        cout << Form("can not open run%06d_0.root", run) << endl;
+        cout <<  RED "error: " END33 << Form("can not open run%06d_0.root", run) << endl;
         exit(1);
         return;
     }
@@ -165,7 +165,7 @@ void Analysis:: MakeCanvas3(){
 void Analysis:: RunEventLoop(){
     MakeCanvas1();
     for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
-    // for(Int_t iEntry=0; iEntry<500; iEntry++){
+    // for(Int_t iEntry=0; iEntry<50; iEntry++){
         tree-> GetEntry(iEntry);
         indicator(iEntry, nEntries);
         if(BSetData) SetData();
@@ -367,6 +367,134 @@ void Analysis:: Save(){
     return;
 }
 
+Bool_t Analysis:: HitStrip(Int_t Strip=0){
+    Bool_t HitRight=0;
+    Bool_t HitLeft=0;
+    if(BSetData){
+        if(Strip==0){
+            if(ReconfigLtdc.at(1).size()!=0 && ReconfigTtdc.at(1).size()!=0){
+                if(ReconfigLtdc.at(1).at(0)>ReconfigTtdc.at(1).at(0)) HitRight=1;
+                else HitRight=0;
+            }
+            if(ReconfigLtdc.at(4).size()!=0 && ReconfigTtdc.at(4).size()!=0){
+                if(ReconfigLtdc.at(4).at(0)>ReconfigTtdc.at(4).at(0)) HitLeft=1;
+                else HitLeft=0;
+            }
+            if(HitRight && HitLeft) return true;
+            else return false;
+        }
+        else if(Strip==1){
+            if(ReconfigLtdc.at(0).size()!=0 && ReconfigTtdc.at(0).size()!=0){
+                if(ReconfigLtdc.at(0).at(0)>ReconfigTtdc.at(0).at(0)) HitRight=1;
+                else HitRight=0;
+            }
+            if(ReconfigLtdc.at(3).size()!=0 && ReconfigTtdc.at(3).size()!=0){
+                if(ReconfigLtdc.at(3).at(0)>ReconfigTtdc.at(3).at(0)) HitLeft=1;
+                else HitLeft=0;
+            }
+            if(HitRight && HitLeft) return true;
+            else return false;
+        }
+        else if(Strip==-1){
+            if(ReconfigLtdc.at(2).size()!=0 && ReconfigTtdc.at(2).size()!=0){
+                if(ReconfigLtdc.at(2).at(0)>ReconfigTtdc.at(2).at(0)) HitRight=1;
+                else HitRight=0;
+            }
+            if(ReconfigLtdc.at(5).size()!=0 && ReconfigTtdc.at(5).size()!=0){
+                if(ReconfigLtdc.at(5).at(0)>ReconfigTtdc.at(5).at(0)) HitLeft=1;
+                else HitLeft=0;
+            }
+            if(HitRight && HitLeft) return true;
+            else return false;
+        }
+        else{
+            cout << RED "error: " END33 << "call of not exisiting the strip" << endl;
+            Analysis:: ~Analysis();
+            exit(1);
+            return false;
+        }
+    }
+    else{
+        if(Strip==0){
+            if(ltdc->at(1).size()!=0 && ttdc->at(1).size()!=0){
+                if(ltdc->at(1).at(0)>ttdc->at(1).at(0)) HitRight=1;
+                else HitRight=0;
+            }
+            if(ltdc->at(4).size()!=0 && ttdc->at(4).size()!=0){
+                if(ltdc->at(4).at(0)>ttdc->at(4).at(0)) HitLeft=1;
+                else HitLeft=0;
+            }
+            if(HitRight && HitLeft) return true;
+            else return false;
+        }
+        else if(Strip==1){
+            if(ltdc->at(0).size()!=0 && ttdc->at(0).size()!=0){
+                if(ltdc->at(0).at(0)>ttdc->at(0).at(0)) HitRight=1;
+                else HitRight=0;
+            }
+            if(ltdc->at(3).size()!=0 && ttdc->at(3).size()!=0){
+                if(ltdc->at(3).at(0)>ttdc->at(3).at(0)) HitLeft=1;
+                else HitLeft=0;
+            }
+            if(HitRight && HitLeft) return true;
+            else return false;
+        }
+        else if(Strip==-1){
+            if(ltdc->at(2).size()!=0 && ttdc->at(2).size()!=0){
+                if(ltdc->at(2).at(0)>ttdc->at(2).at(0)) HitRight=1;
+                else HitRight=0;
+            }
+            if(ltdc->at(5).size()!=0 && ttdc->at(5).size()!=0){
+                if(ltdc->at(5).at(0)>ttdc->at(5).at(0)) HitLeft=1;
+                else HitLeft=0;
+            }
+            if(HitRight && HitLeft) return true;
+            else return false;
+        }
+        else{
+            cout << RED "error: " END33 << "call of not exisiting the strip" << endl;
+            Analysis:: ~Analysis();
+            exit(1);
+            return false;
+        }
+    }
+}
+
+Int_t Analysis:: GetLtdcSize(Int_t ch){
+    if(BSetData) return ReconfigLtdc.at(ch).size();
+    else return ltdc->at(ch).size();
+}
+
+Int_t Analysis:: GetTtdcSize(Int_t ch){
+    if(BSetData) return ReconfigTtdc.at(ch).size();
+    else return ttdc->at(ch).size();
+}
+
+Int_t Analysis:: GetWidthSize(Int_t ch){
+    if(BSetData) return ReconfigWidth.at(ch).size();
+    else return width->at(ch).size();
+}
+
+Double_t Analysis:: GetLtdc(Int_t ch, Int_t Nth=0){
+    if(BSetData) return ReconfigLtdc.at(ch).at(Nth);
+    else return ltdc->at(ch).at(Nth);
+}
+
+Double_t Analysis:: GetTtdc(Int_t ch, Int_t Nth=0){
+    if(BSetData) return ReconfigTtdc.at(ch).at(Nth);
+    else return ttdc->at(ch).at(Nth);
+}
+
+Double_t Analysis:: GetWidth(Int_t ch, Int_t Nth=0){
+    if(BSetData) return ReconfigWidth.at(ch).at(Nth);
+    else return ltdc->at(ch).at(Nth)-ttdc->at(ch).at(Nth);
+}
+
+Double_t Analysis:: SlewingFunction(Double_t x, Double_t *p){
+    // return p[0]+p[1]/(x+p[2])+p[3]/sqrt(x+p[4]);
+    return p[0]+p[1]*x+p[2]*pow(x,2)+p[3]*pow(x,3)+p[4]*pow(x,4)+p[5]*pow(x,5)+p[6]*pow(x,6)+p[7]*pow(x,7)+p[8]*pow(x,8)+p[9]*pow(x,9);
+}
+
 void Analysis:: indicator(Int_t iEntry, Int_t nEntries){
     Int_t percent= 100*(iEntry+1)/nEntries;
     if(percent==percent_tmp) return;
@@ -494,134 +622,6 @@ void Analysis:: CheckSetData(Int_t iEntry){
         cout << endl;
     }
     cout << endl;
-}
-
-Bool_t Analysis:: HitStrip(Int_t Strip=0){
-    Bool_t HitRight=0;
-    Bool_t HitLeft=0;
-    if(BSetData){
-        if(Strip==0){
-            if(ReconfigLtdc.at(1).size()!=0 && ReconfigTtdc.at(1).size()!=0){
-                if(ReconfigLtdc.at(1).at(0)>ReconfigTtdc.at(1).at(0)) HitRight=1;
-                else HitRight=0;
-            }
-            if(ReconfigLtdc.at(4).size()!=0 && ReconfigTtdc.at(4).size()!=0){
-                if(ReconfigLtdc.at(4).at(0)>ReconfigTtdc.at(4).at(0)) HitLeft=1;
-                else HitLeft=0;
-            }
-            if(HitRight && HitLeft) return true;
-            else return false;
-        }
-        else if(Strip==1){
-            if(ReconfigLtdc.at(0).size()!=0 && ReconfigTtdc.at(0).size()!=0){
-                if(ReconfigLtdc.at(0).at(0)>ReconfigTtdc.at(0).at(0)) HitRight=1;
-                else HitRight=0;
-            }
-            if(ReconfigLtdc.at(3).size()!=0 && ReconfigTtdc.at(3).size()!=0){
-                if(ReconfigLtdc.at(3).at(0)>ReconfigTtdc.at(3).at(0)) HitLeft=1;
-                else HitLeft=0;
-            }
-            if(HitRight && HitLeft) return true;
-            else return false;
-        }
-        else if(Strip==-1){
-            if(ReconfigLtdc.at(2).size()!=0 && ReconfigTtdc.at(2).size()!=0){
-                if(ReconfigLtdc.at(2).at(0)>ReconfigTtdc.at(2).at(0)) HitRight=1;
-                else HitRight=0;
-            }
-            if(ReconfigLtdc.at(5).size()!=0 && ReconfigTtdc.at(5).size()!=0){
-                if(ReconfigLtdc.at(5).at(0)>ReconfigTtdc.at(5).at(0)) HitLeft=1;
-                else HitLeft=0;
-            }
-            if(HitRight && HitLeft) return true;
-            else return false;
-        }
-        else{
-            cout << RED "error: " END33 << "call of not exisiting the strip" << endl;
-            Analysis:: ~Analysis();
-            exit(1);
-            return false;
-        }
-    }
-    else{
-        if(Strip==0){
-            if(ltdc->at(1).size()!=0 && ttdc->at(1).size()!=0){
-                if(ltdc->at(1).at(0)>ttdc->at(1).at(0)) HitRight=1;
-                else HitRight=0;
-            }
-            if(ltdc->at(4).size()!=0 && ttdc->at(4).size()!=0){
-                if(ltdc->at(4).at(0)>ttdc->at(4).at(0)) HitLeft=1;
-                else HitLeft=0;
-            }
-            if(HitRight && HitLeft) return true;
-            else return false;
-        }
-        else if(Strip==1){
-            if(ltdc->at(0).size()!=0 && ttdc->at(0).size()!=0){
-                if(ltdc->at(0).at(0)>ttdc->at(0).at(0)) HitRight=1;
-                else HitRight=0;
-            }
-            if(ltdc->at(3).size()!=0 && ttdc->at(3).size()!=0){
-                if(ltdc->at(3).at(0)>ttdc->at(3).at(0)) HitLeft=1;
-                else HitLeft=0;
-            }
-            if(HitRight && HitLeft) return true;
-            else return false;
-        }
-        else if(Strip==-1){
-            if(ltdc->at(2).size()!=0 && ttdc->at(2).size()!=0){
-                if(ltdc->at(2).at(0)>ttdc->at(2).at(0)) HitRight=1;
-                else HitRight=0;
-            }
-            if(ltdc->at(5).size()!=0 && ttdc->at(5).size()!=0){
-                if(ltdc->at(5).at(0)>ttdc->at(5).at(0)) HitLeft=1;
-                else HitLeft=0;
-            }
-            if(HitRight && HitLeft) return true;
-            else return false;
-        }
-        else{
-            cout << RED "error: " END33 << "call of not exisiting the strip" << endl;
-            Analysis:: ~Analysis();
-            exit(1);
-            return false;
-        }
-    }
-}
-
-Int_t Analysis:: GetLtdcSize(Int_t ch){
-    if(BSetData) return ReconfigLtdc.at(ch).size();
-    else return ltdc->at(ch).size();
-}
-
-Int_t Analysis:: GetTtdcSize(Int_t ch){
-    if(BSetData) return ReconfigTtdc.at(ch).size();
-    else return ttdc->at(ch).size();
-}
-
-Int_t Analysis:: GetWidthSize(Int_t ch){
-    if(BSetData) return ReconfigWidth.at(ch).size();
-    else return width->at(ch).size();
-}
-
-Double_t Analysis:: GetLtdc(Int_t ch, Int_t Nth=0){
-    if(BSetData) return ReconfigLtdc.at(ch).at(Nth);
-    else return ltdc->at(ch).at(Nth);
-}
-
-Double_t Analysis:: GetTtdc(Int_t ch, Int_t Nth=0){
-    if(BSetData) return ReconfigTtdc.at(ch).at(Nth);
-    else return ttdc->at(ch).at(Nth);
-}
-
-Double_t Analysis:: GetWidth(Int_t ch, Int_t Nth=0){
-    if(BSetData) return ReconfigWidth.at(ch).at(Nth);
-    else return ltdc->at(ch).at(Nth)-ttdc->at(ch).at(Nth);
-}
-
-Double_t Analysis:: SlewingFunction(Double_t x, Double_t *p){
-    // return p[0]+p[1]/(x+p[2])+p[3]/sqrt(x+p[4]);
-    return p[0]+p[1]*x+p[2]*pow(x,2)+p[3]*pow(x,3)+p[4]*pow(x,4)+p[5]*pow(x,5)+p[6]*pow(x,6)+p[7]*pow(x,7)+p[8]*pow(x,8)+p[9]*pow(x,9);
 }
 
 void Analysis:: Check(){
@@ -818,6 +818,10 @@ void Analysis:: GetSlewing(){
     }
 }
 
+void Analysis:: GetEfficiency(){
+
+}
+
 void Analysis_SP8(Int_t run){
     Analysis* a= new Analysis(run);
     a-> RunEventLoop();
@@ -831,6 +835,6 @@ void Analysis_SP8(){
     cout << "or" << endl;
     cout << "\"" << RED "user$ root" END33 << "\"" << endl;
     cout << "\"" << RED "root [0] .x Analysis_SP8.cpp(run number)" END33 << "\"" << endl;
-    // exit(1);
+    exit(1);
     return;
 }

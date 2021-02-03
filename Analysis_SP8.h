@@ -45,10 +45,6 @@ class Analysis{
     void RunEventLoop();
     void DrawPlot();
     void Save();
-    void indicator(Int_t iEntry, Int_t nEntries);
-    void SetData();
-    void CheckData(Int_t iEntry);
-    void CheckSetData(Int_t iEntry);
     Bool_t HitStrip(Int_t Strip=0);
     Int_t GetLtdcSize(Int_t ch);
     Int_t GetTtdcSize(Int_t ch);
@@ -57,6 +53,10 @@ class Analysis{
     Double_t GetTtdc(Int_t ch, Int_t Nth=0);
     Double_t GetWidth(Int_t ch, Int_t Nth=0);
     Double_t SlewingFunction(Double_t x, Double_t *p);
+    void indicator(Int_t iEntry, Int_t nEntries);
+    void SetData();
+    void CheckData(Int_t iEntry);
+    void CheckSetData(Int_t iEntry);
     void Check();
     void Check(Bool_t BSetData);
     void GetRFDist();
@@ -64,4 +64,5 @@ class Analysis{
     void GetTimeReso();
     void GetFitFunction();
     void GetSlewing();
+    void GetEfficiency();
 };
