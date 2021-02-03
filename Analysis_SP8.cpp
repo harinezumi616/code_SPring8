@@ -143,6 +143,14 @@ void Analysis:: MakeCanvas3(){
     CSlewing2D= new TCanvas(Form("run%d_CSlewing2D", Run), Form("run%d_CSlewing2D", Run), 2000, 2000);
     CSlewing-> Divide(2,2);
     CSlewing2D-> Divide(2,2);
+    HSlewingRight= new TH1D(Form("run%d_HSlewingRight", Run), Form("run%d_HSlewingRight", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingLeft= new TH1D(Form("run%d_HSlewingLeft", Run), Form("run%d_HSlewingLeft", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingMeanR= new TH1D(Form("run%d_HSlewingMeanR", Run), Form("run%d_HSlewingMeanR", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingMeanL= new TH1D(Form("run%d_HSlewingMeanL", Run), Form("run%d_HSlewingMeanL", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingRight2D= new TH2D(Form("run%d_HSlewingRight2D", Run), Form("run%d_HSlewingRight2D", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
+    HSlewingLeft2D= new TH2D(Form("run%d_HSlewingLeft2D", Run), Form("run%d_HSlewingLeft2D", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
+    HSlewingMeanR2D= new TH2D(Form("run%d_HSlewingMeanR2D", Run), Form("run%d_HSlewingMeanR2D", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
+    HSlewingMeanL2D= new TH2D(Form("run%d_HSlewingMeanL2D", Run), Form("run%d_HSlewingMeanL2D", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
 }
 
 void Analysis:: RunEventLoop(){
@@ -166,7 +174,12 @@ void Analysis:: RunEventLoop(){
         if(BGetTimeReso) GetTimeReso();
     }
     if(BGetTimeReso) GetFitFunction();
-    // if(BGetTimeReso) MakeCanvas3();
+    if(BGetTimeReso) MakeCanvas3();
+    for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
+        tree-> GetEntry(iEntry);
+        indicator(iEntry, nEntries);
+        if(BGetTimeReso) GetSlewing();
+    }
     DrawPlot();
     return;
 }
@@ -253,6 +266,22 @@ void Analysis:: DrawPlot(){
         CMerge2D-> cd(4);
         HMergeMeanL2D-> Draw("colz");
         PMergeMeanL2D-> Draw("same");
+        CSlewing-> cd(1);
+        HSlewingRight-> Draw();
+        CSlewing-> cd(2);
+        HSlewingLeft-> Draw();
+        CSlewing-> cd(3);
+        HSlewingMeanR-> Draw();
+        CSlewing-> cd(4);
+        HSlewingMeanL-> Draw();
+        CSlewing2D-> cd(1);
+        HSlewingRight2D-> Draw("colz");
+        CSlewing2D-> cd(2);
+        HSlewingLeft2D-> Draw("colz");
+        CSlewing2D-> cd(3);
+        HSlewingMeanR2D-> Draw("colz");
+        CSlewing2D-> cd(4);
+        HSlewingMeanL2D-> Draw("colz");
     }
     return;
 }
@@ -295,6 +324,8 @@ void Analysis:: Save(){
         }
         CMerge-> Write();
         CMerge2D-> Write();
+        CSlewing-> Write();
+        CSlewing2D-> Write();
         HRF-> Write();
         HRFLtdcRight-> Write();
         HRFLtdcLeft-> Write();
@@ -311,6 +342,14 @@ void Analysis:: Save(){
         HMergeLeft2D-> Write();
         HMergeMeanR2D-> Write();
         HMergeMeanL2D-> Write();
+        HSlewingRight-> Write();
+        HSlewingLeft-> Write();
+        HSlewingMeanR-> Write();
+        HSlewingMeanL-> Write();
+        HSlewingRight2D-> Write();
+        HSlewingLeft2D-> Write();
+        HSlewingMeanR2D-> Write();
+        HSlewingMeanL2D-> Write();
     }
     return;
 }
@@ -567,6 +606,10 @@ Double_t Analysis:: GetWidth(Int_t ch, Int_t Nth=0){
     else return ltdc->at(ch).at(Nth)-ttdc->at(ch).at(Nth);
 }
 
+Double_t Analysis:: SlewingFunction(Double_t x, Double_t *p){
+    return p[0]+p[1]/(x+p[2])+p[3]/sqrt(x+p[4]);
+}
+
 void Analysis:: Check(){
     for(Int_t ch=0; ch<32; ch++){
         for(Int_t i=0; i<ltdc->at(ch).size(); i++){
@@ -706,18 +749,53 @@ void Analysis:: GetFitFunction(){
     PMergeMeanR2D= HMergeMeanR2D-> ProfileX();
     PMergeMeanL2D= HMergeMeanL2D-> ProfileX();
     CMerge2D-> cd(1);
-    PMergeRight2D-> Fit("FSlewingMR", "Q", "", 1.5, 4.5);
+    PMergeRight2D-> Fit("FSlewingMR", "Q", "", 0.5, 10);
+    // PMergeRight2D-> Fit("pol5", "Q", "", 0.5, 10);
     CMerge2D-> cd(2);
-    PMergeLeft2D-> Fit("FSlewingML", "Q", "", 1.5, 4.5);
+    PMergeLeft2D-> Fit("FSlewingML", "Q", "", 0.5, 10);
+    // PMergeLeft2D-> Fit("pol5", "Q", "", 0.5, 10);
     CMerge2D-> cd(3);
-    PMergeMeanR2D-> Fit("FSlewingMMR", "Q", "", 1.5, 4.5);
+    PMergeMeanR2D-> Fit("FSlewingMMR", "Q", "", 0.5, 10);
+    // PMergeMeanR2D-> Fit("pol5", "Q", "", 0.5, 10);
     CMerge2D-> cd(4);
-    PMergeMeanL2D-> Fit("FSlewingMML", "Q", "", 1.5, 4.5);
+    PMergeMeanL2D-> Fit("FSlewingMML", "Q", "", 0.5, 10);
+    // PMergeMeanL2D-> Fit("pol5", "Q", "", 0.5, 10);
     for(Int_t i=0; i<5; i++){
         fuctorMR[i]= FSlewingMR-> GetParameter(i);
         fuctorML[i]= FSlewingML-> GetParameter(i);
         fuctorMMR[i]= FSlewingMMR-> GetParameter(i);
         fuctorMML[i]= FSlewingMML-> GetParameter(i);
+    }
+}
+
+void Analysis:: GetSlewing(){
+    Bool_t C1= HitStrip();
+    if(C1){
+        Double_t right= GetLtdc(1);
+        Double_t left= GetLtdc(4);
+        Double_t mean= (GetLtdc(1)+GetLtdc(4))/2.;
+        Double_t RFright= GetLtdc(15)-right;
+        Double_t RFleft= GetLtdc(15)-left;
+        Double_t RFmean= GetLtdc(15)-mean;
+        for(Int_t i=0; i<80; i++){
+            if(iGaussRight+RF*(2*i-1)/2.<RFright && RFright<iGaussRight+RF*(2*i+1)/2){
+                // HDivisionRight[i]-> Fill(RFright);
+                HSlewingRight-> Fill(RFright-(iGaussRight+i*RF)-SlewingFunction(GetWidth(1), fuctorMR));
+                HSlewingRight2D-> Fill(GetWidth(1), RFright-(iGaussRight+i*RF)-SlewingFunction(GetWidth(1), fuctorMR));
+            }
+            if(iGaussLeft+RF*(2*i-1)/2.<RFleft && RFleft<iGaussLeft+RF*(2*i+1)/2.){
+                // HDivisionLeft[i]-> Fill(RFleft);
+                HSlewingLeft-> Fill(RFleft-(iGaussLeft+i*RF)-SlewingFunction(GetWidth(4), fuctorML));
+                HSlewingLeft2D-> Fill(GetWidth(4), RFleft-(iGaussLeft+i*RF)-SlewingFunction(GetWidth(4), fuctorML));
+            }
+            if(iGaussMean+RF*(2*i-1)/2.<RFmean && RFmean<iGaussMean+RF*(2*i+1)/2.){
+                // HDivisionMean[i]-> Fill(RFmean);
+                HSlewingMeanR-> Fill(RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(1), fuctorMMR));
+                HSlewingMeanL-> Fill(RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(4), fuctorMML));
+                HSlewingMeanR2D-> Fill(GetWidth(1), RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(1), fuctorMMR));
+                HSlewingMeanL2D-> Fill(GetWidth(4), RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(4), fuctorMML));
+            }
+        }
     }
 }
 

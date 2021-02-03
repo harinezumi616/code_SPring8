@@ -56,6 +56,7 @@ class Analysis{
     Double_t GetLtdc(Int_t ch, Int_t Nth=0);
     Double_t GetTtdc(Int_t ch, Int_t Nth=0);
     Double_t GetWidth(Int_t ch, Int_t Nth=0);
+    Double_t SlewingFunction(Double_t x, Double_t *p);
     void Check();
     void Check(Bool_t BSetData);
     void GetRFDist();
