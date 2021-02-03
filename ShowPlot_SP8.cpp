@@ -53,10 +53,14 @@ void ShowPlot_SP8(Int_t run){
         }
         CMerge= (TCanvas*) gROOT-> FindObject(Form("run%d_CMerge", run));
         CMerge2D= (TCanvas*) gROOT-> FindObject(Form("run%d_CMerge2D", run));
+        CSlewing= (TCanvas*) gROOT-> FindObject(Form("run%d_CSlewing", run));
+        CSlewing2D= (TCanvas*) gROOT-> FindObject(Form("run%d_CSlewing2D", run));
         CRF-> Draw();
         CRFLtdc-> Draw();
         CMerge-> Draw();
         CMerge2D-> Draw();
+        CSlewing-> Draw();
+        CSlewing2D-> Draw();
         HRF= (TH1D*) gROOT-> FindObject(Form("run%d_HRF", run));
         HRFLtdcRight= (TH1D*) gROOT-> FindObject(Form("run%d_HRFLtdcRight", run));
         HRFLtdcLeft= (TH1D*) gROOT-> FindObject(Form("run%d_HRFLtdcLeft", run));
@@ -73,5 +77,13 @@ void ShowPlot_SP8(Int_t run){
         HMergeLeft2D= (TH2D*) gROOT-> FindObject(Form("run%d_HMergeLeft2D", run));
         HMergeMeanR2D= (TH2D*) gROOT-> FindObject(Form("run%d_HMergeMeanR2D", run));
         HMergeMeanL2D= (TH2D*) gROOT-> FindObject(Form("run%d_HMergeMeanL2D", run));
+        HSlewingRight= (TH1D*) gROOT-> FindObject(Form("run%d_HSlewingRight", run));
+        HSlewingLeft= (TH1D*) gROOT-> FindObject(Form("run%d_HSlewingLeft", run));
+        HSlewingMeanR= (TH1D*) gROOT-> FindObject(Form("run%d_HSlewingMeanR", run));
+        HSlewingMeanL= (TH1D*) gROOT-> FindObject(Form("run%d_HSlewingMeanL", run));
+        HSlewingRight2D= (TH2D*) gROOT-> FindObject(Form("run%d_HSlewingRight2D", run));
+        HSlewingLeft2D= (TH2D*) gROOT-> FindObject(Form("run%d_HSlewingLeft2D", run));
+        HSlewingMeanR2D= (TH2D*) gROOT-> FindObject(Form("run%d_HSlewingMeanR2D", run));
+        HSlewingMeanL2D= (TH2D*) gROOT-> FindObject(Form("run%d_HSlewingMeanL2D", run));
     }
 }
