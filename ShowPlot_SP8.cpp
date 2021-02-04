@@ -106,6 +106,15 @@ void ShowPlot:: Show(){
         HSlewingLeft2D= (TH2D*) gROOT-> FindObject(Form("run%d_HSlewingLeft2D", Run));
         HSlewingMeanR2D= (TH2D*) gROOT-> FindObject(Form("run%d_HSlewingMeanR2D", Run));
         HSlewingMeanL2D= (TH2D*) gROOT-> FindObject(Form("run%d_HSlewingMeanL2D", Run));
+        if(BGetDifference){
+            CDifference= (TCanvas*) gROOT-> FindObject(Form("run%d_CDifference", Run));
+            CDifference-> Draw();
+            HDifference= (TH1D*) gROOT-> FindObject(Form("run%d_HDifference", Run));
+            HDiffRight= (TH2D*) gROOT-> FindObject(Form("run%d_HDiffRight", Run));
+            HDiffLeft= (TH2D*) gROOT-> FindObject(Form("run%d_HDiffLeft", Run));
+            HDiffMeanR= (TH2D*) gROOT-> FindObject(Form("run%d_HDiffMeanR", Run));
+            HDiffMeanL= (TH2D*) gROOT-> FindObject(Form("run%d_HDiffMeanL", Run));
+        }
     }
 }
 

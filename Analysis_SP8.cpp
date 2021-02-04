@@ -160,6 +160,16 @@ void Analysis:: MakeCanvas3(){
     FLeftSlewing= new TF1("FLeftSlewing", "gaus", -RF/2., RF/2.);
     FMeanRSlewing= new TF1("FMeanRSlewing", "gaus", -RF/2., RF/2.);
     FMeanLSlewing= new TF1("FMeanLSlewing", "gaus", -RF/2., RF/2.);
+
+    if(BGetDifference){
+        CDifference= new TCanvas(Form("run%d_CDifference", Run), Form("run%d_CDifference", Run), 2000, 2000);
+        CDifference-> Divide(3,2);
+        HDifference= new TH1D(Form("run%d_HDifference", Run), Form("run%d_HDifference", Run), 120, -3, 3);
+        HDiffRight= new TH2D(Form("run%d_HDiffRight", Run), Form("run%d_HDiffRight", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+        HDiffLeft= new TH2D(Form("run%d_HDiffLeft", Run), Form("run%d_HDiffLeft", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+        HDiffMeanR= new TH2D(Form("run%d_HDiffMeanR", Run), Form("run%d_HDiffMeanR", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+        HDiffMeanL= new TH2D(Form("run%d_HDiffMeanL", Run), Form("run%d_HDiffMeanL", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+    }
 }
 
 void Analysis:: RunEventLoop(){
@@ -301,6 +311,18 @@ void Analysis:: DrawPlot(){
         HSlewingMeanR2D-> Draw("colz");
         CSlewing2D-> cd(4);
         HSlewingMeanL2D-> Draw("colz");
+        if(BGetDifference){
+            CDifference-> cd(1);
+            HDifference-> Draw();
+            CDifference-> cd(2);
+            HDiffRight-> Draw("colz");
+            CDifference-> cd(3);
+            HDiffLeft-> Draw("colz");
+            CDifference-> cd(4);
+            HDiffMeanR-> Draw("colz");
+            CDifference-> cd(5);
+            HDiffMeanL-> Draw("colz");
+        }
     }
     return;
 }
@@ -369,6 +391,14 @@ void Analysis:: Save(){
         HSlewingLeft2D-> Write();
         HSlewingMeanR2D-> Write();
         HSlewingMeanL2D-> Write();
+        if(BGetDifference){
+            CDifference-> Write();
+            HDifference-> Write();
+            HDiffRight-> Write();
+            HDiffLeft-> Write();
+            HDiffMeanR-> Write();
+            HDiffMeanL-> Write();
+        }
     }
     return;
 }
@@ -807,20 +837,29 @@ void Analysis:: GetSlewing(){
         Double_t RFright= GetLtdc(15)-right;
         Double_t RFleft= GetLtdc(15)-left;
         Double_t RFmean= GetLtdc(15)-mean;
+        Double_t diff;
+        if(BGetDifference) diff= GetLtdc(1)-GetLtdc(4);
+        if(BGetDifference) HDifference-> Fill(diff);
         for(Int_t i=0; i<80; i++){
             if(iGaussRight+RF*(2*i-1)/2.<RFright && RFright<iGaussRight+RF*(2*i+1)/2){
                 HSlewingRight-> Fill(RFright-(iGaussRight+i*RF)-SlewingFunction(GetWidth(1), fuctorMR));
                 HSlewingRight2D-> Fill(GetWidth(1), RFright-(iGaussRight+i*RF)-SlewingFunction(GetWidth(1), fuctorMR));
+                if(BGetDifference)  HDiffRight-> Fill(diff, RFright-(iGaussRight+i*RF)-SlewingFunction(GetWidth(1), fuctorMR));
             }
             if(iGaussLeft+RF*(2*i-1)/2.<RFleft && RFleft<iGaussLeft+RF*(2*i+1)/2.){
                 HSlewingLeft-> Fill(RFleft-(iGaussLeft+i*RF)-SlewingFunction(GetWidth(4), fuctorML));
                 HSlewingLeft2D-> Fill(GetWidth(4), RFleft-(iGaussLeft+i*RF)-SlewingFunction(GetWidth(4), fuctorML));
+                if(BGetDifference) HDiffLeft-> Fill(diff, RFleft-(iGaussLeft+i*RF)-SlewingFunction(GetWidth(4), fuctorML));
             }
             if(iGaussMean+RF*(2*i-1)/2.<RFmean && RFmean<iGaussMean+RF*(2*i+1)/2.){
                 HSlewingMeanR-> Fill(RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(1), fuctorMMR));
                 HSlewingMeanL-> Fill(RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(4), fuctorMML));
                 HSlewingMeanR2D-> Fill(GetWidth(1), RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(1), fuctorMMR));
                 HSlewingMeanL2D-> Fill(GetWidth(4), RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(4), fuctorMML));
+                if(BGetDifference){
+                HDiffMeanR-> Fill(diff, RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(1), fuctorMMR));
+                HDiffMeanL-> Fill(diff, RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(4), fuctorMML));
+                }
             }
         }
     }

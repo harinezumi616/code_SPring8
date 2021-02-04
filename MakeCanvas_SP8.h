@@ -65,3 +65,11 @@ TProfile *PMergeRight2D;
 TProfile *PMergeLeft2D;
 TProfile *PMergeMeanR2D;
 TProfile *PMergeMeanL2D;
+
+//GetDifference
+TCanvas *CDifference;
+TH1D *HDifference;
+TH2D *HDiffRight;
+TH2D *HDiffLeft;
+TH2D *HDiffMeanR;
+TH2D *HDiffMeanL;
