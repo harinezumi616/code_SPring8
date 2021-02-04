@@ -163,15 +163,19 @@ void Analysis:: MakeCanvas3(){
 }
 
 void Analysis:: RunEventLoop(){
+    if(BCheckData || BCheckSetData){
+        for(Int_t iEntry=0; iEntry<5; iEntry++){
+            tree-> GetEntry(iEntry);
+            if(BSetData) SetData();
+            if(BCheckData && !BSetData) CheckData(iEntry, 0);
+            if(BCheckSetData && BSetData) CheckSetData(iEntry, 0);
+        }
+    }
     MakeCanvas1();
     for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
-    // for(Int_t iEntry=0; iEntry<50; iEntry++){
         tree-> GetEntry(iEntry);
         indicator(iEntry, nEntries);
         if(BSetData) SetData();
-        if(BCheckData && !BSetData) CheckData(iEntry);
-        if(BCheckSetData && BSetData) CheckSetData(iEntry);
-        if(BCheck && !BSetData) Check();
         if(BCheck && BSetData) Check(BSetData);
         if(BGetTimeReso) GetRFDist();
     }
@@ -180,6 +184,7 @@ void Analysis:: RunEventLoop(){
     for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
         tree-> GetEntry(iEntry);
         indicator(iEntry, nEntries);
+        if(BSetData) SetData();
         if(BGetTimeReso) GetTimeReso();
     }
     if(BGetTimeReso) GetFitFunction();
@@ -187,6 +192,7 @@ void Analysis:: RunEventLoop(){
     for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
         tree-> GetEntry(iEntry);
         indicator(iEntry, nEntries);
+        if(BSetData) SetData();
         if(BGetTimeReso) GetSlewing();
     }
     DrawPlot();
@@ -548,7 +554,8 @@ void Analysis:: SetData(){
     return;
 }
 
-void Analysis:: CheckData(Int_t iEntry){
+void Analysis:: CheckData(Int_t iEntry, Bool_t interpreter=1){
+    if(interpreter) tree-> GetEntry(iEntry);
     cout << MAGENTA << "Event :" << iEntry << END33 << endl;
     cout << MAGENTA "ltdc" END33 << endl;
     for(Int_t ch=0; ch<32; ch++){
@@ -586,7 +593,8 @@ void Analysis:: CheckData(Int_t iEntry){
     cout << endl;
 }
 
-void Analysis:: CheckSetData(Int_t iEntry){
+void Analysis:: CheckSetData(Int_t iEntry, Bool_t interpreter=1){
+    if(interpreter) tree-> GetEntry(iEntry);
     cout << MAGENTA << "Event :" << iEntry << END33 << endl;
     cout << MAGENTA "ReconfigLtdc" END33 << endl;
     for(Int_t ch=0; ch<32; ch++){
@@ -835,6 +843,6 @@ void Analysis_SP8(){
     cout << "or" << endl;
     cout << "\"" << RED "user$ root" END33 << "\"" << endl;
     cout << "\"" << RED "root [0] .x Analysis_SP8.cpp(run number)" END33 << "\"" << endl;
-    exit(1);
+    // exit(1);
     return;
 }

@@ -55,8 +55,8 @@ class Analysis{
     Double_t SlewingFunction(Double_t x, Double_t *p);
     void indicator(Int_t iEntry, Int_t nEntries);
     void SetData();
-    void CheckData(Int_t iEntry);
-    void CheckSetData(Int_t iEntry);
+    void CheckData(Int_t iEntry, Bool_t interpreter=1);
+    void CheckSetData(Int_t iEntry, Bool_t interpreter=1);
     void Check();
     void Check(Bool_t BSetData);
     void GetRFDist();
