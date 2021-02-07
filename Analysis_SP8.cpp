@@ -102,9 +102,9 @@ void Analysis:: MakeCanvas1(){
         CRFLtdc= new TCanvas(Form("run%d_CRFLtdc", Run), Form("run%d_CRFLtdc", Run), 2000, 2000);
         CRFLtdc-> Divide(1,3);
         HRF= new TH1D(Form("run%d_HRF", Run), Form("run%d_HRF", Run), 2000, 580, 780);
-        HRFLtdcRight= new TH1D(Form("run%d_HRFLtdcRight", Run), Form("run%d_HRFLtdcRight", Run), 6000, 380, 580);
-        HRFLtdcLeft= new TH1D(Form("run%d_HRFLtdcLeft", Run), Form("run%d_HRFLtdcLeft", Run), 6000, 380, 580);
-        HRFLtdcMean= new TH1D(Form("run%d_HRFLtdcMean", Run), Form("run%d_HRFLtdcMean", Run), 6000, 380, 580);
+        HRFLtdcRight= new TH1D(Form("run%d_HRFLtdcRight", Run), Form("run%d_HRFLtdcRight", Run), 4000, 380, 580);
+        HRFLtdcLeft= new TH1D(Form("run%d_HRFLtdcLeft", Run), Form("run%d_HRFLtdcLeft", Run), 4000, 380, 580);
+        HRFLtdcMean= new TH1D(Form("run%d_HRFLtdcMean", Run), Form("run%d_HRFLtdcMean", Run), 4000, 380, 580);
         FRight= new TF1("FRight", "gaus", 0, 600);
         FLeft= new TF1("FLeft", "gaus", 0, 600);
         FMean= new TF1("FMean", "gaus", 0, 600);
@@ -122,9 +122,9 @@ void Analysis:: MakeCanvas2(){
     CMerge-> Divide(3,1);
     CMerge2D-> Divide(2,2);
     for(Int_t i=0; i<80; i++){
-        HDivisionRight[i]= new TH1D(Form("run%d_HDivivisonRight[%d]", Run, i), Form("run%d_HDivivisonRight[%d]", Run, i), 30*RF, iGaussRight+RF*(2*i-1)/2., iGaussRight+RF*(2*i+1)/2.);
-        HDivisionLeft[i]= new TH1D(Form("run%d_HDivivisonLeft[%d]", Run, i), Form("run%d_HDivivisonLeft[%d]", Run, i), 30*RF, iGaussLeft+RF*(2*i-1)/2., iGaussLeft+RF*(2*i+1)/2.);
-        HDivisionMean[i]= new TH1D(Form("run%d_HDivivisonMean[%d]", Run, i), Form("run%d_HDivivisonMean[%d]", Run, i), 30*RF, iGaussMean+RF*(2*i-1)/2., iGaussMean+RF*(2*i+1)/2.);
+        HDivisionRight[i]= new TH1D(Form("run%d_HDivivisonRight[%d]", Run, i), Form("run%d_HDivivisonRight[%d]", Run, i), 20*RF, iGaussRight+RF*(2*i-1)/2., iGaussRight+RF*(2*i+1)/2.);
+        HDivisionLeft[i]= new TH1D(Form("run%d_HDivivisonLeft[%d]", Run, i), Form("run%d_HDivivisonLeft[%d]", Run, i), 20*RF, iGaussLeft+RF*(2*i-1)/2., iGaussLeft+RF*(2*i+1)/2.);
+        HDivisionMean[i]= new TH1D(Form("run%d_HDivivisonMean[%d]", Run, i), Form("run%d_HDivivisonMean[%d]", Run, i), 20*RF, iGaussMean+RF*(2*i-1)/2., iGaussMean+RF*(2*i+1)/2.);
     }
     HMergeRight= new TH1D(Form("run%d_HMergeRight", Run), Form("run%d_HMergeRight", Run), 100*RF, -RF/2., RF/2.);
     HMergeLeft= new TH1D(Form("run%d_HMergeLeft", Run), Form("run%d_HMergeLeft", Run), 100*RF, -RF/2., RF/2.);
@@ -184,7 +184,7 @@ void Analysis:: RunEventLoop(){
     MakeCanvas1();
     for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
         tree-> GetEntry(iEntry);
-        // indicator(iEntry, nEntries);
+        indicator(iEntry, nEntries);
         if(BSetData) SetData();
         if(BCheck && !BSetData) Check();
         if(BCheck && BSetData) Check(BSetData);
@@ -196,7 +196,7 @@ void Analysis:: RunEventLoop(){
         MakeCanvas2();
         for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
             tree-> GetEntry(iEntry);
-            // indicator(iEntry, nEntries);
+            indicator(iEntry, nEntries);
             if(BSetData) SetData();
             if(BGetTimeReso) GetTimeReso();
         }
@@ -206,7 +206,7 @@ void Analysis:: RunEventLoop(){
         MakeCanvas3();
         for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
             tree-> GetEntry(iEntry);
-            // indicator(iEntry, nEntries);
+            indicator(iEntry, nEntries);
             if(BSetData) SetData();
             if(BGetTimeReso) GetSlewing();
         }
@@ -650,6 +650,7 @@ void Analysis:: CheckData(Int_t iEntry, Bool_t interpreter=1){
         cout << endl;
     }
     cout << endl;
+    return;
 }
 
 void Analysis:: CheckSetData(Int_t iEntry, Bool_t interpreter=1){
@@ -689,6 +690,7 @@ void Analysis:: CheckSetData(Int_t iEntry, Bool_t interpreter=1){
         cout << endl;
     }
     cout << endl;
+    return;
 }
 
 void Analysis:: Check(){
@@ -772,15 +774,16 @@ void Analysis:: GetRFDist(){
         HRFLtdcLeft-> Fill(RFleft);
         HRFLtdcMean-> Fill(RFmean);
     }
+    return;
 }
 
 void Analysis:: GetPeak(){
     Int_t nThreRight=20;
     Int_t nThreLeft=20;
     Int_t nThreMean=20;
-    while(HRFLtdcRight->GetBinContent(iBinRight)<nThreRight) iBinRight++;
-    while(HRFLtdcLeft->GetBinContent(iBinLeft)<nThreLeft) iBinLeft++;
-    while(HRFLtdcMean->GetBinContent(iBinMean)<nThreMean) iBinMean++;
+    while(HRFLtdcRight->GetBinContent(iBinRight)<nThreRight && iBinRight<4000) iBinRight++;
+    while(HRFLtdcLeft->GetBinContent(iBinLeft)<nThreLeft && iBinLeft<4000) iBinLeft++;
+    while(HRFLtdcMean->GetBinContent(iBinMean)<nThreMean && iBinMean<4000) iBinMean++;
     CRFLtdc-> cd(1);
     HRFLtdcRight-> Fit("FRight", "Q", "", HRFLtdcRight->GetBinCenter(iBinRight)-RF/2., HRFLtdcRight->GetBinCenter(iBinRight)+RF/2.);
     CRFLtdc-> cd(2);
@@ -790,6 +793,7 @@ void Analysis:: GetPeak(){
     iGaussRight= FRight->GetParameter(1);
     iGaussLeft= FLeft->GetParameter(1);
     iGaussMean= FMean->GetParameter(1);
+    return;
 }
 
 void Analysis:: GetTimeReso(){
@@ -820,6 +824,7 @@ void Analysis:: GetTimeReso(){
             }
         }
     }
+    return;
 }
 
 void Analysis:: GetFitFunction(){
@@ -853,6 +858,7 @@ void Analysis:: GetFitFunction(){
         fuctorMMR[i]= FSlewingMMR-> GetParameter(i);
         fuctorMML[i]= FSlewingMML-> GetParameter(i);
     }
+    return;
 }
 
 void Analysis:: GetSlewing(){
@@ -890,6 +896,7 @@ void Analysis:: GetSlewing(){
             }
         }
     }
+    return;
 }
 
 void Analysis:: GetEfficiency(){
@@ -901,6 +908,7 @@ void Analysis:: GetEfficiency(){
             iHit++;
         }
     }
+    return;
 }
 
 void Analysis_SP8(Int_t run){
