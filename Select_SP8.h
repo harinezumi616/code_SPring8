@@ -6,3 +6,4 @@ Bool_t BCheckSetData=0;
 Bool_t BCheck=0;
 Bool_t BGetTimeReso=1;
 Bool_t BGetDifference=1;
+Bool_t BGetEfficiency=1;

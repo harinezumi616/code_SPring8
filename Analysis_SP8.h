@@ -10,6 +10,8 @@ class Analysis{
     Int_t iBinRight=1;
     Int_t iBinLeft=1;
     Int_t iBinMean=1;
+    Int_t iHit=0;
+    Int_t nHit=0;
     Double_t iGaussRight;
     Double_t iGaussLeft;
     Double_t iGaussMean;
@@ -17,6 +19,15 @@ class Analysis{
     Double_t fuctorML[10];
     Double_t fuctorMMR[10];
     Double_t fuctorMML[10];
+    Double_t resoRight=0;
+    Double_t resoLeft=0;
+    Double_t resoMeanR=0;
+    Double_t resoMeanL=0;
+    Double_t resoErrRight=0;
+    Double_t resoErrLeft=0;
+    Double_t resoErrMeanR=0;
+    Double_t resoErrMeanL=0;
+    Double_t efficiency=0;
     vector<vector<Double_t>> ReconfigLtdc;
     vector<vector<Double_t>> ReconfigTtdc;
     vector<vector<Double_t>> ReconfigWidth;

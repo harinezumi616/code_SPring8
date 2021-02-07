@@ -186,24 +186,30 @@ void Analysis:: RunEventLoop(){
         tree-> GetEntry(iEntry);
         indicator(iEntry, nEntries);
         if(BSetData) SetData();
+        if(BCheck && !BSetData) Check();
         if(BCheck && BSetData) Check(BSetData);
         if(BGetTimeReso) GetRFDist();
+        if(BGetEfficiency) GetEfficiency();
     }
     if(BGetTimeReso) GetPeak();
-    if(BGetTimeReso) MakeCanvas2();
-    for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
-        tree-> GetEntry(iEntry);
-        indicator(iEntry, nEntries);
-        if(BSetData) SetData();
-        if(BGetTimeReso) GetTimeReso();
+    if(BGetTimeReso){
+        MakeCanvas2();
+        for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
+            tree-> GetEntry(iEntry);
+            indicator(iEntry, nEntries);
+            if(BSetData) SetData();
+            if(BGetTimeReso) GetTimeReso();
+        }
+        if(BGetTimeReso) GetFitFunction();
     }
-    if(BGetTimeReso) GetFitFunction();
-    if(BGetTimeReso) MakeCanvas3();
-    for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
-        tree-> GetEntry(iEntry);
-        indicator(iEntry, nEntries);
-        if(BSetData) SetData();
-        if(BGetTimeReso) GetSlewing();
+    if(BGetTimeReso){
+        MakeCanvas3();
+        for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
+            tree-> GetEntry(iEntry);
+            indicator(iEntry, nEntries);
+            if(BSetData) SetData();
+            if(BGetTimeReso) GetSlewing();
+        }
     }
     DrawPlot();
     return;
@@ -294,15 +300,23 @@ void Analysis:: DrawPlot(){
         CSlewing-> cd(1);
         HSlewingRight-> Fit("FRightSlewing", "Q", "", -0.2, 0.2);
         HSlewingRight-> Draw();
+        resoRight= FRightSlewing-> GetParameter(2);
+        resoErrRight= FRightSlewing-> GetParError(2);
         CSlewing-> cd(2);
         HSlewingLeft-> Fit("FLeftSlewing", "Q", "", -0.2, 0.2);
         HSlewingLeft-> Draw();
+        resoLeft= FLeftSlewing-> GetParameter(2);
+        resoErrLeft= FLeftSlewing-> GetParError(2);
         CSlewing-> cd(3);
         HSlewingMeanR-> Fit("FMeanRSlewing", "Q", "", -0.2, 0.2);
         HSlewingMeanR-> Draw();
+        resoMeanR= FMeanRSlewing-> GetParameter(2);
+        resoErrMeanR= FMeanRSlewing-> GetParError(2);
         CSlewing-> cd(4);
         HSlewingMeanL-> Fit("FMeanLSlewing", "Q", "", -0.2, 0.2);
         HSlewingMeanL-> Draw();
+        resoMeanL= FMeanLSlewing-> GetParameter(2);
+        resoErrMeanL= FMeanLSlewing-> GetParError(2);
         CSlewing2D-> cd(1);
         HSlewingRight2D-> Draw("colz");
         CSlewing2D-> cd(2);
@@ -324,12 +338,18 @@ void Analysis:: DrawPlot(){
             HDiffMeanL-> Draw("colz");
         }
     }
+    if(BGetEfficiency){
+        efficiency= (double_t) iHit/nHit*100;
+        cout << RED << "Efficiency= " << END33 << efficiency << " %" << endl;
+    }
+    cout << setw(25) <<  "TimeResoRight[ps]" << setw(25) << "TimeResoLeft[ps]" << setw(25) << "TimeResoMeanR[ps]" << setw(25) << "TimeResoMeanL[ps]" << setw(25) << "efficiency[%]" << endl;
+    cout << setw(25) << Form("%f ± %f", 1000*resoRight, 1000*resoErrRight) << setw(26) << Form("%f ± %f", 1000*resoLeft, 1000*resoErrLeft) << setw(26) << Form("%f ± %f", 1000*resoMeanR, 1000*resoErrMeanR) << setw(26) << Form("%f ± %f", 1000*resoMeanL, 1000*resoErrMeanL) << setw(26) << efficiency << endl;
     return;
 }
 
 void Analysis:: Save(){
-    cout << "\r" << Form("Save Histgram and Canvas into ./../Save/run%d_plot.root", Run) << flush << endl;
-    TFile *fout= new TFile(Form("./../Save/run%d_plot.root", Run), "recreate");
+    cout << Form("Save Histgram and Canvas into ./../Result/run%d_plot.root", Run) << endl;
+    TFile *fout= new TFile(Form("./../Result/run%d_plot.root", Run), "recreate");
     // TTree *cptree= tree-> CloneTree();
     // cptree-> Write();
     if(BCheck){
@@ -400,6 +420,7 @@ void Analysis:: Save(){
             HDiffMeanL-> Write();
         }
     }
+    fout-> Close();
     return;
 }
 
@@ -508,7 +529,8 @@ Int_t Analysis:: GetTtdcSize(Int_t ch){
 
 Int_t Analysis:: GetWidthSize(Int_t ch){
     if(BSetData) return ReconfigWidth.at(ch).size();
-    else return width->at(ch).size();
+    else if(ltdc->at(ch).size()>ttdc->at(ch).size()) return ttdc->at(ch).size();
+    else return ltdc->at(ch).size();
 }
 
 Double_t Analysis:: GetLtdc(Int_t ch, Int_t Nth=0){
@@ -681,7 +703,6 @@ void Analysis:: Check(){
                 else HWidth3[ch]-> Fill(ltdc->at(ch).at(i)-ttdc->at(ch).at(i));
             }
         }
-        // if(ttdc->at(ch).size()<=ltdc->at(ch).size()){
         else{
             for(Int_t i=0; i<ttdc->at(ch).size(); i++){
                 if(i==0) HWidth1[ch]-> Fill(ltdc->at(ch).at(i)-ttdc->at(ch).at(i));
@@ -762,7 +783,6 @@ void Analysis:: GetPeak(){
     iGaussRight= FRight->GetParameter(1);
     iGaussLeft= FLeft->GetParameter(1);
     iGaussMean= FMean->GetParameter(1);
-    // cout << iGaussRight << ":" << iGaussLeft << ":" << iGaussMean << endl;
 }
 
 void Analysis:: GetTimeReso(){
@@ -866,7 +886,14 @@ void Analysis:: GetSlewing(){
 }
 
 void Analysis:: GetEfficiency(){
-
+    Bool_t C1= GetWidthSize(9);
+    Bool_t C2= HitStrip();
+    if(C1){
+        nHit++;
+        if(C2){
+            iHit++;
+        }
+    }
 }
 
 void Analysis_SP8(Int_t run){
