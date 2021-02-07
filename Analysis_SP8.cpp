@@ -184,7 +184,7 @@ void Analysis:: RunEventLoop(){
     MakeCanvas1();
     for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
         tree-> GetEntry(iEntry);
-        indicator(iEntry, nEntries);
+        // indicator(iEntry, nEntries);
         if(BSetData) SetData();
         if(BCheck && !BSetData) Check();
         if(BCheck && BSetData) Check(BSetData);
@@ -196,7 +196,7 @@ void Analysis:: RunEventLoop(){
         MakeCanvas2();
         for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
             tree-> GetEntry(iEntry);
-            indicator(iEntry, nEntries);
+            // indicator(iEntry, nEntries);
             if(BSetData) SetData();
             if(BGetTimeReso) GetTimeReso();
         }
@@ -206,7 +206,7 @@ void Analysis:: RunEventLoop(){
         MakeCanvas3();
         for(Int_t iEntry=0; iEntry<nEntries; iEntry++){
             tree-> GetEntry(iEntry);
-            indicator(iEntry, nEntries);
+            // indicator(iEntry, nEntries);
             if(BSetData) SetData();
             if(BGetTimeReso) GetSlewing();
         }
@@ -340,10 +340,8 @@ void Analysis:: DrawPlot(){
     }
     if(BGetEfficiency){
         efficiency= (double_t) iHit/nHit*100;
-        cout << RED << "Efficiency= " << END33 << efficiency << " %" << endl;
+        // cout << RED << "Efficiency= " << END33 << efficiency << " %" << endl;
     }
-    cout << setw(25) <<  "TimeResoRight[ps]" << setw(25) << "TimeResoLeft[ps]" << setw(25) << "TimeResoMeanR[ps]" << setw(25) << "TimeResoMeanL[ps]" << setw(25) << "efficiency[%]" << endl;
-    cout << setw(25) << Form("%f ± %f", 1000*resoRight, 1000*resoErrRight) << setw(26) << Form("%f ± %f", 1000*resoLeft, 1000*resoErrLeft) << setw(26) << Form("%f ± %f", 1000*resoMeanR, 1000*resoErrMeanR) << setw(26) << Form("%f ± %f", 1000*resoMeanL, 1000*resoErrMeanL) << setw(26) << efficiency << endl;
     return;
 }
 
@@ -428,8 +426,8 @@ void Analysis:: Save(){
         return;
     }
     else cout << Form("Save result of run%d data into ./../Result/result.dat", Run) << endl;
-    // resultfile << setw(22) << "# TimeResoRight[ps]" << setw(20) << "TimeResoErrRight[ps]" << setw(20) << "TimeResoLeft[ps]" << setw(20) << "TimeResoErrLeft[ps]"<< setw(20) << "TimeResoMeanR[ps]" << setw(20) << "TimeResoErrMeanR[ps]"<< setw(20) << "TimeResoMeanL[ps]" << setw(20) << "TimeResoErrMeanL[ps]"<< setw(20) << "Efficiency[%]" << endl;
-    resultfile << setw(20) << resoRight << setw(20) << resoErrRight << setw(20) << resoLeft << setw(20) << resoErrLeft << setw(20) << resoMeanR << setw(20) << resoErrMeanR << setw(20) << resoMeanL << setw(20) << resoErrMeanL << setw(20) << efficiency << endl;
+    // resultfile << setw(4) << "#run" << setw(21) << "TimeResoRight[ps]" << setw(21) << "TimeResoErrRight[ps]" << setw(21) << "TimeResoLeft[ps]" << setw(21) << "TimeResoErrLeft[ps]"<< setw(21) << "TimeResoMeanR[ps]" << setw(21) << "TimeResoErrMeanR[ps]"<< setw(21) << "TimeResoMeanL[ps]" << setw(21) << "TimeResoErrMeanL[ps]"<< setw(21) << "Efficiency[%]" << endl;
+    resultfile << setw(4) << Run << setw(21) << 1000*resoRight << setw(21) << 1000*resoErrRight << setw(21) << 1000*resoLeft << setw(21) << 1000*resoErrLeft << setw(21) << 1000*resoMeanR << setw(21) << 1000*resoErrMeanR << setw(21) << 1000*resoMeanL << setw(21) << 1000*resoErrMeanL << setw(21) << efficiency << endl;
     return;
 }
 
