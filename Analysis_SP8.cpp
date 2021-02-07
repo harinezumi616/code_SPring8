@@ -12,7 +12,6 @@ using namespace std;
 #define BLUE "\033[34m"
 #define MAGENTA "\033[35m"
 #define END33 "\033[m"
-// a
 
 Analysis:: Analysis(Int_t run){
     file= new TFile(Form("./../../Data/run%06d_0.root", run), "read");
