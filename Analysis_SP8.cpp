@@ -421,6 +421,15 @@ void Analysis:: Save(){
         }
     }
     fout-> Close();
+
+    ofstream resultfile("./../Result/result.dat", ios::app);
+    if(!resultfile){
+        cout << RED << "error: " END33 << "can't open the ./../Result/result.dat" << endl;
+        return;
+    }
+    else cout << Form("Save result of run%d data into ./../Result/result.dat", Run) << endl;
+    // resultfile << setw(22) << "# TimeResoRight[ps]" << setw(20) << "TimeResoErrRight[ps]" << setw(20) << "TimeResoLeft[ps]" << setw(20) << "TimeResoErrLeft[ps]"<< setw(20) << "TimeResoMeanR[ps]" << setw(20) << "TimeResoErrMeanR[ps]"<< setw(20) << "TimeResoMeanL[ps]" << setw(20) << "TimeResoErrMeanL[ps]"<< setw(20) << "Efficiency[%]" << endl;
+    resultfile << setw(20) << resoRight << setw(20) << resoErrRight << setw(20) << resoLeft << setw(20) << resoErrLeft << setw(20) << resoMeanR << setw(20) << resoErrMeanR << setw(20) << resoMeanL << setw(20) << resoErrMeanL << setw(20) << efficiency << endl;
     return;
 }
 
