@@ -19,6 +19,10 @@ class Analysis{
     Double_t fuctorML[10];
     Double_t fuctorMMR[10];
     Double_t fuctorMML[10];
+    Double_t fuctorMAmpR[10];
+    Double_t fuctorMAmpL[10];
+    Double_t fuctorMMAmpR[10];
+    Double_t fuctorMMAmpL[10];
     Double_t resoRight=0;
     Double_t resoLeft=0;
     Double_t resoMeanR=0;
@@ -63,6 +67,7 @@ class Analysis{
     Double_t GetLtdc(Int_t ch, Int_t Nth=0);
     Double_t GetTtdc(Int_t ch, Int_t Nth=0);
     Double_t GetWidth(Int_t ch, Int_t Nth=0);
+    Doble_t GetAmp(Int_t ch);
     Double_t SlewingFunction(Double_t x, Double_t *p);
     void indicator(Int_t iEntry, Int_t nEntries);
     void SetData();
