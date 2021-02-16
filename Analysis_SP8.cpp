@@ -119,8 +119,10 @@ void Analysis:: MakeCanvas2(){
     }
     CMerge= new TCanvas(Form("run%d_CMerge", Run), Form("run%d_CMerge", Run), 2000, 2000);
     CMerge2D= new TCanvas(Form("run%d_CMerge2D", Run), Form("run%d_CMerge2D", Run), 2000, 2000);
+    CMergeAmp2D= new TCanvas(Form("run%d_CMergeAmp2D", Run), Form("run%d_CMergeAmp2D", Run), 2000, 2000);
     CMerge-> Divide(3,1);
     CMerge2D-> Divide(2,2);
+    CMergeAmp2D-> Divide(2,2);
     for(Int_t i=0; i<80; i++){
         HDivisionRight[i]= new TH1D(Form("run%d_HDivivisonRight[%d]", Run, i), Form("run%d_HDivivisonRight[%d]", Run, i), 20*RF, iGaussRight+RF*(2*i-1)/2., iGaussRight+RF*(2*i+1)/2.);
         HDivisionLeft[i]= new TH1D(Form("run%d_HDivivisonLeft[%d]", Run, i), Form("run%d_HDivivisonLeft[%d]", Run, i), 20*RF, iGaussLeft+RF*(2*i-1)/2., iGaussLeft+RF*(2*i+1)/2.);
@@ -137,6 +139,14 @@ void Analysis:: MakeCanvas2(){
     FSlewingML= new TF1("FSlewingML", "[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)+[6]*pow(x,6)+[7]*pow(x,7)+[8]*pow(x,8)+[9]*pow(x,9)", 0, 15);
     FSlewingMMR= new TF1("FSlewingMMR", "[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)+[6]*pow(x,6)+[7]*pow(x,7)+[8]*pow(x,8)+[9]*pow(x,9)", 0, 15);
     FSlewingMML= new TF1("FSlewingMML", "[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)+[6]*pow(x,6)+[7]*pow(x,7)+[8]*pow(x,8)+[9]*pow(x,9)", 0, 15);
+    HMergeRightAmp2D= new TH2D(Form("run%d_HMergeRightAmp2D", Run), Form("run%d_HMergeRightAmp2D", Run), 1000, 0, 500, 100*RF, -RF/2., RF/2.);
+    HMergeLeftAmp2D= new TH2D(Form("run%d_HMergeLeftAmp2D", Run), Form("run%d_HMergeLeftAmp2D", Run), 1000, 0, 500, 100*RF, -RF/2., RF/2.);
+    HMergeMeanAmpR2D= new TH2D(Form("run%d_HMergeMeanAmpR2D", Run), Form("run%d_HMergeMeanAmpR2D", Run), 1000, 0, 500, 100*RF, -RF/2., RF/2.);
+    HMergeMeanAmpL2D= new TH2D(Form("run%d_HMergeMeanAmpL2D", Run), Form("run%d_HMergeMeanAmpL2D", Run), 1000, 0, 500, 100*RF, -RF/2., RF/2.);
+    FSlewingMAmpR= new TF1("FSlewingMAmpR", "[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)+[6]*pow(x,6)+[7]*pow(x,7)+[8]*pow(x,8)+[9]*pow(x,9)", 0, 500);
+    FSlewingMAmpL= new TF1("FSlewingMAmpL", "[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)+[6]*pow(x,6)+[7]*pow(x,7)+[8]*pow(x,8)+[9]*pow(x,9)", 0, 500);
+    FSlewingMMAmpR= new TF1("FSlewingMMAmpR", "[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)+[6]*pow(x,6)+[7]*pow(x,7)+[8]*pow(x,8)+[9]*pow(x,9)", 0, 500);
+    FSlewingMMAmpL= new TF1("FSlewingMMAmpL", "[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)+[6]*pow(x,6)+[7]*pow(x,7)+[8]*pow(x,8)+[9]*pow(x,9)", 0, 500);
     // FSlewingMR= new TF1("FSlewingMR", "[0]+[1]/(x+[2])+[3]/sqrt(x+[4])", 0, 15);
     // FSlewingML= new TF1("FSlewingML", "[0]+[1]/(x+[2])+[3]/sqrt(x+[4])", 0, 15);
     // FSlewingMMR= new TF1("FSlewingMMR", "[0]+[1]/(x+[2])+[3]/sqrt(x+[4])", 0, 15);
@@ -146,8 +156,12 @@ void Analysis:: MakeCanvas2(){
 void Analysis:: MakeCanvas3(){
     CSlewing= new TCanvas(Form("run%d_CSlewing", Run), Form("run%d_CSlewing", Run), 2000, 2000);
     CSlewing2D= new TCanvas(Form("run%d_CSlewing2D", Run), Form("run%d_CSlewing2D", Run), 2000, 2000);
+    CSlewingAmp= new TCanvas(Form("run%d_CSlewingAmp", Run), Form("run%d_CSlewingAmp", Run), 2000, 2000);
+    CSlewingAmp2D= new TCanvas(Form("run%d_CSlewingAmp2D", Run), Form("run%d_CSlewingAmp2D", Run), 2000, 2000);
     CSlewing-> Divide(2,2);
     CSlewing2D-> Divide(2,2);
+    CSlewingAmp-> Divide(2,2);
+    CSlewingAmp2D-> Divide(2,2);
     HSlewingRight= new TH1D(Form("run%d_HSlewingRight", Run), Form("run%d_HSlewingRight", Run), 100*RF, -RF/2., RF/2.);
     HSlewingLeft= new TH1D(Form("run%d_HSlewingLeft", Run), Form("run%d_HSlewingLeft", Run), 100*RF, -RF/2., RF/2.);
     HSlewingMeanR= new TH1D(Form("run%d_HSlewingMeanR", Run), Form("run%d_HSlewingMeanR", Run), 100*RF, -RF/2., RF/2.);
@@ -160,15 +174,33 @@ void Analysis:: MakeCanvas3(){
     FLeftSlewing= new TF1("FLeftSlewing", "gaus", -RF/2., RF/2.);
     FMeanRSlewing= new TF1("FMeanRSlewing", "gaus", -RF/2., RF/2.);
     FMeanLSlewing= new TF1("FMeanLSlewing", "gaus", -RF/2., RF/2.);
+    HSlewingRightAmp= new TH1D(Form("run%d_HSlewingRightAmp", Run), Form("run%d_HSlewingRightAmp", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingLeftAmp= new TH1D(Form("run%d_HSlewingLeftAmp", Run), Form("run%d_HSlewingLeftAmp", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingMeanAmpR= new TH1D(Form("run%d_HSlewingMeanAmpR", Run), Form("run%d_HSlewingMeanAmpR", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingMeanAmpL= new TH1D(Form("run%d_HSlewingMeanAmpL", Run), Form("run%d_HSlewingMeanAmpL", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingRightAmp2D= new TH2D(Form("run%d_HSlewingRightAmp2D", Run), Form("run%d_HSlewingRightAmp2D", Run), 1000, 0, 500, 100*RF, -RF/2., RF/2.);
+    HSlewingLeftAmp2D= new TH2D(Form("run%d_HSlewingLeftAmp2D", Run), Form("run%d_HSlewingLeftAmp2D", Run), 1000, 0, 500, 100*RF, -RF/2., RF/2.);
+    HSlewingMeanAmpR2D= new TH2D(Form("run%d_HSlewingMeanAmpR2D", Run), Form("run%d_HSlewingMeanAmpR2D", Run), 1000, 0, 500, 100*RF, -RF/2., RF/2.);
+    HSlewingMeanAmpL2D= new TH2D(Form("run%d_HSlewingMeanAmpL2D", Run), Form("run%d_HSlewingMeanAmpL2D", Run), 1000, 0, 500, 100*RF, -RF/2., RF/2.);
+    FRightAmpSlewing= new TF1("FRightAmpSlewing", "gaus", -RF/2., RF/2.);
+    FLeftAmpSlewing= new TF1("FLeftAmpSlewing", "gaus", -RF/2., RF/2.);
+    FMeanAmpRSlewing= new TF1("FMeanAmpRSlewing", "gaus", -RF/2., RF/2.);
+    FMeanAmpLSlewing= new TF1("FMeanAmpLSlewing", "gaus", -RF/2., RF/2.);
 
     if(BGetDifference){
         CDifference= new TCanvas(Form("run%d_CDifference", Run), Form("run%d_CDifference", Run), 2000, 2000);
+        CDifferenceAmp= new TCanvas(Form("run%d_CDifferenceAmp", Run), Form("run%d_CDifferenceAmp", Run), 2000, 2000);
         CDifference-> Divide(3,2);
+        CDifferenceAmp-> Divide(3,2);
         HDifference= new TH1D(Form("run%d_HDifference", Run), Form("run%d_HDifference", Run), 120, -3, 3);
         HDiffRight= new TH2D(Form("run%d_HDiffRight", Run), Form("run%d_HDiffRight", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
         HDiffLeft= new TH2D(Form("run%d_HDiffLeft", Run), Form("run%d_HDiffLeft", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
         HDiffMeanR= new TH2D(Form("run%d_HDiffMeanR", Run), Form("run%d_HDiffMeanR", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
         HDiffMeanL= new TH2D(Form("run%d_HDiffMeanL", Run), Form("run%d_HDiffMeanL", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+        HDiffRightAmp= new TH2D(Form("run%d_HDiffRightAmp", Run), Form("run%d_HDiffRightAmp", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+        HDiffLeftAmp= new TH2D(Form("run%d_HDiffLeftAmp", Run), Form("run%d_HDiffLeftAmp", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+        HDiffMeanAmpR= new TH2D(Form("run%d_HDiffMeanAmpR", Run), Form("run%d_HDiffMeanAmpR", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+        HDiffMeanAmpL= new TH2D(Form("run%d_HDiffMeanAmpL", Run), Form("run%d_HDiffMeanAmpL", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
     }
 }
 
@@ -337,10 +369,65 @@ void Analysis:: DrawPlot(){
             CDifference-> cd(5);
             HDiffMeanL-> Draw("colz");
         }
+
+        CMergeAmp2D-> cd(1);
+        HMergeRightAmp2D-> Draw("colz");
+        PMergeRightAmp2D-> Draw("same");
+        CMergeAmp2D-> cd(2);
+        HMergeLeftAmp2D-> Draw("colz");
+        PMergeLeftAmp2D-> Draw("same");
+        CMergeAmp2D-> cd(3);
+        HMergeMeanAmpR2D-> Draw("colz");
+        PMergeMeanAmpR2D-> Draw("same");
+        CMergeAmp2D-> cd(4);
+        HMergeMeanAmpL2D-> Draw("colz");
+        PMergeMeanAmpL2D-> Draw("same");
+        CSlewingAmp-> cd(1);
+        HSlewingRightAmp-> Fit("FRightSlewing", "Q", "", -0.2, 0.2);
+        HSlewingRightAmp-> Draw();
+        resoRightAmp= FRightSlewing-> GetParameter(2);
+        resoErrRightAmp= FRightSlewing-> GetParError(2);
+        CSlewingAmp-> cd(2);
+        HSlewingLeftAmp-> Fit("FLeftSlewing", "Q", "", -0.2, 0.2);
+        HSlewingLeftAmp-> Draw();
+        resoLeftAmp= FLeftSlewing-> GetParameter(2);
+        resoErrLeftAmp= FLeftSlewing-> GetParError(2);
+        CSlewingAmp-> cd(3);
+        HSlewingMeanAmpR-> Fit("FMeanRSlewing", "Q", "", -0.2, 0.2);
+        HSlewingMeanAmpR-> Draw();
+        resoMeanAmpR= FMeanRSlewing-> GetParameter(2);
+        resoErrMeanAmpR= FMeanRSlewing-> GetParError(2);
+        CSlewingAmp-> cd(4);
+        HSlewingMeanAmpL-> Fit("FMeanLSlewing", "Q", "", -0.2, 0.2);
+        HSlewingMeanAmpL-> Draw();
+        resoMeanAmpL= FMeanLSlewing-> GetParameter(2);
+        resoErrMeanAmpL= FMeanLSlewing-> GetParError(2);
+        CSlewingAmp2D-> cd(1);
+        HSlewingRightAmp2D-> Draw("colz");
+        CSlewingAmp2D-> cd(2);
+        HSlewingLeftAmp2D-> Draw("colz");
+        CSlewingAmp2D-> cd(3);
+        HSlewingMeanAmpR2D-> Draw("colz");
+        CSlewingAmp2D-> cd(4);
+        HSlewingMeanAmpL2D-> Draw("colz");
+        if(BGetDifference){
+            CDifferenceAmp-> cd(1);
+            HDifference-> Draw();
+            CDifferenceAmp-> cd(2);
+            HDiffRightAmp-> Draw("colz");
+            CDifferenceAmp-> cd(3);
+            HDiffLeftAmp-> Draw("colz");
+            CDifferenceAmp-> cd(4);
+            HDiffMeanAmpR-> Draw("colz");
+            CDifferenceAmp-> cd(5);
+            HDiffMeanAmpL-> Draw("colz");
+        }
     }
     if(BGetEfficiency){
         efficiency= (double_t) iHit/nHit*100;
+        efficiencyAmp= (double_t) iHitAmp/nHit*100;
         // cout << RED << "Efficiency= " << END33 << efficiency << " %" << endl;
+        // cout << RED << "EfficiencyAmp= " << END33 << efficiencyAmp << " %" << endl;
     }
     return;
 }
@@ -385,6 +472,9 @@ void Analysis:: Save(){
         CMerge2D-> Write();
         CSlewing-> Write();
         CSlewing2D-> Write();
+        CMergeAmp2D-> Write();
+        CSlewingAmp-> Write();
+        CSlewingAmp2D-> Write();
         HRF-> Write();
         HRFLtdcRight-> Write();
         HRFLtdcLeft-> Write();
@@ -409,13 +499,30 @@ void Analysis:: Save(){
         HSlewingLeft2D-> Write();
         HSlewingMeanR2D-> Write();
         HSlewingMeanL2D-> Write();
+        HMergeRightAmp2D-> Write();
+        HMergeLeftAmp2D-> Write();
+        HMergeMeanAmpR2D-> Write();
+        HMergeMeanAmpL2D-> Write();
+        HSlewingRightAmp-> Write();
+        HSlewingLeftAmp-> Write();
+        HSlewingMeanAmpR-> Write();
+        HSlewingMeanAmpL-> Write();
+        HSlewingRightAmp2D-> Write();
+        HSlewingLeftAmp2D-> Write();
+        HSlewingMeanAmpR2D-> Write();
+        HSlewingMeanAmpL2D-> Write();
         if(BGetDifference){
             CDifference-> Write();
+            CDifferenceAmp-> Write();
             HDifference-> Write();
             HDiffRight-> Write();
             HDiffLeft-> Write();
             HDiffMeanR-> Write();
             HDiffMeanL-> Write();
+            HDiffRightAmp-> Write();
+            HDiffLeftAmp-> Write();
+            HDiffMeanAmpR-> Write();
+            HDiffMeanAmpL-> Write();
         }
     }
     fout-> Close();
@@ -426,8 +533,8 @@ void Analysis:: Save(){
         return;
     }
     else cout << Form("Save result of run%d data into ./../Result/result.dat", Run) << endl;
-    // resultfile << setw(4) << "#run" << setw(21) << "TimeResoRight[ps]" << setw(21) << "TimeResoErrRight[ps]" << setw(21) << "TimeResoLeft[ps]" << setw(21) << "TimeResoErrLeft[ps]"<< setw(21) << "TimeResoMeanR[ps]" << setw(21) << "TimeResoErrMeanR[ps]"<< setw(21) << "TimeResoMeanL[ps]" << setw(21) << "TimeResoErrMeanL[ps]"<< setw(21) << "Efficiency[%]" << endl;
-    resultfile << setw(4) << Run << setw(21) << 1000*resoRight << setw(21) << 1000*resoErrRight << setw(21) << 1000*resoLeft << setw(21) << 1000*resoErrLeft << setw(21) << 1000*resoMeanR << setw(21) << 1000*resoErrMeanR << setw(21) << 1000*resoMeanL << setw(21) << 1000*resoErrMeanL << setw(21) << efficiency << endl;
+    // resultfile << setw(4) << "#run" << setw(24) << "TimeResoRight[ps]" << setw(24) << "TimeResoErrRight[ps]" << setw(24) << "TimeResoLeft[ps]" << setw(24) << "TimeResoErrLeft[ps]"<< setw(24) << "TimeResoMeanR[ps]" << setw(24) << "TimeResoErrMeanR[ps]"<< setw(24) << "TimeResoMeanL[ps]" << setw(24) << "TimeResoErrMeanL[ps]"<< setw(24) << "TimeResoRightAmp[ps]" << setw(24) << "TimeResoErrRightAmp[ps]" << setw(24) << "TimeResoLeftAmp[ps]" << setw(24) << "TimeResoErrLeftAmp[ps]"<< setw(24) << "TimeResoMeanAmpR[ps]" << setw(24) << "TimeResoErrMeanAmpR[ps]"<< setw(24) << "TimeResoMeanAmpL[ps]" << setw(24) << "TimeResoErrMeanAmpL[ps]" << setw(24) << "Efficiency[%]" << setw(24) << "EfficiencyAmp[%]" << endl;
+    resultfile << setw(4) << Run << setw(24) << 1000*resoRight << setw(24) << 1000*resoErrRight << setw(24) << 1000*resoLeft << setw(24) << 1000*resoErrLeft << setw(24) << 1000*resoMeanR << setw(24) << 1000*resoErrMeanR << setw(24) << 1000*resoMeanL << setw(24) << 1000*resoErrMeanL << setw(24) << 1000*resoRightAmp << setw(24) << 1000*resoErrRightAmp << setw(24) << 1000*resoLeftAmp << setw(24) << 1000*resoErrLeftAmp << setw(24) << 1000*resoMeanAmpR << setw(24) << 1000*resoErrMeanAmpR << setw(24) << 1000*resoMeanAmpL << setw(24) << 1000*resoErrMeanAmpL << setw(24) << efficiency << setw(24) << efficiencyAmp << endl;
     resultfile.close();
     return;
 }
@@ -522,6 +629,35 @@ Bool_t Analysis:: HitStrip(Int_t Strip=0){
             exit(1);
             return false;
         }
+    }
+}
+
+Bool_t Analysis:: HitStripAmp(const Double_t Vth, Int_t Strip=0){
+    Bool_t HitRight=0;
+    Bool_t HitLeft=0;
+    if(Strip==0){
+        if(amp->at(1).at(0)>Vth) HitRight=1;
+        if(amp->at(4).at(0)>Vth) HitLeft=1;
+        if(HitRight && HitLeft) return true;
+        else return false;
+    }
+    else if(Strip==1){
+        if(amp->at(0).at(0)>Vth) HitRight=1;
+        if(amp->at(3).at(0)>Vth) HitLeft=1;
+        if(HitRight && HitLeft) return true;
+        else return false;
+    }
+    else if(Strip==-1){
+        if(amp->at(2).at(0)>Vth) HitRight=1;
+        if(amp->at(5).at(0)>Vth) HitLeft=1;
+        if(HitRight && HitLeft) return true;
+        else return false;
+    }
+    else{
+        cout << RED "error: " END33 << "call of not exisiting the strip" << endl;
+        Analysis:: ~Analysis();
+        exit(1);
+        return false;
     }
 }
 
@@ -876,22 +1012,22 @@ void Analysis:: GetFitFunction(){
     FSlewingMAmpR->SetParLimits(0, -2.0, 2.0);
     FSlewingMAmpR->SetParLimits(9, -1.0, 1.0);
     FSlewingMAmpR->SetParameters(0, 0, 0, 0, 0, 0, 0, 0, 0);
-    PMergeRightAmp2D-> Fit("FSlewingMAmpR", "Q", "", 1, 11);
+    PMergeRightAmp2D-> Fit("FSlewingMAmpR", "Q", "", 20, 400);
     CMergeAmp2D-> cd(2);
     FSlewingMAmpL->SetParLimits(0, -2.0, 2.0);
     FSlewingMAmpL->SetParLimits(9, -1.0, 1.0);
     FSlewingMAmpL->SetParameters(0, 0, 0, 0, 0, 0, 0, 0, 0);
-    PMergeLeft2D-> Fit("FSlewingMAmpL", "Q", "", 1, 11);
+    PMergeLeftAmp2D-> Fit("FSlewingMAmpL", "Q", "", 20, 400);
     CMergeAmp2D-> cd(3);
     FSlewingMMAmpR->SetParLimits(0, -2.0, 2.0);
     FSlewingMMAmpR->SetParLimits(9, -1.0, 1.0);
     FSlewingMMAmpR->SetParameters(0, 0, 0, 0, 0, 0, 0, 0, 0);
-    PMergeMeanR2D-> Fit("FSlewingMMAmpR", "Q", "", 1, 11);
+    PMergeMeanAmpR2D-> Fit("FSlewingMMAmpR", "Q", "", 20, 400);
     CMergeAmp2D-> cd(4);
     FSlewingMMAmpL->SetParLimits(0, -2.0, 2.0);
     FSlewingMMAmpL->SetParLimits(9, -1.0, 1.0);
     FSlewingMMAmpL->SetParameters(0, 0, 0, 0, 0, 0, 0, 0, 0);
-    PMergeMeanL2D-> Fit("FSlewingMMAmpL", "Q", "", 1, 11);
+    PMergeMeanAmpL2D-> Fit("FSlewingMMAmpL", "Q", "", 20, 400);
     for(Int_t i=0; i<10; i++){
         fuctorMAmpR[i]= FSlewingMAmpR-> GetParameter(i);
         fuctorMAmpL[i]= FSlewingMAmpL-> GetParameter(i);
@@ -958,11 +1094,11 @@ void Analysis:: GetSlewing(){
 void Analysis:: GetEfficiency(){
     Bool_t C1= GetWidthSize(9);
     Bool_t C2= HitStrip();
+    Bool_t C3= HitStripAmp(100);
     if(C1){
         nHit++;
-        if(C2){
-            iHit++;
-        }
+        if(C2) iHit++;
+        if(C3) iHitAmp++;
     }
     return;
 }

@@ -28,6 +28,9 @@ TCanvas *CMerge;
 TCanvas *CMerge2D;
 TCanvas *CSlewing;
 TCanvas *CSlewing2D;
+TCanvas *CMergeAmp2D;
+TCanvas *CSlewingAmp;
+TCanvas *CSlewingAmp2D;
 TH1D *HRF;
 TH1D *HRFLtdcRight;
 TH1D *HRFLtdcLeft;
@@ -92,6 +95,7 @@ TProfile *PMergeMeanAmpL2D;
 
 //GetDifference
 TCanvas *CDifference;
+TCanvas *CDifferenceAmp;
 TH1D *HDifference;
 TH2D *HDiffRight;
 TH2D *HDiffLeft;

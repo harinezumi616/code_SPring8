@@ -19,7 +19,7 @@ class ShowPlot{
 ShowPlot:: ShowPlot(Int_t run){
     gStyle-> SetOptFit(11111111);
     gStyle-> SetOptStat(11111111);
-    TFile *fin= new TFile(Form("./../Save/run%d_plot.root", run), "read");
+    TFile *fin= new TFile(Form("./../Result/run%d_plot.root", run), "read");
     if(!fin || !fin-> IsOpen()){
         cout << RED "error: " END33 << Form("can not open run%d_plot.root", run) << endl;
         exit(1);
@@ -76,12 +76,18 @@ void ShowPlot:: Show(){
         CMerge2D= (TCanvas*) gROOT-> FindObject(Form("run%d_CMerge2D", Run));
         CSlewing= (TCanvas*) gROOT-> FindObject(Form("run%d_CSlewing", Run));
         CSlewing2D= (TCanvas*) gROOT-> FindObject(Form("run%d_CSlewing2D", Run));
+        CMergeAmp2D= (TCanvas*) gROOT-> FindObject(Form("run%d_CMergeAmp2D", Run));
+        CSlewingAmp= (TCanvas*) gROOT-> FindObject(Form("run%d_CSlewingAmp", Run));
+        CSlewingAmp2D= (TCanvas*) gROOT-> FindObject(Form("run%d_CSlewingAmp2D", Run));
         CRF-> Draw();
         CRFLtdc-> Draw();
         CMerge-> Draw();
         CMerge2D-> Draw();
         CSlewing-> Draw();
         CSlewing2D-> Draw();
+        CMergeAmp2D-> Draw();
+        CSlewingAmp-> Draw();
+        CSlewingAmp2D-> Draw();
         HRF= (TH1D*) gROOT-> FindObject(Form("run%d_HRF", Run));
         HRFLtdcRight= (TH1D*) gROOT-> FindObject(Form("run%d_HRFLtdcRight", Run));
         HRFLtdcLeft= (TH1D*) gROOT-> FindObject(Form("run%d_HRFLtdcLeft", Run));
@@ -106,14 +112,32 @@ void ShowPlot:: Show(){
         HSlewingLeft2D= (TH2D*) gROOT-> FindObject(Form("run%d_HSlewingLeft2D", Run));
         HSlewingMeanR2D= (TH2D*) gROOT-> FindObject(Form("run%d_HSlewingMeanR2D", Run));
         HSlewingMeanL2D= (TH2D*) gROOT-> FindObject(Form("run%d_HSlewingMeanL2D", Run));
+        HMergeRightAmp2D= (TH2D*) gROOT-> FindObject(Form("run%d_HMergeRightAmp2D", Run));
+        HMergeLeftAmp2D= (TH2D*) gROOT-> FindObject(Form("run%d_HMergeLeftAmp2D", Run));
+        HMergeMeanAmpR2D= (TH2D*) gROOT-> FindObject(Form("run%d_HMergeMeanAmpR2D", Run));
+        HMergeMeanAmpL2D= (TH2D*) gROOT-> FindObject(Form("run%d_HMergeMeanAmpL2D", Run));
+        HSlewingRightAmp= (TH1D*) gROOT-> FindObject(Form("run%d_HSlewingRightAmp", Run));
+        HSlewingLeftAmp= (TH1D*) gROOT-> FindObject(Form("run%d_HSlewingLeftAmp", Run));
+        HSlewingMeanAmpR= (TH1D*) gROOT-> FindObject(Form("run%d_HSlewingMeanAmpR", Run));
+        HSlewingMeanAmpL= (TH1D*) gROOT-> FindObject(Form("run%d_HSlewingMeanAmpL", Run));
+        HSlewingRightAmp2D= (TH2D*) gROOT-> FindObject(Form("run%d_HSlewingRightAmp2D", Run));
+        HSlewingLeftAmp2D= (TH2D*) gROOT-> FindObject(Form("run%d_HSlewingLeftAmp2D", Run));
+        HSlewingMeanAmpR2D= (TH2D*) gROOT-> FindObject(Form("run%d_HSlewingMeanAmpR2D", Run));
+        HSlewingMeanAmpL2D= (TH2D*) gROOT-> FindObject(Form("run%d_HSlewingMeanAmpL2D", Run));
         if(BGetDifference){
             CDifference= (TCanvas*) gROOT-> FindObject(Form("run%d_CDifference", Run));
+            CDifferenceAmp= (TCanvas*) gROOT-> FindObject(Form("run%d_CDifferenceAmp", Run));
             CDifference-> Draw();
+            CDifferenceAmp-> Draw();
             HDifference= (TH1D*) gROOT-> FindObject(Form("run%d_HDifference", Run));
             HDiffRight= (TH2D*) gROOT-> FindObject(Form("run%d_HDiffRight", Run));
             HDiffLeft= (TH2D*) gROOT-> FindObject(Form("run%d_HDiffLeft", Run));
             HDiffMeanR= (TH2D*) gROOT-> FindObject(Form("run%d_HDiffMeanR", Run));
             HDiffMeanL= (TH2D*) gROOT-> FindObject(Form("run%d_HDiffMeanL", Run));
+            HDiffRightAmp= (TH2D*) gROOT-> FindObject(Form("run%d_HDiffRightAmp", Run));
+            HDiffLeftAmp= (TH2D*) gROOT-> FindObject(Form("run%d_HDiffLeftAmp", Run));
+            HDiffMeanAmpR= (TH2D*) gROOT-> FindObject(Form("run%d_HDiffMeanAmpR", Run));
+            HDiffMeanAmpL= (TH2D*) gROOT-> FindObject(Form("run%d_HDiffMeanAmpL", Run));
         }
     }
 }
