@@ -1,5 +1,5 @@
 #pragma once
-//Check()
+//Check
 TCanvas *CLtdc1;
 TCanvas *CLtdc2;
 TCanvas *CTtdc1;
@@ -105,3 +105,10 @@ TH2D *HDiffRightAmp;
 TH2D *HDiffLeftAmp;
 TH2D *HDiffMeanAmpR;
 TH2D *HDiffMeanAmpL;
+
+//GetScan
+TCanvas *CScan;
+TGraphErrors *GHVScan;
+TGraphErrors *GVthScan;
+TGraphErrors *GStripScan;
+TGraphErrors *GPosScan;

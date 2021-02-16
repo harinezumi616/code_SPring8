@@ -14,6 +14,7 @@ class ShowPlot{
     ShowPlot(Int_t run);
     ~ShowPlot();
     void Show();
+    void Scan();
 };
 
 ShowPlot:: ShowPlot(Int_t run){
@@ -70,7 +71,6 @@ void ShowPlot:: Show(){
         CRFLtdc= (TCanvas*) gROOT-> FindObject(Form("run%d_CRFLtdc", Run));
         for(Int_t i=0; i<3; i++){
             CDivision[i]= (TCanvas*) gROOT-> FindObject(Form("run%d_CDivision[%d]", Run, i));
-            CDivision[i]-> Draw();
         }
         CMerge= (TCanvas*) gROOT-> FindObject(Form("run%d_CMerge", Run));
         CMerge2D= (TCanvas*) gROOT-> FindObject(Form("run%d_CMerge2D", Run));
@@ -81,6 +81,9 @@ void ShowPlot:: Show(){
         CSlewingAmp2D= (TCanvas*) gROOT-> FindObject(Form("run%d_CSlewingAmp2D", Run));
         CRF-> Draw();
         CRFLtdc-> Draw();
+        CDivision[0]-> Draw();
+        CDivision[1]-> Draw();
+        CDivision[2]-> Draw();
         CMerge-> Draw();
         CMerge2D-> Draw();
         CSlewing-> Draw();
@@ -140,6 +143,11 @@ void ShowPlot:: Show(){
             HDiffMeanAmpL= (TH2D*) gROOT-> FindObject(Form("run%d_HDiffMeanAmpL", Run));
         }
     }
+}
+
+//作りかけ
+void ShowPlot:: Scan(){
+    
 }
 
 void ShowPlot_SP8(Int_t run){

@@ -919,9 +919,9 @@ void Analysis:: GetRFDist(){
 }
 
 void Analysis:: GetPeak(){
-    Int_t nThreRight=20;
-    Int_t nThreLeft=20;
-    Int_t nThreMean=20;
+    Int_t nThreRight=10;
+    Int_t nThreLeft=10;
+    Int_t nThreMean=10;
     while(HRFLtdcRight->GetBinContent(iBinRight)<nThreRight && iBinRight<4000) iBinRight++;
     while(HRFLtdcLeft->GetBinContent(iBinLeft)<nThreLeft && iBinLeft<4000) iBinLeft++;
     while(HRFLtdcMean->GetBinContent(iBinMean)<nThreMean && iBinMean<4000) iBinMean++;
