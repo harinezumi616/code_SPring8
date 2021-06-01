@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "TROOT.h"
 #include "Select_SP8.h"
 #include "MakeCanvas_SP8.h"
 #include "Analysis_SP8.h"
@@ -26,7 +27,7 @@ Analysis:: Analysis(Int_t run){
     gStyle-> SetOptFit(111111111);
     gStyle-> SetOptStat(111111111);
     nEntries= tree-> GetEntriesFast();
-    cout << Form("Data File:run%d", run) << endl;
+    cout << Form("Data File: run%d", run) << endl;
     cout << "Event    : " << nEntries << endl;
 }
 
@@ -426,7 +427,7 @@ void Analysis:: DrawPlot(){
     if(BGetEfficiency){
         efficiency= (double_t) iHit/nHit*100;
         efficiencyAmp= (double_t) iHitAmp/nHit*100;
-        // cout << RED << "Efficiency= " << END33 << efficiency << " %" << endl;
+        cout << RED << "Efficiency= " << END33 << efficiency << " %" << endl;
         // cout << RED << "EfficiencyAmp= " << END33 << efficiencyAmp << " %" << endl;
     }
     return;

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include "TROOT.h"
 #include "Select_SP8.h"
 #include "MakeCanvas_SP8.h"
 using namespace std;
