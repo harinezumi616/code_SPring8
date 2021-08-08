@@ -28,7 +28,6 @@ ShowPlot:: ShowPlot(Int_t run){
         return;
     }
     Run= run;
-    Show();
 }
 
 ShowPlot:: ~ShowPlot(){
@@ -148,11 +147,11 @@ void ShowPlot:: Show(){
 
 //作りかけ
 void ShowPlot:: Scan(){
-    
 }
 
 void ShowPlot_SP8(Int_t run){
     ShowPlot* a= new ShowPlot(run);
+    a-> Show();
     return;
 }
 

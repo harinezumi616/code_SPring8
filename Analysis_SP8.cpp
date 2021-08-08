@@ -739,8 +739,8 @@ void Analysis:: SetData(){
                 ReconfigLtdc.at(ch).emplace_back(ltdc->at(ch).at(i));
                 ReconfigTtdc.at(ch).emplace_back(ttdc->at(ch).at(j));
                 ReconfigWidth.at(ch).emplace_back(ltdc->at(ch).at(i)-ttdc->at(ch).at(j));
-                Int_t nReconfigLtdc= ReconfigLtdc.at(ch).size();
-                Int_t nReconfigTtdc= ReconfigTtdc.at(ch).size();
+                // Int_t nReconfigLtdc= ReconfigLtdc.at(ch).size();
+                // Int_t nReconfigTtdc= ReconfigTtdc.at(ch).size();
                 // cout << RED << Form("ReconfigLtdc.at(%2d).at(%2d)= ", ch, nReconfigLtdc-1) << END33 << ReconfigLtdc.at(ch).at(nReconfigLtdc-1) << endl;
                 // cout << BLUE << Form("ReconfigTtdc.at(%2d).at(%2d)= ", ch, nReconfigTtdc-1) << END33 << ReconfigTtdc.at(ch).at(nReconfigTtdc-1) << endl;
                 i++;
