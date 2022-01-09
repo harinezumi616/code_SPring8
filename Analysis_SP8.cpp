@@ -70,15 +70,15 @@ void Analysis:: MakeCanvas1(){
         CWidth2-> Divide(4,4);
         CAmp1-> Divide(4,4);
         for(Int_t ch=0; ch<32; ch++){
-            HLtdc1[ch]= new TH1D(Form("run%d_HLtdc1[%d]", Run, ch), Form("run%d_HLtdc1[%d]", Run, ch), 3000, 0, 600);
-            HLtdc2[ch]= new TH1D(Form("run%d_HLtdc2[%d]", Run, ch), Form("run%d_HLtdc2[%d]", Run, ch), 3000, 0, 600);
-            HLtdc3[ch]= new TH1D(Form("run%d_HLtdc3[%d]", Run, ch), Form("run%d_HLtdc3[%d]", Run, ch), 3000, 0, 600);
-            HTtdc1[ch]= new TH1D(Form("run%d_HTtdc1[%d]", Run, ch), Form("run%d_HTtdc1[%d]", Run, ch), 3000, 0, 600);
-            HTtdc2[ch]= new TH1D(Form("run%d_HTtdc2[%d]", Run, ch), Form("run%d_HTtdc2[%d]", Run, ch), 3000, 0, 600);
-            HTtdc3[ch]= new TH1D(Form("run%d_HTtdc3[%d]", Run, ch), Form("run%d_HTtdc3[%d]", Run, ch), 3000, 0, 600);
-            HWidth1[ch]= new TH1D(Form("run%d_HWidth1[%d]", Run, ch), Form("run%d_HWidth1[%d]", Run, ch), 150, 0, 30);
-            HWidth2[ch]= new TH1D(Form("run%d_HWidth2[%d]", Run, ch), Form("run%d_HWidth2[%d]", Run, ch), 150, 0, 30);
-            HWidth3[ch]= new TH1D(Form("run%d_HWidth3[%d]", Run, ch), Form("run%d_HWidth3[%d]", Run, ch), 150, 0, 30);
+            HLtdc1[ch]= new TH1D(Form("run%d_HLtdc1[%d]", Run, ch), Form("run%d_HLtdc1[%d]; leading (ns)", Run, ch), 3000, 0, 600);
+            HLtdc2[ch]= new TH1D(Form("run%d_HLtdc2[%d]", Run, ch), Form("run%d_HLtdc2[%d]; leading (ns)", Run, ch), 3000, 0, 600);
+            HLtdc3[ch]= new TH1D(Form("run%d_HLtdc3[%d]", Run, ch), Form("run%d_HLtdc3[%d]; leading (ns)", Run, ch), 3000, 0, 600);
+            HTtdc1[ch]= new TH1D(Form("run%d_HTtdc1[%d]", Run, ch), Form("run%d_HTtdc1[%d]; trailing (ns)", Run, ch), 3000, 0, 600);
+            HTtdc2[ch]= new TH1D(Form("run%d_HTtdc2[%d]", Run, ch), Form("run%d_HTtdc2[%d]; trailing (ns)", Run, ch), 3000, 0, 600);
+            HTtdc3[ch]= new TH1D(Form("run%d_HTtdc3[%d]", Run, ch), Form("run%d_HTtdc3[%d]; trailing (ns)", Run, ch), 3000, 0, 600);
+            HWidth1[ch]= new TH1D(Form("run%d_HWidth1[%d]", Run, ch), Form("run%d_HWidth1[%d]; width (ns)", Run, ch), 150, 0, 30);
+            HWidth2[ch]= new TH1D(Form("run%d_HWidth2[%d]", Run, ch), Form("run%d_HWidth2[%d]; width (ns)", Run, ch), 150, 0, 30);
+            HWidth3[ch]= new TH1D(Form("run%d_HWidth3[%d]", Run, ch), Form("run%d_HWidth3[%d]; width (ns)", Run, ch), 150, 0, 30);
             HLtdc1[ch]-> SetLineColor(kRed);
             HLtdc2[ch]-> SetLineColor(kBlue);
             HLtdc3[ch]-> SetLineColor(kBlack);
@@ -90,9 +90,9 @@ void Analysis:: MakeCanvas1(){
             HWidth3[ch]-> SetLineColor(kBlack);
         }
         for(Int_t ch=0; ch<16; ch++){
-            HAmp1[ch]= new TH1D(Form("run%d_HAmp1[%d]", Run, ch), Form("run%d_HAmp1[%d]", Run, ch), 500, 0, 500);
-            HAmp2[ch]= new TH1D(Form("run%d_HAmp2[%d]", Run, ch), Form("run%d_HAmp2[%d]", Run, ch), 500, 0, 500);
-            HAmp3[ch]= new TH1D(Form("run%d_HAmp3[%d]", Run, ch), Form("run%d_HAmp3[%d]", Run, ch), 500, 0, 500);
+            HAmp1[ch]= new TH1D(Form("run%d_HAmp1[%d]", Run, ch), Form("run%d_HAmp1[%d]; Amp (mV)", Run, ch), 500, 0, 500);
+            HAmp2[ch]= new TH1D(Form("run%d_HAmp2[%d]", Run, ch), Form("run%d_HAmp2[%d]; Amp (mV)", Run, ch), 500, 0, 500);
+            HAmp3[ch]= new TH1D(Form("run%d_HAmp3[%d]", Run, ch), Form("run%d_HAmp3[%d]; Amp (mV)", Run, ch), 500, 0, 500);
             HAmp1[ch]-> SetLineColor(kRed);
             HAmp2[ch]-> SetLineColor(kBlue);
             HAmp3[ch]-> SetLineColor(kBlack);
@@ -102,10 +102,10 @@ void Analysis:: MakeCanvas1(){
         CRF= new TCanvas(Form("run%d_CRF", Run), Form("run%d_CRF", Run), 2000, 2000);
         CRFLtdc= new TCanvas(Form("run%d_CRFLtdc", Run), Form("run%d_CRFLtdc", Run), 2000, 2000);
         CRFLtdc-> Divide(1,3);
-        HRF= new TH1D(Form("run%d_HRF", Run), Form("run%d_HRF", Run), 2000, 580, 780);
-        HRFLtdcRight= new TH1D(Form("run%d_HRFLtdcRight", Run), Form("run%d_HRFLtdcRight", Run), 4000, 380, 580);
-        HRFLtdcLeft= new TH1D(Form("run%d_HRFLtdcLeft", Run), Form("run%d_HRFLtdcLeft", Run), 4000, 380, 580);
-        HRFLtdcMean= new TH1D(Form("run%d_HRFLtdcMean", Run), Form("run%d_HRFLtdcMean", Run), 4000, 380, 580);
+        HRF= new TH1D(Form("run%d_HRF", Run), Form("run%d_HRF; (ns)", Run), 2000, 580, 780);
+        HRFLtdcRight= new TH1D(Form("run%d_HRFLtdcRight", Run), Form("run%d_HRFLtdcRight; leading(Right)-RF (ns)", Run), 4000, 380, 580);
+        HRFLtdcLeft= new TH1D(Form("run%d_HRFLtdcLeft", Run), Form("run%d_HRFLtdcLeft; leading(Left)-RF (ns)", Run), 4000, 380, 580);
+        HRFLtdcMean= new TH1D(Form("run%d_HRFLtdcMean", Run), Form("run%d_HRFLtdcMean; leading(Mean)-RF (ns)", Run), 4000, 380, 580);
         FRight= new TF1("FRight", "gaus", 0, 600);
         FLeft= new TF1("FLeft", "gaus", 0, 600);
         FMean= new TF1("FMean", "gaus", 0, 600);
@@ -125,25 +125,25 @@ void Analysis:: MakeCanvas2(){
     CMerge2D-> Divide(2,2);
     CMergeAmp2D-> Divide(2,2);
     for(Int_t i=0; i<80; i++){
-        HDivisionRight[i]= new TH1D(Form("run%d_HDivivisonRight[%d]", Run, i), Form("run%d_HDivivisonRight[%d]", Run, i), 20*RF, iGaussRight+RF*(2*i-1)/2., iGaussRight+RF*(2*i+1)/2.);
-        HDivisionLeft[i]= new TH1D(Form("run%d_HDivivisonLeft[%d]", Run, i), Form("run%d_HDivivisonLeft[%d]", Run, i), 20*RF, iGaussLeft+RF*(2*i-1)/2., iGaussLeft+RF*(2*i+1)/2.);
-        HDivisionMean[i]= new TH1D(Form("run%d_HDivivisonMean[%d]", Run, i), Form("run%d_HDivivisonMean[%d]", Run, i), 20*RF, iGaussMean+RF*(2*i-1)/2., iGaussMean+RF*(2*i+1)/2.);
+        HDivisionRight[i]= new TH1D(Form("run%d_HDivivisonRight[%d]", Run, i), Form("run%d_HDivivisonRight[%d]; leading(Right)-RF (ns)", Run, i), 20*RF, iGaussRight+RF*(2*i-1)/2., iGaussRight+RF*(2*i+1)/2.);
+        HDivisionLeft[i]= new TH1D(Form("run%d_HDivivisonLeft[%d]", Run, i), Form("run%d_HDivivisonLeft[%d]; leading(Left)-RF (ns)", Run, i), 20*RF, iGaussLeft+RF*(2*i-1)/2., iGaussLeft+RF*(2*i+1)/2.);
+        HDivisionMean[i]= new TH1D(Form("run%d_HDivivisonMean[%d]", Run, i), Form("run%d_HDivivisonMean[%d]; leading(Mean)-RF (ns)", Run, i), 20*RF, iGaussMean+RF*(2*i-1)/2., iGaussMean+RF*(2*i+1)/2.);
     }
-    HMergeRight= new TH1D(Form("run%d_HMergeRight", Run), Form("run%d_HMergeRight", Run), 100*RF, -RF/2., RF/2.);
-    HMergeLeft= new TH1D(Form("run%d_HMergeLeft", Run), Form("run%d_HMergeLeft", Run), 100*RF, -RF/2., RF/2.);
-    HMergeMean= new TH1D(Form("run%d_HMergeMean", Run), Form("run%d_HMergeMean", Run), 100*RF, -RF/2., RF/2.);
-    HMergeRight2D= new TH2D(Form("run%d_HMergeRight2D", Run), Form("run%d_HMergeRight2D", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
-    HMergeLeft2D= new TH2D(Form("run%d_HMergeLeft2D", Run), Form("run%d_HMergeLeft2D", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
-    HMergeMeanR2D= new TH2D(Form("run%d_HMergeMeanR2D", Run), Form("run%d_HMergeMeanR2D", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
-    HMergeMeanL2D= new TH2D(Form("run%d_HMergeMeanL2D", Run), Form("run%d_HMergeMeanL2D", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
+    HMergeRight= new TH1D(Form("run%d_HMergeRight", Run), Form("run%d_HMergeRight; leading(Right)-RF (ns)", Run), 100*RF, -RF/2., RF/2.);
+    HMergeLeft= new TH1D(Form("run%d_HMergeLeft", Run), Form("run%d_HMergeLeft; leading(Left)-RF (ns)", Run), 100*RF, -RF/2., RF/2.);
+    HMergeMean= new TH1D(Form("run%d_HMergeMean", Run), Form("run%d_HMergeMean; leading(Mean)-RF (ns)", Run), 100*RF, -RF/2., RF/2.);
+    HMergeRight2D= new TH2D(Form("run%d_HMergeRight2D", Run), Form("run%d_HMergeRight2D; width(Right) (ns); leading(Right)-RF (ns)", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
+    HMergeLeft2D= new TH2D(Form("run%d_HMergeLeft2D", Run), Form("run%d_HMergeLeft2D; width(Left) (ns); leading(Left)-RF (ns)", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
+    HMergeMeanR2D= new TH2D(Form("run%d_HMergeMeanR2D", Run), Form("run%d_HMergeMeanR2D; width(Right) (ns); leading(Mean)-RF (ns)", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
+    HMergeMeanL2D= new TH2D(Form("run%d_HMergeMeanL2D", Run), Form("run%d_HMergeMeanL2D; width(Left) (ns); leading(Mean)-RF (ns)", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
     FSlewingMR= new TF1("FSlewingMR", "[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)+[6]*pow(x,6)+[7]*pow(x,7)+[8]*pow(x,8)+[9]*pow(x,9)", 0, 15);
     FSlewingML= new TF1("FSlewingML", "[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)+[6]*pow(x,6)+[7]*pow(x,7)+[8]*pow(x,8)+[9]*pow(x,9)", 0, 15);
     FSlewingMMR= new TF1("FSlewingMMR", "[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)+[6]*pow(x,6)+[7]*pow(x,7)+[8]*pow(x,8)+[9]*pow(x,9)", 0, 15);
     FSlewingMML= new TF1("FSlewingMML", "[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)+[6]*pow(x,6)+[7]*pow(x,7)+[8]*pow(x,8)+[9]*pow(x,9)", 0, 15);
-    HMergeRightAmp2D= new TH2D(Form("run%d_HMergeRightAmp2D", Run), Form("run%d_HMergeRightAmp2D", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
-    HMergeLeftAmp2D= new TH2D(Form("run%d_HMergeLeftAmp2D", Run), Form("run%d_HMergeLeftAmp2D", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
-    HMergeMeanAmpR2D= new TH2D(Form("run%d_HMergeMeanAmpR2D", Run), Form("run%d_HMergeMeanAmpR2D", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
-    HMergeMeanAmpL2D= new TH2D(Form("run%d_HMergeMeanAmpL2D", Run), Form("run%d_HMergeMeanAmpL2D", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
+    HMergeRightAmp2D= new TH2D(Form("run%d_HMergeRightAmp2D", Run), Form("run%d_HMergeRightAmp2D; Amp(Right) (mV); leading(Right)-RF (ns)", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
+    HMergeLeftAmp2D= new TH2D(Form("run%d_HMergeLeftAmp2D", Run), Form("run%d_HMergeLeftAmp2D; Amp(Left) (mV); leading(Left)-RF (ns)", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
+    HMergeMeanAmpR2D= new TH2D(Form("run%d_HMergeMeanAmpR2D", Run), Form("run%d_HMergeMeanAmpR2D; Amp(Right) (mV); leading(Mean)-RF (ns)", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
+    HMergeMeanAmpL2D= new TH2D(Form("run%d_HMergeMeanAmpL2D", Run), Form("run%d_HMergeMeanAmpL2D; Amp(Left) (mV); leading(Mean)-RF (ns)", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
     FSlewingMAmpR= new TF1("FSlewingMAmpR", "[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)+[6]*pow(x,6)+[7]*pow(x,7)+[8]*pow(x,8)+[9]*pow(x,9)", 0, 500);
     FSlewingMAmpL= new TF1("FSlewingMAmpL", "[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)+[6]*pow(x,6)+[7]*pow(x,7)+[8]*pow(x,8)+[9]*pow(x,9)", 0, 500);
     FSlewingMMAmpR= new TF1("FSlewingMMAmpR", "[0]+[1]*x+[2]*pow(x,2)+[3]*pow(x,3)+[4]*pow(x,4)+[5]*pow(x,5)+[6]*pow(x,6)+[7]*pow(x,7)+[8]*pow(x,8)+[9]*pow(x,9)", 0, 500);
@@ -163,26 +163,26 @@ void Analysis:: MakeCanvas3(){
     CSlewing2D-> Divide(2,2);
     CSlewingAmp-> Divide(2,2);
     CSlewingAmp2D-> Divide(2,2);
-    HSlewingRight= new TH1D(Form("run%d_HSlewingRight", Run), Form("run%d_HSlewingRight", Run), 100*RF, -RF/2., RF/2.);
-    HSlewingLeft= new TH1D(Form("run%d_HSlewingLeft", Run), Form("run%d_HSlewingLeft", Run), 100*RF, -RF/2., RF/2.);
-    HSlewingMeanR= new TH1D(Form("run%d_HSlewingMeanR", Run), Form("run%d_HSlewingMeanR", Run), 100*RF, -RF/2., RF/2.);
-    HSlewingMeanL= new TH1D(Form("run%d_HSlewingMeanL", Run), Form("run%d_HSlewingMeanL", Run), 100*RF, -RF/2., RF/2.);
-    HSlewingRight2D= new TH2D(Form("run%d_HSlewingRight2D", Run), Form("run%d_HSlewingRight2D", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
-    HSlewingLeft2D= new TH2D(Form("run%d_HSlewingLeft2D", Run), Form("run%d_HSlewingLeft2D", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
-    HSlewingMeanR2D= new TH2D(Form("run%d_HSlewingMeanR2D", Run), Form("run%d_HSlewingMeanR2D", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
-    HSlewingMeanL2D= new TH2D(Form("run%d_HSlewingMeanL2D", Run), Form("run%d_HSlewingMeanL2D", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
+    HSlewingRight= new TH1D(Form("run%d_HSlewingRight", Run), Form("run%d_HSlewingRight; leading(Right)-RF (ns)", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingLeft= new TH1D(Form("run%d_HSlewingLeft", Run), Form("run%d_HSlewingLeft; leading(Left)-RF (ns)", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingMeanR= new TH1D(Form("run%d_HSlewingMeanR", Run), Form("run%d_HSlewingMeanR; leading(Mean)-RF (ns)", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingMeanL= new TH1D(Form("run%d_HSlewingMeanL", Run), Form("run%d_HSlewingMeanL; leading(Mean)-RF (ns)", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingRight2D= new TH2D(Form("run%d_HSlewingRight2D", Run), Form("run%d_HSlewingRight2D; width(ns); leading(Right)-RF (ns)", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
+    HSlewingLeft2D= new TH2D(Form("run%d_HSlewingLeft2D", Run), Form("run%d_HSlewingLeft2D; width(ns); leading(Left)-RF (ns)", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
+    HSlewingMeanR2D= new TH2D(Form("run%d_HSlewingMeanR2D", Run), Form("run%d_HSlewingMeanR2D; width(ns); leading(Mean)-RF (ns)", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
+    HSlewingMeanL2D= new TH2D(Form("run%d_HSlewingMeanL2D", Run), Form("run%d_HSlewingMeanL2D; width(ns); leading(Mean)-RF (ns)", Run), 150, 0, 15, 100*RF, -RF/2., RF/2.);
     FRightSlewing= new TF1("FRightSlewing", "gaus", -RF/2., RF/2.);
     FLeftSlewing= new TF1("FLeftSlewing", "gaus", -RF/2., RF/2.);
     FMeanRSlewing= new TF1("FMeanRSlewing", "gaus", -RF/2., RF/2.);
     FMeanLSlewing= new TF1("FMeanLSlewing", "gaus", -RF/2., RF/2.);
-    HSlewingRightAmp= new TH1D(Form("run%d_HSlewingRightAmp", Run), Form("run%d_HSlewingRightAmp", Run), 100*RF, -RF/2., RF/2.);
-    HSlewingLeftAmp= new TH1D(Form("run%d_HSlewingLeftAmp", Run), Form("run%d_HSlewingLeftAmp", Run), 100*RF, -RF/2., RF/2.);
-    HSlewingMeanAmpR= new TH1D(Form("run%d_HSlewingMeanAmpR", Run), Form("run%d_HSlewingMeanAmpR", Run), 100*RF, -RF/2., RF/2.);
-    HSlewingMeanAmpL= new TH1D(Form("run%d_HSlewingMeanAmpL", Run), Form("run%d_HSlewingMeanAmpL", Run), 100*RF, -RF/2., RF/2.);
-    HSlewingRightAmp2D= new TH2D(Form("run%d_HSlewingRightAmp2D", Run), Form("run%d_HSlewingRightAmp2D", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
-    HSlewingLeftAmp2D= new TH2D(Form("run%d_HSlewingLeftAmp2D", Run), Form("run%d_HSlewingLeftAmp2D", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
-    HSlewingMeanAmpR2D= new TH2D(Form("run%d_HSlewingMeanAmpR2D", Run), Form("run%d_HSlewingMeanAmpR2D", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
-    HSlewingMeanAmpL2D= new TH2D(Form("run%d_HSlewingMeanAmpL2D", Run), Form("run%d_HSlewingMeanAmpL2D", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
+    HSlewingRightAmp= new TH1D(Form("run%d_HSlewingRightAmp", Run), Form("run%d_HSlewingRightAmp; leading(Right)-RF (ns)", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingLeftAmp= new TH1D(Form("run%d_HSlewingLeftAmp", Run), Form("run%d_HSlewingLeftAmp; leading(Left)-RF (ns)", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingMeanAmpR= new TH1D(Form("run%d_HSlewingMeanAmpR", Run), Form("run%d_HSlewingMeanAmpR; leading(Mean)-RF (ns)", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingMeanAmpL= new TH1D(Form("run%d_HSlewingMeanAmpL", Run), Form("run%d_HSlewingMeanAmpL; leading(Mean)-RF (ns)", Run), 100*RF, -RF/2., RF/2.);
+    HSlewingRightAmp2D= new TH2D(Form("run%d_HSlewingRightAmp2D", Run), Form("run%d_HSlewingRightAmp2D; Amp (mV); leading(Right)-RF (ns)", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
+    HSlewingLeftAmp2D= new TH2D(Form("run%d_HSlewingLeftAmp2D", Run), Form("run%d_HSlewingLeftAmp2D; Amp (mV); leading(Left)-RF (ns)", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
+    HSlewingMeanAmpR2D= new TH2D(Form("run%d_HSlewingMeanAmpR2D", Run), Form("run%d_HSlewingMeanAmpR2D; Amp (mV); leading(Mean)-RF (ns)", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
+    HSlewingMeanAmpL2D= new TH2D(Form("run%d_HSlewingMeanAmpL2D", Run), Form("run%d_HSlewingMeanAmpL2D; Amp (mV); leading(Mean)-RF (ns)", Run), 200, 0, 500, 100*RF, -RF/2., RF/2.);
     FRightAmpSlewing= new TF1("FRightAmpSlewing", "gaus", -RF/2., RF/2.);
     FLeftAmpSlewing= new TF1("FLeftAmpSlewing", "gaus", -RF/2., RF/2.);
     FMeanAmpRSlewing= new TF1("FMeanAmpRSlewing", "gaus", -RF/2., RF/2.);
@@ -193,15 +193,15 @@ void Analysis:: MakeCanvas3(){
         CDifferenceAmp= new TCanvas(Form("run%d_CDifferenceAmp", Run), Form("run%d_CDifferenceAmp", Run), 2000, 2000);
         CDifference-> Divide(3,2);
         CDifferenceAmp-> Divide(3,2);
-        HDifference= new TH1D(Form("run%d_HDifference", Run), Form("run%d_HDifference", Run), 120, -3, 3);
-        HDiffRight= new TH2D(Form("run%d_HDiffRight", Run), Form("run%d_HDiffRight", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
-        HDiffLeft= new TH2D(Form("run%d_HDiffLeft", Run), Form("run%d_HDiffLeft", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
-        HDiffMeanR= new TH2D(Form("run%d_HDiffMeanR", Run), Form("run%d_HDiffMeanR", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
-        HDiffMeanL= new TH2D(Form("run%d_HDiffMeanL", Run), Form("run%d_HDiffMeanL", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
-        HDiffRightAmp= new TH2D(Form("run%d_HDiffRightAmp", Run), Form("run%d_HDiffRightAmp", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
-        HDiffLeftAmp= new TH2D(Form("run%d_HDiffLeftAmp", Run), Form("run%d_HDiffLeftAmp", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
-        HDiffMeanAmpR= new TH2D(Form("run%d_HDiffMeanAmpR", Run), Form("run%d_HDiffMeanAmpR", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
-        HDiffMeanAmpL= new TH2D(Form("run%d_HDiffMeanAmpL", Run), Form("run%d_HDiffMeanAmpL", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+        HDifference= new TH1D(Form("run%d_HDifference", Run), Form("run%d_HDifference; leading(Right)-leading(Left) (ns)", Run), 120, -3, 3);
+        HDiffRight= new TH2D(Form("run%d_HDiffRight", Run), Form("run%d_HDiffRight; leading(Right)-leading(Left) (ns); leading(Right)-RF", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+        HDiffLeft= new TH2D(Form("run%d_HDiffLeft", Run), Form("run%d_HDiffLeft; leading(Right)-leading(Left) (ns); leading(Left)-RF", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+        HDiffMeanR= new TH2D(Form("run%d_HDiffMeanR", Run), Form("run%d_HDiffMeanR; leading(Right)-leading(Left) (ns); leading(Mean)-RF", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+        HDiffMeanL= new TH2D(Form("run%d_HDiffMeanL", Run), Form("run%d_HDiffMeanL; leading(Right)-leading(Left) (ns); leading(Mean)-RF", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+        HDiffRightAmp= new TH2D(Form("run%d_HDiffRightAmp", Run), Form("run%d_HDiffRightAmp; leading(Right)-leading(Left) (ns); leading(Right)-RF", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+        HDiffLeftAmp= new TH2D(Form("run%d_HDiffLeftAmp", Run), Form("run%d_HDiffLeftAmp; leading(Right)-leading(Left) (ns); leading(Left)-RF", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+        HDiffMeanAmpR= new TH2D(Form("run%d_HDiffMeanAmpR", Run), Form("run%d_HDiffMeanAmpR; leading(Right)-leading(Left) (ns); leading(Mean)-RF", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
+        HDiffMeanAmpL= new TH2D(Form("run%d_HDiffMeanAmpL", Run), Form("run%d_HDiffMeanAmpL; leading(Right)-leading(Left) (ns); leading(Mean)-RF", Run), 120, -3, 3, 100*RF, -RF/2., RF/2.);
     }
 }
 
@@ -428,7 +428,7 @@ void Analysis:: DrawPlot(){
         efficiency= (double_t) iHit/nHit*100;
         efficiencyAmp= (double_t) iHitAmp/nHit*100;
         cout << RED << "Efficiency= " << END33 << efficiency << " %" << endl;
-        // cout << RED << "EfficiencyAmp= " << END33 << efficiencyAmp << " %" << endl;
+        cout << RED << "EfficiencyAmp= " << END33 << efficiencyAmp << " %" << endl;
     }
     return;
 }
