@@ -12,6 +12,8 @@ class Analysis{
     Int_t iBinMean=1;
     Int_t nHit=0;
     Int_t iHit=0;
+    Int_t iHitR=0;
+    Int_t iHitL=0;
     Int_t iHitAmp=0;
     Double_t iGaussRight;
     Double_t iGaussLeft;
@@ -33,6 +35,8 @@ class Analysis{
     Double_t resoErrMeanR=0;
     Double_t resoErrMeanL=0;
     Double_t efficiency=0;
+    Double_t efficiencyR=0;
+    Double_t efficiencyL=0;
     Double_t resoRightAmp=0;
     Double_t resoLeftAmp=0;
     Double_t resoMeanAmpR=0;
@@ -71,6 +75,8 @@ class Analysis{
     void DrawPlot();
     void Save();
     Bool_t HitStrip(Int_t Strip=0);
+    Bool_t HitStripRight(Int_t Strip=0);
+    Bool_t HitStripLeft(Int_t Strip=0);
     Bool_t HitStripAmp(const Double_t Vth, Int_t Strip=0);
     Int_t GetLtdcSize(Int_t ch);
     Int_t GetTtdcSize(Int_t ch);

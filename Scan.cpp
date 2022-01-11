@@ -7,22 +7,30 @@ void Scan(){
     TCanvas *CEffScan= new TCanvas("CEffScan", "CEffScan", 2000, 2000);
     CTimeResoScan-> Divide(2,2);
     CEffScan-> Divide(2,2);
+    // RunNo= {36, 35, 34, 27}
     Double_t HV[4]= {11.5, 12, 12.52, 13};
     Double_t TimeResoHV[4]= {95.9842, 86.0821, 77.6565, 78.8911};
     Double_t TimeResoHVErr[4]= {0.78109, 0.499402, 0.45704, 0.463808};
     Double_t EffHV[4]= {40.1683, 79.0027, 95.4828, 96.9009};
+
+    // RunNo= {45, 46, 47,48}
     Double_t Vth[4]= {-17.5, -35, -52.5, -70};
     Double_t TimeResoVth[4]= {88.1479, 88.6765, 91.4172, 90.8011};
     Double_t TimeResoVthErr[4]= {0.732578, 0.869382, 0.978207, 1.22023};
     Double_t EffVth[4]= {51.8517, 37.4975, 29.5604, 19.704};
+    
+    // RunNo= {51, 46, 52, 53*, 54, 58}
     Double_t Strip[6]= {1, 2, 3, 4, 5, 6};
     Double_t TimeResoStrip[6]= {98.8717, 88.6765, 83.1457, 84.1666, 92.5224, 91.0017};
     Double_t TimeResoStripErr[6]= {1.16067, 0.869382, 0.440485, 0.451346, 0.719804, 0.704778};
     Double_t EffStrip[6]= {35.2879, 37.4975, 98.611, 95.1222, 55.4072, 58.3742};
+    
+    // RunNo= {72, 71, 54, 68, 73}
     Double_t Position[5]= {-30, -15, 0, 15, 30};
     Double_t TimeResoPos[5]= {99.7095, 92.345, 92.5224, 95.9285, 101.806};
     Double_t TimeResoPosErr[5]= {1.26896, 1.21046, 0.719804, 1.39186, 1.76466};
     Double_t EffPos[5]= {65.5831, 69.6255, 58.3742, 60.2335, 68.5894};
+    
     Double_t HVErr[4]= {};
     Double_t VthErr[4]= {};
     Double_t StripErr[6]= {};
@@ -32,6 +40,7 @@ void Scan(){
     TGraphErrors *GTimeResoVthScan= new TGraphErrors(4, Vth, TimeResoVth, VthErr, TimeResoVthErr);
     TGraphErrors *GTimeResoStripScan= new TGraphErrors(6, Strip, TimeResoStrip, StripErr, TimeResoStripErr);
     TGraphErrors *GTimeResoPosScan= new TGraphErrors(5, Position, TimeResoPos, PosErr, TimeResoPosErr);
+    
     TGraphErrors *GEffHVScan= new TGraphErrors(4, HV, EffHV);
     TGraphErrors *GEffVthScan= new TGraphErrors(4, Vth, EffVth);
     TGraphErrors *GEffStripScan= new TGraphErrors(6, Strip, EffStrip);

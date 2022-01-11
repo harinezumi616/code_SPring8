@@ -426,8 +426,12 @@ void Analysis:: DrawPlot(){
     }
     if(BGetEfficiency){
         efficiency= (double_t) iHit/nHit*100;
+        efficiencyR= (double_t) iHitR/nHit*100;
+        efficiencyL= (double_t) iHitL/nHit*100;
         efficiencyAmp= (double_t) iHitAmp/nHit*100;
         cout << RED << "Efficiency= " << END33 << efficiency << " %" << endl;
+        cout << RED << "EfficiencyRight= " << END33 << efficiencyR << " %" << endl;
+        cout << RED << "EfficiencyLeft= " << END33 << efficiencyL << " %" << endl;
         cout << RED << "EfficiencyAmp= " << END33 << efficiencyAmp << " %" << endl;
     }
     return;
@@ -534,8 +538,8 @@ void Analysis:: Save(){
         return;
     }
     else cout << Form("Save result of run%d data into ./../Result/result.dat", Run) << endl;
-    // resultfile << setw(4) << "#run" << setw(24) << "TimeResoRight[ps]" << setw(24) << "TimeResoErrRight[ps]" << setw(24) << "TimeResoLeft[ps]" << setw(24) << "TimeResoErrLeft[ps]"<< setw(24) << "TimeResoMeanR[ps]" << setw(24) << "TimeResoErrMeanR[ps]"<< setw(24) << "TimeResoMeanL[ps]" << setw(24) << "TimeResoErrMeanL[ps]"<< setw(24) << "TimeResoRightAmp[ps]" << setw(24) << "TimeResoErrRightAmp[ps]" << setw(24) << "TimeResoLeftAmp[ps]" << setw(24) << "TimeResoErrLeftAmp[ps]"<< setw(24) << "TimeResoMeanAmpR[ps]" << setw(24) << "TimeResoErrMeanAmpR[ps]"<< setw(24) << "TimeResoMeanAmpL[ps]" << setw(24) << "TimeResoErrMeanAmpL[ps]" << setw(24) << "Efficiency[%]" << setw(24) << "EfficiencyAmp[%]" << endl;
-    resultfile << setw(4) << Run << setw(24) << 1000*resoRight << setw(24) << 1000*resoErrRight << setw(24) << 1000*resoLeft << setw(24) << 1000*resoErrLeft << setw(24) << 1000*resoMeanR << setw(24) << 1000*resoErrMeanR << setw(24) << 1000*resoMeanL << setw(24) << 1000*resoErrMeanL << setw(24) << 1000*resoRightAmp << setw(24) << 1000*resoErrRightAmp << setw(24) << 1000*resoLeftAmp << setw(24) << 1000*resoErrLeftAmp << setw(24) << 1000*resoMeanAmpR << setw(24) << 1000*resoErrMeanAmpR << setw(24) << 1000*resoMeanAmpL << setw(24) << 1000*resoErrMeanAmpL << setw(24) << efficiency << setw(24) << efficiencyAmp << endl;
+    // resultfile << setw(4) << "#run" << setw(24) << "TimeResoRight[ps]" << setw(24) << "TimeResoErrRight[ps]" << setw(24) << "TimeResoLeft[ps]" << setw(24) << "TimeResoErrLeft[ps]"<< setw(24) << "TimeResoMeanR[ps]" << setw(24) << "TimeResoErrMeanR[ps]"<< setw(24) << "TimeResoMeanL[ps]" << setw(24) << "TimeResoErrMeanL[ps]"<< setw(24) << "TimeResoRightAmp[ps]" << setw(24) << "TimeResoErrRightAmp[ps]" << setw(24) << "TimeResoLeftAmp[ps]" << setw(24) << "TimeResoErrLeftAmp[ps]"<< setw(24) << "TimeResoMeanAmpR[ps]" << setw(24) << "TimeResoErrMeanAmpR[ps]"<< setw(24) << "TimeResoMeanAmpL[ps]" << setw(24) << "TimeResoErrMeanAmpL[ps]" << setw(24) << "Efficiency[%]" << setw(24) << "EfficiencyR[%]" << setw(24) << "EfficiencyL[%]" << setw(24) << "EfficiencyAmp[%]" << endl;
+    resultfile << setw(4) << Run << setw(24) << 1000*resoRight << setw(24) << 1000*resoErrRight << setw(24) << 1000*resoLeft << setw(24) << 1000*resoErrLeft << setw(24) << 1000*resoMeanR << setw(24) << 1000*resoErrMeanR << setw(24) << 1000*resoMeanL << setw(24) << 1000*resoErrMeanL << setw(24) << 1000*resoRightAmp << setw(24) << 1000*resoErrRightAmp << setw(24) << 1000*resoLeftAmp << setw(24) << 1000*resoErrLeftAmp << setw(24) << 1000*resoMeanAmpR << setw(24) << 1000*resoErrMeanAmpR << setw(24) << 1000*resoMeanAmpL << setw(24) << 1000*resoErrMeanAmpL << setw(24) << efficiency << setw(24) << efficiencyR << setw(24) << efficiencyL << setw(24) << efficiencyAmp << endl;
     resultfile.close();
     return;
 }
@@ -633,12 +637,135 @@ Bool_t Analysis:: HitStrip(Int_t Strip=0){
     }
 }
 
+Bool_t Analysis:: HitStripRight(Int_t Strip=0){
+    if(BSetData){
+        if(Strip==0){
+            if(ReconfigLtdc.at(1).size()!=0 && ReconfigTtdc.at(1).size()!=0){
+                if(ReconfigLtdc.at(1).at(0)>ReconfigTtdc.at(1).at(0)) return true;
+                else return false;
+            }
+            else return false;
+        }
+        else if(Strip==1){
+            if(ReconfigLtdc.at(0).size()!=0 && ReconfigTtdc.at(0).size()!=0){
+                if(ReconfigLtdc.at(0).at(0)>ReconfigTtdc.at(0).at(0)) return true;
+                else return false;
+            }
+            else return false;
+        }
+        else if(Strip==-1){
+            if(ReconfigLtdc.at(2).size()!=0 && ReconfigTtdc.at(2).size()!=0){
+                if(ReconfigLtdc.at(2).at(0)>ReconfigTtdc.at(2).at(0)) return true;
+                else return false;
+            }
+            else return false;
+        }
+        else{
+            cout << RED "error: " END33 << "call of not exisiting the strip" << endl;
+            Analysis:: ~Analysis();
+            exit(1);
+            return false;
+        }
+    }
+    else{
+        if(Strip==0){
+            if(ltdc->at(1).size()!=0 && ttdc->at(1).size()!=0){
+                if(ltdc->at(1).at(0)>ttdc->at(1).at(0)) return true;
+                else return false;
+            }
+            else return false;
+        }
+        else if(Strip==1){
+            if(ltdc->at(0).size()!=0 && ttdc->at(0).size()!=0){
+                if(ltdc->at(0).at(0)>ttdc->at(0).at(0)) return true;
+                else return false;
+            }
+            else return false;
+        }
+        else if(Strip==-1){
+            if(ltdc->at(2).size()!=0 && ttdc->at(2).size()!=0){
+                if(ltdc->at(2).at(0)>ttdc->at(2).at(0)) return true;
+                else return false;
+            }
+            else return false;
+        }
+        else{
+            cout << RED "error: " END33 << "call of not exisiting the strip" << endl;
+            Analysis:: ~Analysis();
+            exit(1);
+            return false;
+        }
+    }
+}
+
+Bool_t Analysis:: HitStripLeft(Int_t Strip=0){
+    if(BSetData){
+        if(Strip==0){
+            if(ReconfigLtdc.at(4).size()!=0 && ReconfigTtdc.at(4).size()!=0){
+                if(ReconfigLtdc.at(4).at(0)>ReconfigTtdc.at(4).at(0)) return true;
+                else return false;
+            }
+            else return false;
+        }
+        else if(Strip==1){
+            if(ReconfigLtdc.at(3).size()!=0 && ReconfigTtdc.at(3).size()!=0){
+                if(ReconfigLtdc.at(3).at(0)>ReconfigTtdc.at(3).at(0)) return true;
+                else return false;
+            }
+            else return false;
+        }
+        else if(Strip==-1){
+            if(ReconfigLtdc.at(5).size()!=0 && ReconfigTtdc.at(5).size()!=0){
+                if(ReconfigLtdc.at(5).at(0)>ReconfigTtdc.at(5).at(0)) return true;
+                else return false;
+            }
+            else return false;
+        }
+        else{
+            cout << RED "error: " END33 << "call of not exisiting the strip" << endl;
+            Analysis:: ~Analysis();
+            exit(1);
+            return false;
+        }
+    }
+    else{
+        if(Strip==0){
+            if(ltdc->at(4).size()!=0 && ttdc->at(4).size()!=0){
+                if(ltdc->at(4).at(0)>ttdc->at(4).at(0)) return true;
+                else return false;
+            }
+            else return false;
+        }
+        else if(Strip==1){
+            if(ltdc->at(3).size()!=0 && ttdc->at(3).size()!=0){
+                if(ltdc->at(3).at(0)>ttdc->at(3).at(0)) return true;
+                else return false;
+            }
+            else return false;
+        }
+        else if(Strip==-1){
+            if(ltdc->at(5).size()!=0 && ttdc->at(5).size()!=0){
+                if(ltdc->at(5).at(0)>ttdc->at(5).at(0)) return true;
+                else return false;
+            }
+            else return false;
+        }
+        else{
+            cout << RED "error: " END33 << "call of not exisiting the strip" << endl;
+            Analysis:: ~Analysis();
+            exit(1);
+            return false;
+        }
+    }
+}
+
 Bool_t Analysis:: HitStripAmp(const Double_t Vth, Int_t Strip=0){
     Bool_t HitRight=0;
     Bool_t HitLeft=0;
     if(Strip==0){
         if(amp->at(1).at(0)>Vth) HitRight=1;
         if(amp->at(4).at(0)>Vth) HitLeft=1;
+        // cout << Form("amp->at(1).at(0)= %f", amp->at(1).at(0)) << endl;
         if(HitRight && HitLeft) return true;
         else return false;
     }
@@ -1096,10 +1223,14 @@ void Analysis:: GetEfficiency(){
     Bool_t C1= GetWidthSize(9);
     Bool_t C2= HitStrip();
     Bool_t C3= HitStripAmp(100);
+    Bool_t C4= HitStripRight();
+    Bool_t C5= HitStripLeft();
     if(C1){
         nHit++;
         if(C2) iHit++;
         if(C3) iHitAmp++;
+        if(C4) iHitR++;
+        if(C5) iHitL++;
     }
     return;
 }
