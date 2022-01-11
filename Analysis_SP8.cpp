@@ -1067,7 +1067,7 @@ void Analysis:: GetPeak(){
 
 void Analysis:: GetTimeReso(){
     Bool_t C1= HitStrip();
-    if(C1){
+    if(C1 && Run!=53){
         Double_t right= GetLtdc(1);
         Double_t left= GetLtdc(4);
         Double_t mean= (GetLtdc(1)+GetLtdc(4))/2.;
@@ -1094,6 +1094,36 @@ void Analysis:: GetTimeReso(){
                 HMergeMeanAmpR2D-> Fill(GetAmp(1), RFmean-(iGaussMean+i*RF));
                 HMergeMeanL2D-> Fill(GetWidth(4), RFmean-(iGaussMean+i*RF));
                 HMergeMeanAmpL2D-> Fill(GetAmp(4), RFmean-(iGaussMean+i*RF));
+            }
+        }
+    }
+    else if(C1 && Run==53){
+        Double_t right= GetLtdc(1);
+        Double_t left= GetLtdc(5);
+        Double_t mean= (GetLtdc(1)+GetLtdc(5))/2.;
+        Double_t RFright= GetLtdc(15)-right;
+        Double_t RFleft= GetLtdc(15)-left;
+        Double_t RFmean= GetLtdc(15)-mean;
+        for(Int_t i=0; i<80; i++){
+            if(iGaussRight+RF*(2*i-1)/2.<RFright && RFright<iGaussRight+RF*(2*i+1)/2){
+                HDivisionRight[i]-> Fill(RFright);
+                HMergeRight-> Fill(RFright-(iGaussRight+i*RF));
+                HMergeRight2D-> Fill(GetWidth(1), RFright-(iGaussRight+i*RF));
+                HMergeRightAmp2D-> Fill(GetAmp(1), RFright-(iGaussRight+i*RF));
+            }
+            if(iGaussLeft+RF*(2*i-1)/2.<RFleft && RFleft<iGaussLeft+RF*(2*i+1)/2.){
+                HDivisionLeft[i]-> Fill(RFleft);
+                HMergeLeft-> Fill(RFleft-(iGaussLeft+i*RF));
+                HMergeLeft2D-> Fill(GetWidth(5), RFleft-(iGaussLeft+i*RF));
+                HMergeLeftAmp2D-> Fill(GetAmp(5), RFleft-(iGaussLeft+i*RF));
+            }
+            if(iGaussMean+RF*(2*i-1)/2.<RFmean && RFmean<iGaussMean+RF*(2*i+1)/2.){
+                HDivisionMean[i]-> Fill(RFmean);
+                HMergeMean-> Fill(RFmean-(iGaussMean+i*RF));
+                HMergeMeanR2D-> Fill(GetWidth(1), RFmean-(iGaussMean+i*RF));
+                HMergeMeanAmpR2D-> Fill(GetAmp(1), RFmean-(iGaussMean+i*RF));
+                HMergeMeanL2D-> Fill(GetWidth(5), RFmean-(iGaussMean+i*RF));
+                HMergeMeanAmpL2D-> Fill(GetAmp(5), RFmean-(iGaussMean+i*RF));
             }
         }
     }
@@ -1167,7 +1197,7 @@ void Analysis:: GetFitFunction(){
 
 void Analysis:: GetSlewing(){
     Bool_t C1= HitStrip();
-    if(C1){
+    if(C1 && Run!=53){
         Double_t right= GetLtdc(1);
         Double_t left= GetLtdc(4);
         Double_t mean= (GetLtdc(1)+GetLtdc(4))/2.;
@@ -1216,6 +1246,55 @@ void Analysis:: GetSlewing(){
             }
         }
     }
+    else if(C1 && Run==53){
+        Double_t right= GetLtdc(1);
+        Double_t left= GetLtdc(5);
+        Double_t mean= (GetLtdc(1)+GetLtdc(5))/2.;
+        Double_t RFright= GetLtdc(15)-right;
+        Double_t RFleft= GetLtdc(15)-left;
+        Double_t RFmean= GetLtdc(15)-mean;
+        Double_t diff;
+        if(BGetDifference) diff= GetLtdc(1)-GetLtdc(5);
+        if(BGetDifference) HDifference-> Fill(diff);
+        for(Int_t i=0; i<80; i++){
+            if(iGaussRight+RF*(2*i-1)/2.<RFright && RFright<iGaussRight+RF*(2*i+1)/2){
+                HSlewingRight-> Fill(RFright-(iGaussRight+i*RF)-SlewingFunction(GetWidth(1), fuctorMR));
+                HSlewingRight2D-> Fill(GetWidth(1), RFright-(iGaussRight+i*RF)-SlewingFunction(GetWidth(1), fuctorMR));
+                HSlewingRightAmp-> Fill(RFright-(iGaussRight+i*RF)-SlewingFunction(GetAmp(1), fuctorMAmpR));
+                HSlewingRightAmp2D-> Fill(GetAmp(1), RFright-(iGaussRight+i*RF)-SlewingFunction(GetAmp(1), fuctorMAmpR));
+                if(BGetDifference){
+                    HDiffRight-> Fill(diff, RFright-(iGaussRight+i*RF)-SlewingFunction(GetWidth(1), fuctorMR));
+                    HDiffRightAmp-> Fill(diff, RFright-(iGaussRight+i*RF)-SlewingFunction(GetAmp(1), fuctorMAmpR));
+                }
+            }
+            if(iGaussLeft+RF*(2*i-1)/2.<RFleft && RFleft<iGaussLeft+RF*(2*i+1)/2.){
+                HSlewingLeft-> Fill(RFleft-(iGaussLeft+i*RF)-SlewingFunction(GetWidth(5), fuctorML));
+                HSlewingLeft2D-> Fill(GetWidth(5), RFleft-(iGaussLeft+i*RF)-SlewingFunction(GetWidth(5), fuctorML));
+                HSlewingLeftAmp-> Fill(RFleft-(iGaussLeft+i*RF)-SlewingFunction(GetAmp(5), fuctorMAmpL));
+                HSlewingLeftAmp2D-> Fill(GetAmp(5), RFleft-(iGaussLeft+i*RF)-SlewingFunction(GetAmp(5), fuctorMAmpL));
+                if(BGetDifference){
+                    HDiffLeft-> Fill(diff, RFleft-(iGaussLeft+i*RF)-SlewingFunction(GetWidth(5), fuctorML));
+                    HDiffLeftAmp-> Fill(diff, RFleft-(iGaussLeft+i*RF)-SlewingFunction(GetAmp(5), fuctorMAmpL));
+                }
+            }
+            if(iGaussMean+RF*(2*i-1)/2.<RFmean && RFmean<iGaussMean+RF*(2*i+1)/2.){
+                HSlewingMeanR-> Fill(RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(1), fuctorMMR));
+                HSlewingMeanL-> Fill(RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(5), fuctorMML));
+                HSlewingMeanR2D-> Fill(GetWidth(1), RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(1), fuctorMMR));
+                HSlewingMeanL2D-> Fill(GetWidth(5), RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(5), fuctorMML));
+                HSlewingMeanAmpR-> Fill(RFmean-(iGaussMean+i*RF)-SlewingFunction(GetAmp(1), fuctorMMAmpR));
+                HSlewingMeanAmpL-> Fill(RFmean-(iGaussMean+i*RF)-SlewingFunction(GetAmp(5), fuctorMMAmpL));
+                HSlewingMeanAmpR2D-> Fill(GetAmp(1), RFmean-(iGaussMean+i*RF)-SlewingFunction(GetAmp(1), fuctorMMAmpR));
+                HSlewingMeanAmpL2D-> Fill(GetAmp(5), RFmean-(iGaussMean+i*RF)-SlewingFunction(GetAmp(5), fuctorMMAmpL));
+                if(BGetDifference){
+                HDiffMeanR-> Fill(diff, RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(1), fuctorMMR));
+                HDiffMeanL-> Fill(diff, RFmean-(iGaussMean+i*RF)-SlewingFunction(GetWidth(5), fuctorMML));
+                HDiffMeanAmpR-> Fill(diff, RFmean-(iGaussMean+i*RF)-SlewingFunction(GetAmp(1), fuctorMMAmpR));
+                HDiffMeanAmpL-> Fill(diff, RFmean-(iGaussMean+i*RF)-SlewingFunction(GetAmp(5), fuctorMMAmpL));
+                }
+            }
+        }
+    }
     return;
 }
 
@@ -1225,6 +1304,10 @@ void Analysis:: GetEfficiency(){
     Bool_t C3= HitStripAmp(100);
     Bool_t C4= HitStripRight();
     Bool_t C5= HitStripLeft();
+    if(Run==53){
+        C5= HitStripLeft(-1);
+        C2= (C4 && C5);
+    }
     if(C1){
         nHit++;
         if(C2) iHit++;
