@@ -6,8 +6,10 @@ void Scan(){
     // MRPC1=======================================================================================================
     TCanvas *CTimeResoScan1= new TCanvas("CTimeResoScan1", "CTimeResoScan1", 2000, 2000);
     TCanvas *CEffScan1= new TCanvas("CEffScan1", "CEffScan1", 2000, 2000);
+    TCanvas *CTimeResoScan1_strip4= new TCanvas("CTimeResoScan1_strip4", "CTimeResoScan1_strip4", 2000, 2000);
     CTimeResoScan1-> Divide(2,2);
     CEffScan1-> Divide(2,2);
+    CTimeResoScan1_strip4-> Divide(2,2);
     // RunNo= {36, 35, 33, 27}
     Double_t HV1[4]= {11.5, 12, 12.52, 13};
     Double_t TimeResoHV1[4]= {95.7562, 86.0832, 77.6048, 78.8911};
@@ -42,7 +44,7 @@ void Scan(){
     Double_t EffVth1R_strip4[9]= {99.5496, 99.3229, 98.8734, 97.7191, 92.0847, 66.9856, 39.8143, 20.5992, 9.22665};
     Double_t TimeResoVth1L_strip4[9]= {113.722, 110.183, 103.973, 103.172, 110.311, 129.577, 145.695, 167.708, 207.75};
     Double_t TimeResoVthErr1L_strip4[9]= {1.58793, 0.925914, 0.820831, 0.80717, 1.16467, 1.53178, 3.44552, 8.03158, 29.4765};
-    Double_t EffVth1L_strip4[9]= {};
+    Double_t EffVth1L_strip4[9]= {99.4134, 99.079, 98.5638, 97.1219, 90.4514, 62.5478, 34.9042, 16.4968, 6.41909};
     
     // RunNo= {51, 42, 41, 53*, 55, 58}
     Double_t Strip1[6]= {1, 2, 3, 4, 5, 6};
@@ -56,53 +58,57 @@ void Scan(){
     Double_t TimeResoStripErr1L[6]= {3.48058, 0.713278, 1.04016, 0.892435, 1.48524, 1.4114};
     Double_t EffStrip1L[6]= {38.3086, 97.4103, 97.8659, 45.7554, 62.5954, 63.2269};
     
-    // RunNo= {72, 71, 54, 68, 72}
+    // RunNo= {72, 71, 55, 68, 72}
     Double_t Position1[5]= {-30, -15, 0, 15, 30};
-    Double_t TimeResoPos1[5]= {99.7095, 92.345, 92.5224, 95.9285, 101.806};
-    Double_t TimeResoPosErr1[5]= {1.26896, 1.21046, 0.719804, 1.39186, 1.76466};
-    Double_t EffPos1[5]= {65.5831, 69.6255, 58.3742, 60.2335, 68.5894};
-    Double_t TimeResoPos1R[5]= {};
-    Double_t TimeResoPosErr1R[5]= {};
-    Double_t EffPos1R[5]= {};
-    Double_t TimeResoPos1L[5]= {};
-    Double_t TimeResoPosErr1L[5]= {};
-    Double_t EffPos1L[5]= {};
+    Double_t TimeResoPos1[5]= {90.951, 91.8524, 92.408, 94.8681, 90.951};
+    Double_t TimeResoPosErr1[5]= {1.27177, 1.20041, 0.723491, 1.57039, 1.27177};
+    Double_t EffPos1[5]= {65.5831, 69.6255, 58.3822, 60.2335, 65.5831};
+    Double_t TimeResoPos1R[5]= {112.077, 111.897, 114.763, 119.41, 112.077};
+    Double_t TimeResoPosErr1R[5]= {2.13112, 1.92082, 1.2107, 2.59767, 2.13112};
+    Double_t EffPos1R[5]= {96.6233, 97.6025, 94.2365, 88.5371, 96.6233};
+    Double_t TimeResoPos1L[5]= {115.312, 120.671, 122.293, 130.659, 115.312};
+    Double_t TimeResoPosErr1L[5]= {2.20046, 2.28968, 1.48302, 3.65817, 2.20046};
+    Double_t EffPos1L[5]= {67.1141, 71.1116, 62.5994, 70.0513, 67.1141};
     
     Double_t HVErr1[4]= {};
     Double_t VthErr1[4]= {};
+    Double_t VthErr1_strip4[9]= {};
     Double_t StripErr1[6]= {};
     Double_t PosErr1[5]= {};
 
     TGraphErrors *GTimeResoHVScan1= new TGraphErrors(4, HV1, TimeResoHV1, HVErr1, TimeResoHVErr1);
     TGraphErrors *GTimeResoVthScan1= new TGraphErrors(4, Vth1, TimeResoVth1, VthErr1, TimeResoVthErr1);
-    TGraphErrors *GTimeResoVthScan1_strip4= new TGraphErrors(4, Vth1_strip4, TimeResoVth1_strip4, VthErr1, TimeResoVthErr1_strip4);
+    TGraphErrors *GTimeResoVthScan1_strip4= new TGraphErrors(9, Vth1_strip4, TimeResoVth1_strip4, VthErr1_strip4, TimeResoVthErr1_strip4);
     TGraphErrors *GTimeResoStripScan1= new TGraphErrors(6, Strip1, TimeResoStrip1, StripErr1, TimeResoStripErr1);
     TGraphErrors *GTimeResoPosScan1= new TGraphErrors(5, Position1, TimeResoPos1, PosErr1, TimeResoPosErr1);
 
     TGraphErrors *GTimeResoHVScan1R= new TGraphErrors(4, HV1, TimeResoHV1R, HVErr1, TimeResoHVErr1R);
     TGraphErrors *GTimeResoVthScan1R= new TGraphErrors(4, Vth1, TimeResoVth1R, VthErr1, TimeResoVthErr1R);
-    TGraphErrors *GTimeResoVthScan1R_strip4= new TGraphErrors(4, Vth1_strip4, TimeResoVth1R_strip4, VthErr1, TimeResoVthErr1R_strip4);
+    TGraphErrors *GTimeResoVthScan1R_strip4= new TGraphErrors(9, Vth1_strip4, TimeResoVth1R_strip4, VthErr1_strip4, TimeResoVthErr1R_strip4);
     TGraphErrors *GTimeResoStripScan1R= new TGraphErrors(6, Strip1, TimeResoStrip1R, StripErr1, TimeResoStripErr1R);
     TGraphErrors *GTimeResoPosScan1R= new TGraphErrors(5, Position1, TimeResoPos1R, PosErr1, TimeResoPosErr1R);
 
     TGraphErrors *GTimeResoHVScan1L= new TGraphErrors(4, HV1, TimeResoHV1L, HVErr1, TimeResoHVErr1L);
     TGraphErrors *GTimeResoVthScan1L= new TGraphErrors(4, Vth1, TimeResoVth1L, VthErr1, TimeResoVthErr1L);
-    TGraphErrors *GTimeResoVthScan1L_strip4= new TGraphErrors(4, Vth1_strip4, TimeResoVth1L_strip4, VthErr1, TimeResoVthErr1L_strip4);
+    TGraphErrors *GTimeResoVthScan1L_strip4= new TGraphErrors(9, Vth1_strip4, TimeResoVth1L_strip4, VthErr1_strip4, TimeResoVthErr1L_strip4);
     TGraphErrors *GTimeResoStripScan1L= new TGraphErrors(6, Strip1, TimeResoStrip1L, StripErr1, TimeResoStripErr1L);
     TGraphErrors *GTimeResoPosScan1L= new TGraphErrors(5, Position1, TimeResoPos1L, PosErr1, TimeResoPosErr1L);
     
     TGraphErrors *GEffHVScan1= new TGraphErrors(4, HV1, EffHV1);
     TGraphErrors *GEffVthScan1= new TGraphErrors(4, Vth1, EffVth1);
+    TGraphErrors *GEffVthScan1_strip4= new TGraphErrors(9, Vth1_strip4, EffVth1_strip4);
     TGraphErrors *GEffStripScan1= new TGraphErrors(6, Strip1, EffStrip1);
     TGraphErrors *GEffPosScan1= new TGraphErrors(5, Position1, EffPos1);
 
     TGraphErrors *GEffHVScan1R= new TGraphErrors(4, HV1, EffHV1R);
     TGraphErrors *GEffVthScan1R= new TGraphErrors(4, Vth1, EffVth1R);
+    TGraphErrors *GEffVthScan1R_strip4= new TGraphErrors(9, Vth1_strip4, EffVth1R_strip4);
     TGraphErrors *GEffStripScan1R= new TGraphErrors(6, Strip1, EffStrip1R);
     TGraphErrors *GEffPosScan1R= new TGraphErrors(5, Position1, EffPos1R);
 
     TGraphErrors *GEffHVScan1L= new TGraphErrors(4, HV1, EffHV1L);
     TGraphErrors *GEffVthScan1L= new TGraphErrors(4, Vth1, EffVth1L);
+    TGraphErrors *GEffVthScan1L_strip4= new TGraphErrors(9, Vth1_strip4, EffVth1L_strip4);
     TGraphErrors *GEffStripScan1L= new TGraphErrors(6, Strip1, EffStrip1L);
     TGraphErrors *GEffPosScan1L= new TGraphErrors(5, Position1, EffPos1L);
 
@@ -114,6 +120,8 @@ void Scan(){
     TMultiGraph *GMerge6= new TMultiGraph();
     TMultiGraph *GMerge7= new TMultiGraph();
     TMultiGraph *GMerge8= new TMultiGraph();
+    TMultiGraph *GMergeX= new TMultiGraph();
+    TMultiGraph *GMergeY= new TMultiGraph();
 
     // MRPC2=======================================================================================================
     TCanvas *CTimeResoScan2= new TCanvas("CTimeResoScan2", "CTimeResoScan2", 2000, 2000);
@@ -219,17 +227,37 @@ void Scan(){
     GMerge2-> SetTitle("Time resolution (MRPC1); Threshold Voltage [mV]; Time Resolution [ps]");
     GMerge2-> Draw("apl");
     CTimeResoScan1-> cd(3);
-    GTimeResoStripScan1-> SetTitle("Time resolution (MRPC1); Strip; Time Resolution [ps]");
     GTimeResoStripScan1-> SetMarkerStyle(8);
     GTimeResoStripScan1-> SetMarkerColor(kGreen);
     GTimeResoStripScan1-> SetLineColor(kGreen);
-    GTimeResoStripScan1-> Draw("apl");
+    GTimeResoStripScan1R-> SetMarkerStyle(8);
+    GTimeResoStripScan1R-> SetMarkerColor(kRed);
+    GTimeResoStripScan1R-> SetLineColor(kRed);
+    GTimeResoStripScan1L-> SetMarkerStyle(8);
+    GTimeResoStripScan1L-> SetMarkerColor(kBlue);
+    GTimeResoStripScan1L-> SetLineColor(kBlue);
+    GMerge3-> Add(GTimeResoStripScan1);
+    GMerge3-> Add(GTimeResoStripScan1R);
+    GMerge3-> Add(GTimeResoStripScan1L);
+    GMerge3-> SetName("Time resolution (MRPC1); Strip; Time Resolution [ps]");
+    GMerge3-> SetTitle("Time resolution (MRPC1); Strip; Time Resolution [ps]");
+    GMerge3-> Draw("apl");
     CTimeResoScan1-> cd(4);
-    GTimeResoPosScan1-> SetTitle("Time resolution (MRPC1); Position [cm]; Time Resolution [ps]");
     GTimeResoPosScan1-> SetMarkerStyle(8);
     GTimeResoPosScan1-> SetMarkerColor(kGreen);
     GTimeResoPosScan1-> SetLineColor(kGreen);
-    GTimeResoPosScan1-> Draw("apl");
+    GTimeResoPosScan1R-> SetMarkerStyle(8);
+    GTimeResoPosScan1R-> SetMarkerColor(kRed);
+    GTimeResoPosScan1R-> SetLineColor(kRed);
+    GTimeResoPosScan1L-> SetMarkerStyle(8);
+    GTimeResoPosScan1L-> SetMarkerColor(kBlue);
+    GTimeResoPosScan1L-> SetLineColor(kBlue);
+    GMerge4-> Add(GTimeResoPosScan1);
+    GMerge4-> Add(GTimeResoPosScan1R);
+    GMerge4-> Add(GTimeResoPosScan1L);
+    GMerge4-> SetName("Time resolution (MRPC1); Position [cm]; Time Resolution [ps]");
+    GMerge4-> SetTitle("Time resolution (MRPC1); Position [cm]; Time Resolution [ps]");
+    GMerge4-> Draw("apl");
 
     CEffScan1-> cd(1);
     GEffHVScan1-> SetMarkerStyle(8);
@@ -264,17 +292,74 @@ void Scan(){
     GMerge6-> SetTitle("Efficiency (MRPC1); Threshold Voltage [mV]; Efficiency [%]");
     GMerge6-> Draw("apl");
     CEffScan1-> cd(3);
-    GEffStripScan1-> SetTitle("Efficiency (MRPC1); Strip; Efficiency [%]");
     GEffStripScan1-> SetMarkerStyle(8);
     GEffStripScan1-> SetMarkerColor(kGreen);
     GEffStripScan1-> SetLineColor(kGreen);
-    GEffStripScan1-> Draw("apl");
+    GEffStripScan1R-> SetMarkerStyle(8);
+    GEffStripScan1R-> SetMarkerColor(kRed);
+    GEffStripScan1R-> SetLineColor(kRed);
+    GEffStripScan1L-> SetMarkerStyle(8);
+    GEffStripScan1L-> SetMarkerColor(kBlue);
+    GEffStripScan1L-> SetLineColor(kBlue);
+    GMerge7-> Add(GEffStripScan1);
+    GMerge7-> Add(GEffStripScan1R);
+    GMerge7-> Add(GEffStripScan1L);
+    GMerge7-> SetName("Efficiency (MRPC1); Strip; Efficiency [%]");
+    GMerge7-> SetTitle("Efficiency (MRPC1); Strip; Efficiency [%]");
+    GMerge7-> Draw("apl");
     CEffScan1-> cd(4);
-    GEffPosScan1-> SetTitle("Efficiency (MRPC1); Position [cm]; Efficiency [%]");
     GEffPosScan1-> SetMarkerStyle(8);
     GEffPosScan1-> SetMarkerColor(kGreen);
     GEffPosScan1-> SetLineColor(kGreen);
-    GEffPosScan1-> Draw("apl");
+    GEffPosScan1R-> SetMarkerStyle(8);
+    GEffPosScan1R-> SetMarkerColor(kRed);
+    GEffPosScan1R-> SetLineColor(kRed);
+    GEffPosScan1L-> SetMarkerStyle(8);
+    GEffPosScan1L-> SetMarkerColor(kBlue);
+    GEffPosScan1L-> SetLineColor(kBlue);
+    GMerge8-> Add(GEffPosScan1);
+    GMerge8-> Add(GEffPosScan1R);
+    GMerge8-> Add(GEffPosScan1L);
+    GMerge8-> SetName("Efficiency (MRPC1); Position [cm]; Efficiency [%]");
+    GMerge8-> SetTitle("Efficiency (MRPC1); Position [cm]; Efficiency [%]");
+    GMerge8-> Draw("apl");
+
+
+    CTimeResoScan1_strip4-> cd(1);
+    GTimeResoVthScan1_strip4-> SetMarkerStyle(8);
+    GTimeResoVthScan1_strip4-> SetMarkerColor(kGreen);
+    GTimeResoVthScan1_strip4-> SetLineColor(kGreen);
+    GTimeResoVthScan1R_strip4-> SetMarkerStyle(8);
+    GTimeResoVthScan1R_strip4-> SetMarkerColor(kRed);
+    GTimeResoVthScan1R_strip4-> SetLineColor(kRed);
+    GTimeResoVthScan1L_strip4-> SetMarkerStyle(8);
+    GTimeResoVthScan1L_strip4-> SetMarkerColor(kBlue);
+    GTimeResoVthScan1L_strip4-> SetLineColor(kBlue);
+    GMergeX-> Add(GTimeResoVthScan1_strip4);
+    GMergeX-> Add(GTimeResoVthScan1R_strip4);
+    GMergeX-> Add(GTimeResoVthScan1L_strip4);
+    GMergeX-> SetName("Time resolution (MRPC1 strip4); Threshold Voltage [mV]; Time Resolution [ps]");
+    GMergeX-> SetTitle("Time resolution (MRPC1 strip4); Threshold Voltage [mV]; Time Resolution [ps]");
+    GMergeX-> Draw("apl");
+
+    CTimeResoScan1_strip4-> cd(2);
+    GEffVthScan1_strip4-> SetMarkerStyle(8);
+    GEffVthScan1_strip4-> SetMarkerColor(kGreen);
+    GEffVthScan1_strip4-> SetLineColor(kGreen);
+    GEffVthScan1R_strip4-> SetMarkerStyle(8);
+    GEffVthScan1R_strip4-> SetMarkerColor(kRed);
+    GEffVthScan1R_strip4-> SetLineColor(kRed);
+    GEffVthScan1L_strip4-> SetMarkerStyle(8);
+    GEffVthScan1L_strip4-> SetMarkerColor(kBlue);
+    GEffVthScan1L_strip4-> SetLineColor(kBlue);
+    GMergeY-> Add(GEffVthScan1_strip4);
+    GMergeY-> Add(GEffVthScan1R_strip4);
+    GMergeY-> Add(GEffVthScan1L_strip4);
+    GMergeY-> SetName("Efficiency (MRPC1); Threshold Voltage [mV]; Efficiency [%]");
+    GMergeY-> SetTitle("Efficiency (MRPC1); Threshold Voltage [mV]; Efficiency [%]");
+    GMergeY-> Draw("apl");
+
+
 
 
 

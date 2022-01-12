@@ -26,7 +26,7 @@ do
 done
 
 echo "#MRPC1 position scan" >> ./../Result/result.dat
-for RunNo in 72 71 54 68 72
+for RunNo in 72 71 55 68 72
 do
     timeout 180 root -l -b -q Analysis_SP8.cpp\(${RunNo}\)
 done
