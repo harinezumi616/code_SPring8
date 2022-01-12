@@ -1097,7 +1097,7 @@ void Analysis:: GetTimeReso(){
             }
         }
     }
-    else if(C1 && Run==53){
+    else if(C1 && Run==53 && GetLtdcSize(5)!=0){
         Double_t right= GetLtdc(1);
         Double_t left= GetLtdc(5);
         Double_t mean= (GetLtdc(1)+GetLtdc(5))/2.;
@@ -1246,7 +1246,7 @@ void Analysis:: GetSlewing(){
             }
         }
     }
-    else if(C1 && Run==53){
+    else if(C1 && Run==53 && GetLtdcSize(5)!=0){
         Double_t right= GetLtdc(1);
         Double_t left= GetLtdc(5);
         Double_t mean= (GetLtdc(1)+GetLtdc(5))/2.;
