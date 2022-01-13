@@ -132,7 +132,7 @@ void Scan(){
     CEffScan2-> Divide(2,2);
     // RunNo= {84, 83, 82, 78}
     Double_t HV2[4]= {11.5, 12, 12.5, 13};
-    Double_t TimeResoHV2[4]= {101.776, 247.391, 93.9332, 92.5169};
+    Double_t TimeResoHV2[4]= {247.391, 101.776, 93.9332, 92.5169};
     Double_t TimeResoHVErr2[4]= {2302.84, 7.75633, 1.56076, 1.83357};
     Double_t EffHV2[4]= {7.96686, 23.0211, 30.8238, 52.7509};
     Double_t TimeResoHV2R[4]= {4.99592, 113.784, 121.73, 111.472};
@@ -161,22 +161,22 @@ void Scan(){
     Double_t EffStrip2[8]= {41.893, 73.2529, 64.2046, 65.7516, 62.8611, 66.3697, 71.6653, 51.8324};
     Double_t TimeResoStrip2R[8]= {124.515, 112.614, 105.124, 106.736, 110.713, 103.586, 99.9082, 122.794};
     Double_t TimeResoStripErr2R[8]= {3.20968,  1.96507, 0.885171, 0.945594, 1.05133, 0.879441, 0.792552, 1.66541};
-    Double_t EffStrip2R[8]= {46.3281, 74.1076, 64.9547, 69.1271, 63.7089, 66.9618, 73.2716, 52.3954};
+    Double_t EffStrip2R[8]= {90.6476, 97.9638, 98.2547, 95.7653, 97.4902, 98.6497, 97.7815, 98.3718};
     Double_t TimeResoStrip2L[8]= {142.127, 123.848, 126.252, 121.581, 126.881, 129.893, 124.735, 137.687};
     Double_t TimeResoStripErr2L[8]= {4.89356, 2.51541, 1.45695, 1.31785, 1.55541, 1.62993, 1.57184, 2.46765};
     Double_t EffStrip2L[8]= {46.3281, 74.1076, 64.9547, 69.1271, 63.7089, 66.9618, 73.2716, 52.3954};
 
     // RunNo= {108, 107, 101, 106, 105}
     Double_t Position2[5]= {-30, -15, 0, 15, 30};
-    Double_t TimeResoPos2[5]= {};
-    Double_t TimeResoPosErr2[5]= {};
-    Double_t EffPos2[5]= {};
-    Double_t TimeResoPos2R[5]= {};
-    Double_t TimeResoPosErr2R[5]= {};
-    Double_t EffPos2R[5]= {};
-    Double_t TimeResoPos2L[5]= {};
-    Double_t TimeResoPosErr2L[5]= {};
-    Double_t EffPos2L[5]= {};
+    Double_t TimeResoPos2[5]= {89.6944, 85.304, 89.8558, 81.8141, 88.7865};
+    Double_t TimeResoPosErr2[5]= {0.748416, 0.701295, 0.661941, 0.641317, 0.728376};
+    Double_t EffPos2[5]= {57.1976, 45.6337, 62.8611, 62.3396, 61.6045};
+    Double_t TimeResoPos2R[5]= {129.319, 114.011, 110.713, 116.465, 109.8};
+    Double_t TimeResoPosErr2R[5]= {1.94795, 1.516, 1.05133, 1.5484, 1.21718};
+    Double_t EffPos2R[5]= {57.3356, 45.7892, 97.4902, 62.3396, 61.6276};
+    Double_t TimeResoPos2L[5]= {132.778, 144.732, 126.881, 130.983, 148.008};
+    Double_t TimeResoPosErr2L[5]= {2.0671, 2.73947, 1.55541, 2.15441, 2.76141};
+    Double_t EffPos2L[5]= {67.9289, 63.8547, 63.7089, 83.6226, 79.8748};
 
     Double_t HVErr2[4]= {};
     Double_t VthErr2[7]= {};
@@ -225,6 +225,11 @@ void Scan(){
 
 
     // MRPC1=======================================================================================================
+    TLegend *Legend1= new TLegend(0.7, 0.7, 0.85, 0.85);
+    Legend1-> AddEntry(GTimeResoHVScan1R, "MRPC(Right)", "p");
+    Legend1-> AddEntry(GTimeResoHVScan1L, "MRPC(Left)", "p");
+    Legend1-> AddEntry(GTimeResoHVScan1, "MRPC(Mean)", "p");
+
     CTimeResoScan1-> cd(1);
     GTimeResoHVScan1-> SetMarkerStyle(8);
     GTimeResoHVScan1-> SetMarkerColor(kGreen);
@@ -241,6 +246,7 @@ void Scan(){
     GMerge1-> SetName("Time resolution (MRPC1); High Voltage [kV]; Time Resolution [ps]");
     GMerge1-> SetTitle("Time resolution (MRPC1); High Voltage [kV]; Time Resolution [ps]");
     GMerge1-> Draw("apl");
+    Legend1-> Draw();
     CTimeResoScan1-> cd(2);
     GTimeResoVthScan1-> SetMarkerStyle(8);
     GTimeResoVthScan1-> SetMarkerColor(kGreen);
@@ -257,6 +263,7 @@ void Scan(){
     GMerge2-> SetName("Time resolution (MRPC1); Threshold Voltage [mV]; Time Resolution [ps]");
     GMerge2-> SetTitle("Time resolution (MRPC1); Threshold Voltage [mV]; Time Resolution [ps]");
     GMerge2-> Draw("apl");
+    Legend1-> Draw();
     CTimeResoScan1-> cd(3);
     GTimeResoStripScan1-> SetMarkerStyle(8);
     GTimeResoStripScan1-> SetMarkerColor(kGreen);
@@ -273,6 +280,7 @@ void Scan(){
     GMerge3-> SetName("Time resolution (MRPC1); Strip; Time Resolution [ps]");
     GMerge3-> SetTitle("Time resolution (MRPC1); Strip; Time Resolution [ps]");
     GMerge3-> Draw("apl");
+    Legend1-> Draw();
     CTimeResoScan1-> cd(4);
     GTimeResoPosScan1-> SetMarkerStyle(8);
     GTimeResoPosScan1-> SetMarkerColor(kGreen);
@@ -289,6 +297,7 @@ void Scan(){
     GMerge4-> SetName("Time resolution (MRPC1); Position [cm]; Time Resolution [ps]");
     GMerge4-> SetTitle("Time resolution (MRPC1); Position [cm]; Time Resolution [ps]");
     GMerge4-> Draw("apl");
+    Legend1-> Draw();
 
     CEffScan1-> cd(1);
     GEffHVScan1-> SetMarkerStyle(8);
@@ -306,6 +315,7 @@ void Scan(){
     GMerge5-> SetName("Efficiency (MRPC1); High Voltage [kV]; Efficiency [%]");
     GMerge5-> SetTitle("Efficiency (MRPC1); High Voltage [kV]; Efficiency [%]");
     GMerge5-> Draw("apl");
+    Legend1-> Draw();
     CEffScan1-> cd(2);
     GEffVthScan1-> SetMarkerStyle(8);
     GEffVthScan1-> SetMarkerColor(kGreen);
@@ -322,6 +332,7 @@ void Scan(){
     GMerge6-> SetName("Efficiency (MRPC1); Threshold Voltage [mV]; Efficiency [%]");
     GMerge6-> SetTitle("Efficiency (MRPC1); Threshold Voltage [mV]; Efficiency [%]");
     GMerge6-> Draw("apl");
+    Legend1-> Draw();
     CEffScan1-> cd(3);
     GEffStripScan1-> SetMarkerStyle(8);
     GEffStripScan1-> SetMarkerColor(kGreen);
@@ -338,6 +349,7 @@ void Scan(){
     GMerge7-> SetName("Efficiency (MRPC1); Strip; Efficiency [%]");
     GMerge7-> SetTitle("Efficiency (MRPC1); Strip; Efficiency [%]");
     GMerge7-> Draw("apl");
+    Legend1-> Draw();
     CEffScan1-> cd(4);
     GEffPosScan1-> SetMarkerStyle(8);
     GEffPosScan1-> SetMarkerColor(kGreen);
@@ -354,6 +366,7 @@ void Scan(){
     GMerge8-> SetName("Efficiency (MRPC1); Position [cm]; Efficiency [%]");
     GMerge8-> SetTitle("Efficiency (MRPC1); Position [cm]; Efficiency [%]");
     GMerge8-> Draw("apl");
+    Legend1-> Draw();
 
 
     CTimeResoScan1_strip4-> cd(1);
@@ -372,6 +385,7 @@ void Scan(){
     GMergeX-> SetName("Time resolution (MRPC1 strip4); Threshold Voltage [mV]; Time Resolution [ps]");
     GMergeX-> SetTitle("Time resolution (MRPC1 strip4); Threshold Voltage [mV]; Time Resolution [ps]");
     GMergeX-> Draw("apl");
+    Legend1-> Draw();
 
     CTimeResoScan1_strip4-> cd(2);
     GEffVthScan1_strip4-> SetMarkerStyle(8);
@@ -389,6 +403,7 @@ void Scan(){
     GMergeY-> SetName("Efficiency (MRPC1); Threshold Voltage [mV]; Efficiency [%]");
     GMergeY-> SetTitle("Efficiency (MRPC1); Threshold Voltage [mV]; Efficiency [%]");
     GMergeY-> Draw("apl");
+    Legend1-> Draw();
 
 
 
@@ -409,6 +424,7 @@ void Scan(){
     GMerge9-> SetName("Time resolution (MRPC2); High Voltage [kV]; Time Resolution [ps]");
     GMerge9-> SetTitle("Time resolution (MRPC2); High Voltage [kV]; Time Resolution [ps]");
     GMerge9-> Draw("apl");
+    Legend1-> Draw();
     CTimeResoScan2-> cd(2);
     GTimeResoVthScan2-> SetMarkerStyle(8);
     GTimeResoVthScan2-> SetMarkerColor(kGreen);
@@ -425,6 +441,7 @@ void Scan(){
     GMerge10-> SetName("Time resolution (MRPC2); Threshold Voltage [mV]; Time Resolution [ps]");
     GMerge10-> SetTitle("Time resolution (MRPC2); Threshold Voltage [mV]; Time Resolution [ps]");
     GMerge10-> Draw("apl");
+    Legend1-> Draw();
     CTimeResoScan2-> cd(3);
     GTimeResoStripScan2-> SetMarkerStyle(8);
     GTimeResoStripScan2-> SetMarkerColor(kGreen);
@@ -441,12 +458,24 @@ void Scan(){
     GMerge11-> SetName("Time resolution (MRPC2); Strip; Time Resolution [ps]");
     GMerge11-> SetTitle("Time resolution (MRPC2); Strip; Time Resolution [ps]");
     GMerge11-> Draw("apl");
+    Legend1-> Draw();
     CTimeResoScan2-> cd(4);
-    GTimeResoPosScan2-> SetTitle("Time resolution (MRPC2); Position [cm]; Time Resolution [ps]");
     GTimeResoPosScan2-> SetMarkerStyle(8);
     GTimeResoPosScan2-> SetMarkerColor(kGreen);
     GTimeResoPosScan2-> SetLineColor(kGreen);
-    GTimeResoPosScan2-> Draw("apl");
+    GTimeResoPosScan2R-> SetMarkerStyle(8);
+    GTimeResoPosScan2R-> SetMarkerColor(kRed);
+    GTimeResoPosScan2R-> SetLineColor(kRed);
+    GTimeResoPosScan2L-> SetMarkerStyle(8);
+    GTimeResoPosScan2L-> SetMarkerColor(kBlue);
+    GTimeResoPosScan2L-> SetLineColor(kBlue);
+    GMerge12-> Add(GTimeResoPosScan2);
+    GMerge12-> Add(GTimeResoPosScan2R);
+    GMerge12-> Add(GTimeResoPosScan2L);
+    GMerge12-> SetName("Time resolution (MRPC2); Position [cm]; Time Resolution [ps]");
+    GMerge12-> SetTitle("Time resolution (MRPC2); Position [cm]; Time Resolution [ps]");
+    GMerge12-> Draw("apl");
+    Legend1-> Draw();
     CEffScan2-> cd(1);
     GEffHVScan2-> SetMarkerStyle(8);
     GEffHVScan2-> SetMarkerColor(kGreen);
@@ -463,6 +492,7 @@ void Scan(){
     GMerge13-> SetName("Efficiency (MRPC2); High Voltage [kV]; Efficiency [%]");
     GMerge13-> SetTitle("Efficiency (MRPC2); High Voltage [kV]; Efficiency [%]");
     GMerge13-> Draw("apl");
+    Legend1-> Draw();
     CEffScan2-> cd(2);
     GEffVthScan2-> SetMarkerStyle(8);
     GEffVthScan2-> SetMarkerColor(kGreen);
@@ -479,6 +509,7 @@ void Scan(){
     GMerge14-> SetName("Efficiency (MRPC2); Threshold Voltage [mV]; Efficiency [%]");
     GMerge14-> SetTitle("Efficiency (MRPC2); Threshold Voltage [mV]; Efficiency [%]");
     GMerge14-> Draw("apl");
+    Legend1-> Draw();
     CEffScan2-> cd(3);
     GEffStripScan2-> SetMarkerStyle(8);
     GEffStripScan2-> SetMarkerColor(kGreen);
@@ -495,11 +526,23 @@ void Scan(){
     GMerge15-> SetName("Efficiency (MRPC2); Strip; Efficiency [%]");
     GMerge15-> SetTitle("Efficiency (MRPC2); Strip; Efficiency [%]");
     GMerge15-> Draw("apl");
+    Legend1-> Draw();
     CEffScan2-> cd(4);
-    GEffPosScan2-> SetTitle("Efficiency (MRPC2); Position [cm]; Efficiency [%]");
     GEffPosScan2-> SetMarkerStyle(8);
     GEffPosScan2-> SetMarkerColor(kGreen);
     GEffPosScan2-> SetLineColor(kGreen);
-    GEffPosScan2-> Draw("apl");
+    GEffPosScan2R-> SetMarkerStyle(8);
+    GEffPosScan2R-> SetMarkerColor(kRed);
+    GEffPosScan2R-> SetLineColor(kRed);
+    GEffPosScan2L-> SetMarkerStyle(8);
+    GEffPosScan2L-> SetMarkerColor(kBlue);
+    GEffPosScan2L-> SetLineColor(kBlue);
+    GMerge16-> Add(GEffPosScan2);
+    GMerge16-> Add(GEffPosScan2R);
+    GMerge16-> Add(GEffPosScan2L);
+    GMerge16-> SetName("Efficiency (MRPC2); Position [cm]; Efficiency [%]");
+    GMerge16-> SetTitle("Efficiency (MRPC2); Position [cm]; Efficiency [%]");
+    GMerge16-> Draw("apl");
+    Legend1-> Draw();
     return;
 }
