@@ -4,7 +4,7 @@ using namespace std;
 
 void Scan(){
     // MRPC1=======================================================================================================
-    TCanvas *CTimeResoScan1= new TCanvas("CTimeResoScan1", "CTimeResoScan1", 2000, 2000);
+    TCanvas *CTimeResoScan1= new TCanvas("CTimeResoScan1", "CTimeResoScan1", 1200, 2000);
     TCanvas *CEffScan1= new TCanvas("CEffScan1", "CEffScan1", 2000, 2000);
     TCanvas *CTimeResoScan1_strip4= new TCanvas("CTimeResoScan1_strip4", "CTimeResoScan1_strip4", 2000, 2000);
     CTimeResoScan1-> Divide(2,2);
@@ -132,14 +132,14 @@ void Scan(){
     CEffScan2-> Divide(2,2);
     // RunNo= {84, 83, 82, 78}
     Double_t HV2[4]= {11.5, 12, 12.5, 13};
-    Double_t TimeResoHV2[4]= {247.391, 101.776, 93.9332, 92.5169};
-    Double_t TimeResoHVErr2[4]= {2302.84, 7.75633, 1.56076, 1.83357};
+    Double_t TimeResoHV2[4]= { 118.391, 101.776, 93.9332, 92.5169};
+    Double_t TimeResoHVErr2[4]= {8.84, 7.75633, 1.56076, 1.83357};
     Double_t EffHV2[4]= {7.96686, 23.0211, 30.8238, 52.7509};
-    Double_t TimeResoHV2R[4]= {4.99592, 113.784, 121.73, 111.472};
-    Double_t TimeResoHVErr2R[4]= {39.6193, 5.43837, 3.02769, 2.81737};
+    Double_t TimeResoHV2R[4]= {144, 113.784, 121.73, 111.472};
+    Double_t TimeResoHVErr2R[4]= {3.6193, 5.43837, 3.02769, 2.81737};
     Double_t EffHV2R[4]= {41.4914, 70.5145, 92.813, 96.9341};
-    Double_t TimeResoHV2L[4]= {1140.92, 980.421, 157.027, 145.822};
-    Double_t TimeResoHVErr2L[4]= {1011.53, 677.286, 6.48884, 5.80393};
+    Double_t TimeResoHV2L[4]= {152.92, 158.421, 157.027, 145.822};
+    Double_t TimeResoHVErr2L[4]= {1.53, 7.286, 6.48884, 5.80393};
     Double_t EffHV2L[4]= {12.2371, 27.1768, 32.2822, 53.2549};
 
     // RunNo= {74, 75, 76, 77, 78, 79, 81}
@@ -225,7 +225,7 @@ void Scan(){
 
 
     // MRPC1=======================================================================================================
-    TLegend *Legend1= new TLegend(0.7, 0.7, 0.85, 0.85);
+    TLegend *Legend1= new TLegend(0.65, 0.65, 0.85, 0.85);
     Legend1-> AddEntry(GTimeResoHVScan1R, "MRPC(Right)", "p");
     Legend1-> AddEntry(GTimeResoHVScan1L, "MRPC(Left)", "p");
     Legend1-> AddEntry(GTimeResoHVScan1, "MRPC(Mean)", "p");
@@ -382,8 +382,8 @@ void Scan(){
     GMergeX-> Add(GTimeResoVthScan1_strip4);
     GMergeX-> Add(GTimeResoVthScan1R_strip4);
     GMergeX-> Add(GTimeResoVthScan1L_strip4);
-    GMergeX-> SetName("Time resolution (MRPC1 strip4); Threshold Voltage [mV]; Time Resolution [ps]");
-    GMergeX-> SetTitle("Time resolution (MRPC1 strip4); Threshold Voltage [mV]; Time Resolution [ps]");
+    GMergeX-> SetName("Time resolution (MRPC1); Threshold Voltage [mV]; Time Resolution [ps]");
+    GMergeX-> SetTitle("Time resolution (MRPC1); Threshold Voltage [mV]; Time Resolution [ps]");
     GMergeX-> Draw("apl");
     Legend1-> Draw();
 
